@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Block.gd" type="Script" id=1]
+[ext_resource path="res://paneldepon/blue.tres" type="SpriteFrames" id=2]
+[ext_resource path="res://lip/1.png" type="Texture" id=3]
+[ext_resource path="res://BlockParticle.tscn" type="PackedScene" id=4]
+
+[node name="Control" type="AnimatedSprite"]
+position = Vector2( 8, 8 )
+frames = ExtResource( 2 )
+animation = "jump"
+script = ExtResource( 1 )
+
+[node name="BR" parent="." instance=ExtResource( 4 )]
+position = Vector2( 0, 0 )
+
+[node name="BL" parent="." instance=ExtResource( 4 )]
+position = Vector2( 0, 0 )
+rotation = 1.5708
+
+[node name="TL" parent="." instance=ExtResource( 4 )]
+position = Vector2( 0, 0 )
+rotation = -3.14159
+
+[node name="TR" parent="." instance=ExtResource( 4 )]
+position = Vector2( 0, 0 )
+rotation = -1.5708
+
+[node name="Trash" type="Sprite" parent="."]
+visible = false
+texture = ExtResource( 3 )
+
+[node name="Dark" type="AnimatedSprite" parent="."]
+modulate = Color( 1, 1, 1, 0 )
+frames = ExtResource( 2 )
+animation = "dark"

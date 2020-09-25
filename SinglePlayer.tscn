@@ -1,0 +1,195 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Board.tscn" type="PackedScene" id=1]
+[ext_resource path="res://SinglePlayer.gd" type="Script" id=2]
+[ext_resource path="res://lip/background.png" type="Texture" id=3]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color( 0, 0, 0, 1 )
+border_blend = true
+
+[node name="SinglePlayer" type="Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -128.0
+margin_top = -112.0
+margin_right = 128.0
+margin_bottom = 112.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Board" parent="." instance=ExtResource( 1 )]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -40.0
+margin_top = -89.0
+margin_right = 56.0
+margin_bottom = 103.0
+
+[node name="Score" type="Panel" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 120.0
+margin_top = -244.0
+margin_right = 229.0
+margin_bottom = -67.0
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Score"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -1.0
+margin_bottom = -2.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HighScore" type="Control" parent="Score/VBoxContainer"]
+margin_right = 108.0
+margin_bottom = 40.0
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Score/VBoxContainer/HighScore"]
+margin_left = 6.0
+margin_top = 5.0
+margin_right = 265.0
+margin_bottom = 215.0
+text = "HIGH-SCORE"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Value" type="Label" parent="Score/VBoxContainer/HighScore"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -139.0
+margin_top = 19.0
+margin_right = -6.0
+margin_bottom = 33.0
+text = "69420"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Score" type="Control" parent="Score/VBoxContainer"]
+margin_top = 44.0
+margin_right = 108.0
+margin_bottom = 84.0
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Score/VBoxContainer/Score"]
+margin_left = 6.0
+margin_top = 5.0
+margin_right = 265.0
+margin_bottom = 215.0
+text = "SCORE"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Value" type="Label" parent="Score/VBoxContainer/Score"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -139.0
+margin_top = 19.0
+margin_right = -6.0
+margin_bottom = 33.0
+text = "69420"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SpeedLevel" type="Control" parent="Score/VBoxContainer"]
+margin_top = 88.0
+margin_right = 108.0
+margin_bottom = 128.0
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Score/VBoxContainer/SpeedLevel"]
+margin_left = 6.0
+margin_top = 5.0
+margin_right = 265.0
+margin_bottom = 215.0
+text = "Speed Level"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Value" type="Label" parent="Score/VBoxContainer/SpeedLevel"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -139.0
+margin_top = 19.0
+margin_right = -6.0
+margin_bottom = 33.0
+text = "69420"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Level" type="Control" parent="Score/VBoxContainer"]
+margin_top = 132.0
+margin_right = 108.0
+margin_bottom = 175.0
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Score/VBoxContainer/Level"]
+margin_left = 6.0
+margin_top = 5.0
+margin_right = 265.0
+margin_bottom = 215.0
+text = "Level"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Value" type="Label" parent="Score/VBoxContainer/Level"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -139.0
+margin_top = 19.0
+margin_right = -6.0
+margin_bottom = 33.0
+text = "Easy"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 128, 112 )
+texture = ExtResource( 3 )
+
+[node name="Label" type="Label" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -40.0
+margin_top = -14.0
+text = "60"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
