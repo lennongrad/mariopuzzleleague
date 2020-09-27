@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://BlockParticle.tscn" type="PackedScene" id=1]
+[ext_resource path="res://chain/2.png" type="Texture" id=2]
+[ext_resource path="res://ChainCombo.gd" type="Script" id=3]
+
+[node name="ChainCombo" type="Sprite"]
+texture = ExtResource( 2 )
+script = ExtResource( 3 )
+
+[node name="BR" parent="." instance=ExtResource( 1 )]
+position = Vector2( -0.00338721, -0.170248 )
+
+[node name="BL" parent="." instance=ExtResource( 1 )]
+position = Vector2( -0.16008, 0.00677872 )
+rotation = 1.5708
+
+[node name="TL" parent="." instance=ExtResource( 1 )]
+position = Vector2( 0.00678253, 0.00678062 )
+rotation = -3.14159
+
+[node name="TR" parent="." instance=ExtResource( 1 )]
+position = Vector2( 0.00677872, 0.00678062 )
+rotation = -1.5708

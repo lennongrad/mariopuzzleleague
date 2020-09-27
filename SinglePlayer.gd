@@ -4,7 +4,7 @@ var seed_to_use
 var player_one
 
 func _ready():
-	start({"difficulty": enums.DIFFICULTY.EASY, "ai": true})
+	start({"difficulty": enums.DIFFICULTY.EASY, "ai": false})
 
 func start(player_one_data):
 	randomize()

@@ -16,18 +16,14 @@ var wobble_timer = 0
 var last_p = Vector2(0,0)
 var drop_timer = 0
 var last_fell = 0
+var fell_from_match = false
 var preview = false
 var lost = false
 var loss_timer = 0
 var going_to_lose = true
 
-var popping_timer = 0
-
-var matching = false
+var popping_timer = -1
 var matching_timer = -1
-var matching_visual_timer = 0
-var matching_now = false
-var match_group
 
 var removed = false
 
@@ -56,36 +52,38 @@ func drop():
 	drop_timer += 1
 	if drop_timer > 15:
 		p.y += 1
-		last_fell += 1
 
 func on_bottom(timer):
 	if drop_timer > 0:
 		set_wobble()
+		last_fell = 5
 	drop_timer = timer
-	last_fell = 0
+	if last_fell > 0:
+		last_fell -= 1
+	elif timer == 0:
+		fell_from_match = true
 
 func set_wobble():
 	if wobble_timer <= 0:
 		wobble_timer = 16
 
-func set_match(time, total, p_match_group):
-	if matching:
-		return false
-	matching = true
+# dealing with matches
+func set_match(time):
 	matching_timer = time
-	matching_now = true
-	match_group = p_match_group
-	matching_visual_timer = matching_timer + 10 * total 
-	return true
 
 func update_match():
-	matching_timer -= 1
-	matching_visual_timer -= 1
-	matching_now = false
-	if matching_timer <= 0:
-		matching_timer = 0
+	if matching_timer > 1:
+		matching_timer -= 1
 		return true
 	return false
+
+func can_match():
+	return not (
+		type == enums.BLOCKTYPE.TRASH or
+		popping_timer > 0 or
+		matching_timer > 0 or
+		drop_timer > 0
+	)
 
 func pop(time):
 	popping_timer = time
@@ -103,7 +101,8 @@ func remove():
 
 func lose():
 	lost = true
-	play("shock")
+	if not type == enums.BLOCKTYPE.TRASH:
+		play("shock")
 
 func _process(_delta):
 	playing = false
@@ -124,8 +123,23 @@ func _process(_delta):
 		loss_timer += 1
 		if loss_timer > 50:
 			$Dark.modulate.a += (1 - $Dark.modulate.a) * .1
+		if loss_timer > 125:
+			scale.y -= scale.y * .1
+		if loss_timer > 150:
+			visible = false
 	elif preview:
 		play("preview")
+	elif matching_timer != -1:
+		play("shock")
+		playing = false
+		if matching_timer < 60:
+			frame = 1
+		elif matching_timer < 85:
+			frame = 0
+		if matching_timer == 35 and type != enums.BLOCKTYPE.TRASH:
+			self_modulate.a = 0
+			for particle in particles:
+				particle.play()
 	elif wobble_timer > 0 and type != enums.BLOCKTYPE.TRASH:
 		if going_to_lose:
 			wobble_timer -= .25
@@ -133,18 +147,7 @@ func _process(_delta):
 			wobble_timer -= 1
 		play("jump")
 		frame = 4 - abs(floor(float(wobble_timer) / 2) - 4)
-	elif matching:
-		play("shock")
-		playing = false
-		if matching_visual_timer < 60:
-			frame = 1
-		elif matching_visual_timer < 85:
-			frame = 0
-		if matching_visual_timer == 35 and type != enums.BLOCKTYPE.TRASH:
-			self_modulate.a = 0
-			for particle in particles:
-				particle.play()
-	else:
+	elif type != enums.BLOCKTYPE.TRASH:
 		play("jump")
 		playing = false
 		modulate.a += (1 - modulate.a) * .1

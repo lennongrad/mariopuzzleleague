@@ -1,14 +1,13 @@
 extends Control
 
-signal removed
-
-var cursor_p = Vector2(2,5)
+var cursor_p = Vector2(4,-4)
 var preview_blocks = []
 
 const width = 6
 const height = 12
 const block_size = 16
-const base_time = 85
+const base_time = 105
+const additional_block_time = 10
 const falling_time = 20
 var block_graphics = {
 	enums.BLOCKTYPE.RED: load("res://paneldepon/red.tres"),
@@ -27,16 +26,39 @@ var trash_graphics = {
 	Vector2(6,1): load("res://lip/5.png"),
 	Vector2(6,2): load("res://lip/6.png")
 }
+var chain_graphics = {
+	2: load("res://chain/2.png"),
+	3: load("res://chain/3.png"),
+	4: load("res://chain/4.png"),
+	5: load("res://chain/5.png"),
+	6: load("res://chain/6.png"),
+	7: load("res://chain/7.png"),
+	8: load("res://chain/8.png"),
+	9: load("res://chain/9.png"),
+}
+var combo_graphics = {
+	4: load("res://combo/4.png"),
+	5: load("res://combo/5.png"),
+	6: load("res://combo/6.png"),
+	7: load("res://combo/7.png"),
+	8: load("res://combo/8.png"),
+	9: load("res://combo/9.png"),
+}
 var severity_sizes = [Vector2(3,1), Vector2(4,1), Vector2(5,1), Vector2(6,1), Vector2(6,2)]
 
 var progress = 0
 var rand
 
-var match_groups = 0
-
 var block_children
 
 var has_lost = false
+var has_started = false
+
+var match_sets = []
+
+var cursor_target = Vector2(2, 7)
+var block_targets = []
+var ai_stalling = 0
 
 func _ready():
 	pass
@@ -64,7 +86,7 @@ func get_random_color():
 func shuffle_list(list):
 	var shuffledList = [] 
 	var indexList = range(list.size())
-	for i in range(list.size()):
+	for _i in range(list.size()):
 		var x = randi() % indexList.size()
 		shuffledList.append(list[indexList[x]])
 		indexList.remove(x)
@@ -82,6 +104,7 @@ func update_blocks():
 		if child.get("is_block") != null:
 			if not child.preview and not child.removed:
 				block_children.append(child)
+	block_children.sort_custom(self, "block_comparison")
 
 func get_blocks():
 	if block_children == null:
@@ -96,12 +119,6 @@ func get_block(index):
 			and (block.p.y <= index.y) and (block.p.y + block.size.y > index.y)):
 			return block
 	return null
-
-# from bottom to top, right to left
-func get_blocks_sorted():
-	var blocks = get_blocks()
-	blocks.sort_custom(self, "block_comparison")
-	return blocks
 
 func get_p_adjacent_null(index, direction):
 	var result = index
@@ -178,8 +195,9 @@ func make_trash_block(size):
 	update_blocks()
 
 func generate_trash_blocks(severity):
-	var size = severity_sizes[severity]
-	make_trash_block(size)
+	var size = severity_sizes[min(4, severity)]
+	if get_max_height(true) + size.y < height:
+		make_trash_block(size)
 
 func swap():
 	var first = get_block(cursor_p)
@@ -188,40 +206,51 @@ func swap():
 	var block_above = get_block(get_p_adjacent_null(cursor_p, enums.DIRECTION.UP))
 	if block_above != null:
 		if block_above.drop_timer > 0:
-			return
+			return false
 	block_above = get_block(get_p_adjacent_null(cursor_p + Vector2(1, 0), enums.DIRECTION.UP))
 	if block_above != null:
 		if block_above.drop_timer > 0:
-			return
+			return false
 	
 	if first != null:
 		if first.drop_timer > 0:
-			return
+			return false
 		if first.matching_timer > 0:
-			return
+			return false
+		if first.popping_timer > 0:
+			return false
 		if first.type == enums.BLOCKTYPE.TRASH:
-			return
+			return false
 		if second != null:
 			if second.drop_timer > 0:
-				return
+				return false
 			if second.matching_timer > 0:
-				return
+				return false
+			if second.popping_timer > 0:
+				return false
 			if second.type == enums.BLOCKTYPE.TRASH:
-				return
+				return false
 		first.p = cursor_p + Vector2(1,0)
-	update_blocks()
 	if second != null:
 		if second.drop_timer > 0:
-			return
+			return false
 		if second.matching_timer > 0:
-			return
+			return false
+		if second.popping_timer > 0:
+			return false
 		if second.type == enums.BLOCKTYPE.TRASH:
-			return
+			return false
 		second.p = cursor_p
+	return true
+	
+	for block in (get_column(cursor_p.x) + get_column(cursor_p.x + 1)):
+		if block.p.y <= cursor_p.y:
+			block.fell_from_match = false
+	
 	update_blocks()
 
 func drop():
-	var sorted_blocks = get_blocks_sorted()
+	var sorted_blocks = get_blocks()
 	for block in sorted_blocks:
 		var bottom_block
 		for i in range(0, block.size.x):
@@ -230,9 +259,7 @@ func drop():
 			if temp_block != null:
 				bottom_block = temp_block
 		if bottom_block == null:
-			if block.popping_timer != 0:
-				print(block.popping_timer)
-			if block.p.y + + block.size.y < height and block.popping_timer == 0:
+			if block.p.y + + block.size.y < height and block.popping_timer == 0 and block.matching_timer == -1:
 				block.drop()
 			else:
 				block.on_bottom(0)
@@ -240,7 +267,7 @@ func drop():
 			block.on_bottom(bottom_block.drop_timer)
 
 func going_to_lose():
-	return get_max_height() >= height - 1
+	return get_max_height(true) >= height - 1
 
 func generate_preview_blocks():
 	for block in preview_blocks:
@@ -289,59 +316,29 @@ func push_preview_blocks():
 func set_progress(progress_p):
 	progress = progress_p
 
-func set_match(block, time, additional, match_group):
-	var final = block.set_match(time, additional, match_group)
-	var plus = 0
-	if block.type == enums.BLOCKTYPE.TRASH:
-		var last_two = [null, null]
-		for i in range(0, block.size.x):
-			for e in range(0, block.size.y):
-				plus += 5
-				var block_new = load("Block.tscn").instance()
-				
-				block_new.block_graphics = block_graphics
-				block_new.trash_graphics = trash_graphics
-				block_new.p = Vector2(i, e) + block.p
-				var stop_loop = false
-				while not stop_loop:
-					block_new.type = get_random_color()
-					stop_loop = true
-					if last_two[0] != null and last_two[1] != null:
-						if last_two[0] == last_two[1] and last_two[1] == block_new.type:
-							stop_loop = false
-				add_child(block_new)
-				block_new.pop(time + additional + plus)
-				block_new.position = get_position_vector(block_new.p)
-				last_two[0] = last_two[1]
-				last_two[1] = block_new.type
-	for block_adj in get_adjacent_blocks(block):
-		if block_adj.type == enums.BLOCKTYPE.TRASH and not block_adj.matching:
-			set_match(block_adj, time, additional, match_group)
-	return final
-
-func get_column_height(column):
+func get_column_height(column, include_trash):
 	var count = 0
 	for i in range(0, height):
 		var block = get_block(Vector2(column, i))
 		if block != null:
-			if block.drop_timer == 0:
+			if block.drop_timer == 0 and (include_trash or block.type != enums.BLOCKTYPE.TRASH):
 				count = height - i
 				break
 	return count
 
-func get_max_height():
+func get_max_height(include_trash):
 	var count = 0
 	for i in range(0, width):
-		var height = get_column_height(i)
+		var height = get_column_height(i, include_trash)
 		if height > count:
 			count = height
 	return count
 
-func get_min_height():
+func get_min_height(include_trash):
 	var count = height + 1
 	var col
 	for i in range(0, width):
-		var height = get_column_height(i)
+		var height = get_column_height(i, include_trash)
 		if height < count:
 			count = height
 			col = i
@@ -352,133 +349,153 @@ func lose_game():
 		block.lose()
 	has_lost = true
 
-func check_matches():
-	var total_matching = 0
-	var last_block
-	# updown
-	for i in range(0, width):
-		var last_blocks = [null, null]
-		var falling = false
-		for e in range(0, height):
-			var block = get_block(Vector2(i, e))
-			if block != null:
-				if block.drop_timer > 0:
-					falling = true
-				var time = base_time
-				if falling:
-					time += falling_time
-				if (block.matching_timer == -1 or block.matching_now) and block.type != enums.BLOCKTYPE.TRASH:
-					if last_blocks[0] != null and last_blocks[1] != null:
-						if block.type == last_blocks[1].type and last_blocks[0].type == last_blocks[1].type:
-							if set_match(last_blocks[0], time, total_matching, match_groups + 1):
-								total_matching += 1
-							if set_match(last_blocks[1], time, total_matching, match_groups + 1):
-								total_matching += 1
-							if set_match(block, time, total_matching, match_groups + 1):
-								total_matching += 1
-							last_block = block
-				last_blocks[0] = last_blocks[1]
-				if (block.matching_timer == -1 or block.matching_now) and block.type != enums.BLOCKTYPE.TRASH:
-					last_blocks[1] = block
-				else:
-					last_blocks[1] = null
-			else:
-				last_blocks[0] = last_blocks[1]
-				last_blocks[1] = null
-		
-	for i in range(0, height):
-		var last_blocks = [null, null]
-		var falling = false
-		for e in range(0, width):
-			var block = get_block(Vector2(e, i))
-			if block != null:
-				if block.drop_timer > 0:
-					falling = true
-				var time = 40
-				if falling:
-					time += 20
-				if (block.matching_timer == -1 or block.matching_now) and block.last_fell == 0 and block.type != enums.BLOCKTYPE.TRASH:
-					if last_blocks[0] != null and last_blocks[1] != null:
-						if block.type == last_blocks[1].type and last_blocks[0].type == last_blocks[1].type:
-							if set_match(last_blocks[0], time, total_matching, match_groups + 1):
-								total_matching += 1
-							if set_match(last_blocks[1], time, total_matching, match_groups + 1):
-								total_matching += 1
-							if set_match(block, time, total_matching, match_groups + 1):
-								total_matching += 1
-							last_block = block
-				last_blocks[0] = last_blocks[1]
-				if ((block.matching_timer == -1 or block.matching_now) and block.last_fell == 0
-					 and block.type != enums.BLOCKTYPE.TRASH):
-					last_blocks[1] = block
-				else:
-					last_blocks[1] = null
-			else:
-				last_blocks[0] = last_blocks[1]
-				last_blocks[1] = null
-	update_blocks()
-	if total_matching > 0:
-		match_groups += 1
-	return {"matches": total_matching, "block": last_block}
+func trash_break(block):
+	var last_two = [null, null]
+	var plus = 0
+	for i in range(0, block.size.x):
+		for e in range(0, block.size.y):
+			plus += 5
+			var block_new = load("Block.tscn").instance()
+			
+			block_new.block_graphics = block_graphics
+			block_new.trash_graphics = trash_graphics
+			block_new.p = Vector2(i, e) + block.p
+			var stop_loop = false
+			while not stop_loop:
+				block_new.type = get_random_color()
+				stop_loop = true
+				if last_two[0] != null and last_two[1] != null:
+					if last_two[0] == last_two[1] and last_two[1] == block_new.type:
+						stop_loop = false
+			add_child(block_new)
+			block_new.pop(base_time + plus)
+			block_new.position = get_position_vector(block_new.p)
+			last_two[0] = last_two[1]
+			last_two[1] = block_new.type
+	remove(block)
 
-func toggle():
-	var block = get_block(cursor_p)
-	if block == null:
-		return
-	block.type += 1
-	if block.type > 4:
-		block.type = 0
+func check_matches():
+	var current_matches = {}
+	for i in range(0, width + height):
+		var last_blocks = []
+		var r
+		if i < width:
+			r = range(0, height)
+		else:
+			r = range(0, width)
+		for e in r:
+			var block
+			if i < width:
+				block = get_block(Vector2(i, e))
+			else:
+				block = get_block(Vector2(e,i - width))
+			if block != null: 
+				if not block.can_match():
+					last_blocks = []
+				else:
+					if last_blocks.size() == 0 or last_blocks[0].type == block.type:
+						last_blocks.append(block)
+					else:
+						last_blocks = [block]
+					if last_blocks.size() >= 3:
+						for x in last_blocks:
+							current_matches[x] = 1
+			else:
+				last_blocks = []
+	
+	var i = 0
+	var current_matches_array = []
+	for block in current_matches:
+		current_matches_array.append(block)
+	current_matches_array.sort_custom(self, "block_comparison")
+	
+	var chain_progress = false
+	for block in current_matches_array:
+		block.set_match(base_time + i * additional_block_time)
+		if block.last_fell > 0 and block.fell_from_match:
+			chain_progress = true
+		
+		for bl in get_adjacent_blocks(block):
+			if bl.type == enums.BLOCKTYPE.TRASH:
+				trash_break(bl)
+		i += 1
+	if current_matches_array.size() > 0:
+		match_sets.append(current_matches_array)
+	
+	update_blocks()
+	return {"matches": current_matches_array, "chain": chain_progress}
 
 func update_matches():
-	var blocks_remaining = 0
+	var blocks_remaining = false
+	var sets_to_remove = []
 	
-	for i in range(0, match_groups + 1):
-		var temp_remaining = 0
-		var max_match = 0
-		for block in get_blocks():
-			if block.match_group == i:
-				if block.matching:
-					if not block.update_match():
-						temp_remaining += 1
-					if block.matching_visual_timer > max_match:
-						max_match = block.matching_visual_timer
-		for block in get_blocks():
-			if block.match_group == i:
-				if block.matching_timer > 0:
-					block.matching_timer = max_match
-		if temp_remaining == 0:
-			for block in get_blocks():
-				if block.match_group == i:
-					if block.matching:
-						remove(block)
-		blocks_remaining += temp_remaining
+	for match_set in match_sets:
+		var set_done = true
+		for block in match_set:
+			if block.update_match():
+				set_done = false
+		if set_done:
+			for block in match_set:
+				remove(block)
+			sets_to_remove.append(match_set)
+		else:
+			blocks_remaining = true
+	
+	for match_set in sets_to_remove:
+		match_sets.remove(match_sets.find(match_set))
 	
 	for block in get_blocks():
 		if not block.update_popping():
-			blocks_remaining += 1
-	return blocks_remaining > 0
+			blocks_remaining = true
+	return blocks_remaining
 
 func remove(block):
 	var block_above = get_block(get_p_adjacent_null(block.p, enums.DIRECTION.UP))
 	if block_above != null:
 		block_above.drop_timer = 10
 	block.remove()
-	emit_signal("removed")
 	update_blocks()
+
+func show_chain(chain, position, is_chain):
+	var node = load("ChainCombo.tscn").instance()
+	node.position = get_position_vector(position) + Vector2(0, -15)
+	if node.position.x < 12:
+		node.position.x = 12
+	if node.position.x > 84:
+		node.position.x = 84
+	if is_chain:
+		node.texture = chain_graphics[max(2, min(9, chain))]
+	else:
+		node.texture = combo_graphics[max(4, min(9, chain))]
+	add_child(node)
+
+func tab():
+	if not going_to_lose():
+		push_preview_blocks()
+		generate_preview_blocks()
 
 ###########
 ### ai
 ###########
 
+func toggle():
+	var block = get_block(cursor_p)
+	if block == null:
+		return
+	if block.type + 2 > colors.size():
+		block.type = 0
+	else:
+		block.type += 1
+
 func get_direction(target, obj):
-	if target.x < obj.x:
-		return enums.DIRECTION.LEFT
-	if target.x > obj.x:
-		return enums.DIRECTION.RIGHT
 	if target.y > obj.y:
 		return enums.DIRECTION.DOWN
 	if target.y < obj.y:
 		return enums.DIRECTION.UP
+	if target.x < obj.x:
+		return enums.DIRECTION.LEFT
+	if target.x > obj.x:
+		return enums.DIRECTION.RIGHT
 	return null
 
 func get_row(id):
@@ -498,14 +515,16 @@ func get_column(id):
 	return arr
 
 func get_new_targets():
-	var minimum_col = get_min_height()
-	if minimum_col.count + 1 < get_max_height():
+	var minimum_col = get_min_height(false)
+	if minimum_col.count + 1 < get_max_height(false):
 		for i in range(0, height):
 			var row = get_row(i)
-			if row.size() != 0:
-				var block = row[0]
-				block_targets.append({"target": minimum_col.column, "block": block})
-				return
+			for z in range(0, row.size()):
+				var block = row[z]
+				if block.type != enums.BLOCKTYPE.TRASH:
+					block_targets.append({"target": minimum_col.column, "block": block})
+					return
+	
 	match (randi() % 2):
 		0: 
 			for i in range(0, height):
@@ -514,7 +533,7 @@ func get_new_targets():
 					color_dict[x] = []
 				var row = get_row(i)
 				for block in row:
-					if not block.matching and not block.type == enums.BLOCKTYPE.TRASH:
+					if not block.matching_timer > 0 and not block.type == enums.BLOCKTYPE.TRASH:
 						color_dict[block.type].append(block)
 				var target_color
 				for color in color_dict:
@@ -536,7 +555,7 @@ func get_new_targets():
 					color_dict[x] = []
 				var row = get_row(i)
 				for block in row:
-					if not block.matching and not block.type == enums.BLOCKTYPE.TRASH:
+					if not block.matching_timer > 0 and not block.type == enums.BLOCKTYPE.TRASH:
 						color_dict[block.type].append(block)
 				for color in color_dict:
 					color_dict[color].sort_custom(self, "block_comparison")
@@ -561,59 +580,72 @@ func get_new_targets():
 						if total_colors[color] > 2:
 							target_colors.append(color)
 					target_colors = shuffle_list(target_colors)
-					var block_queue = []
+					var z = 0
 					for color in target_colors:
+#						var position_x 
+#						if target_colors.size() == 2:
+#							position_x = color_dict[color][0].p.x
+#						position_x += z
 						for r in range(i + 1 - unnull_rows.size(), i + 1):
 							var r_blocks = get_row(r)
 							var cease = false
 							for block in r_blocks:
 								if block.type == color and not cease:
-									var e = color
-#									if r == i - 2 and target_colors.size() > 1:
-#										e = (e + 1) % 5
-									block_targets.append({"target": color_dict[color][0].p.x, "block": block})
-#									block_queue.append({"target": e + 1, "block": block})
+									block_targets.append({"target": color_dict[target_colors[0]][0].p.x + z, "block": block})
 									cease = true
-						for command in block_queue:
-							block_targets.append(command)
+						z += 1
 
-var cursor_target 
-var block_targets = []
 func ai():
-	if cursor_target == null:
+	if not ai_cursor():
 		if block_targets.size() == 0:
 			get_new_targets()
+			ai_stalling += 1
+			if ai_stalling > 7:
+				if get_max_height(true) < 5:
+					tab()
+				ai_stalling = -5
 		else:
 			var t = block_targets[0]["target"]
 			var b = block_targets[0]["block"]
-			if b == null or b.p.x == t or b.matching or (b.type == enums.BLOCKTYPE.TRASH) or (b.p.y == height) or t < 0 or t > width - 1:
+			if b == null or b.p.x == t or b.matching_timer > 0 or (b.type == enums.BLOCKTYPE.TRASH) or (b.p.y == height) or t < 0 or t > width - 1:
 				block_targets.remove(0)
 			else:
 				if t < b.p.x:
+					if cursor_target != Vector2(b.p.x - 1, b.p.y):
+						ai_stalling = 0
 					cursor_target = Vector2(b.p.x - 1, b.p.y)
-				else:
+				elif t > b.p.x:
+					if cursor_target != Vector2(b.p.x, b.p.y):
+						ai_stalling = 0
 					cursor_target = Vector2(b.p.x, b.p.y)
-				if ((get_block(cursor_target) != null and get_block(cursor_target).matching) or
-					(get_block(cursor_target + Vector2(1, 0)) != null and get_block(cursor_target + Vector2(1, 0)).matching)):
+				if ((get_block(cursor_target) != null and get_block(cursor_target).matching_timer > 0) or
+					(get_block(cursor_target + Vector2(1, 0)) != null and get_block(cursor_target + Vector2(1, 0)).matching_timer > 0)):
 					block_targets.remove(0)
 					cursor_target = null
+
+func ai_cursor():
+	if cursor_target == null:
+		return false
+	var direction = get_direction(cursor_target, cursor_p)
+	if direction != null:
+		move_cursor(direction)
 	else:
-		var direction = get_direction(cursor_target, cursor_p)
-		if direction != null:
-			move_cursor(direction)
-		else:
-			cursor_target = null
-			swap()
+		cursor_target = null
+		if not swap():
+			if block_targets.size() > 0:
+				block_targets.remove(0)
+	return true
 
 func _process(_delta):
 	if has_lost:
 		$Cursor.modulate.a -= $Cursor.modulate.a * .1
+	if has_started:
+		$Cursor.position += (get_position_vector(cursor_p) - $Cursor.position) * .4
 	
 	for block in (get_blocks() + preview_blocks):
-		block.position += (get_position_vector(block.p) + Vector2(8 * block.size.x, 8 * block.size.y) - block.position) * .4
-		if get_column_height(block.p.x) > height - 2:
+		block.position += (get_position_vector(block.p) + Vector2(8 * block.size.x, 8 * block.size.y) - block.position) * .6
+		if get_column_height(block.p.x, true) > height - 2:
 			block.set_wobble()
 			block.going_to_lose = true
 		else:
 			block.going_to_lose = false
-	$Cursor.position += (get_position_vector(cursor_p) - $Cursor.position) * .4

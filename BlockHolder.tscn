@@ -26,7 +26,7 @@ __meta__ = {
 }
 
 [node name="Cursor" type="Node2D" parent="."]
-position = Vector2( 17.421, 139.896 )
+position = Vector2( 46.3161, -240.518 )
 z_index = 4
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="Cursor"]

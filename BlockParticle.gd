@@ -1,5 +1,3 @@
-tool
-
 extends Particles2D
 
 var test = false
