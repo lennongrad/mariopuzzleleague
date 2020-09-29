@@ -1,19 +1,24 @@
-tool
+
 
 extends Node2D
 
 export(Array, int) var blocks = [] setget change_blocks
-export(int) var shown = 1 setget change_shown
+export(int) var shown = 0 setget change_shown
+export(String) var color = "blue"
 
 var last_position = Vector2(0,3)
+var has_displayed = 0
 
 func last_pos():
 	return get_global_position() + last_position
 
 func change_shown(p_shown):
-	if p_shown < shown:
-		for child in $Particles.get_children():
-			child.play()
+	if has_displayed > 2:
+		if p_shown < shown:
+			for child in $Particles.get_children():
+				child.play()
+	else:
+		has_displayed += 1
 	shown = p_shown
 	change_blocks(blocks)
 
@@ -30,7 +35,7 @@ func change_blocks(p_blocks):
 			var sprite = Sprite.new()
 			sprite.position.x += (i + e % 4) * 7
 			sprite.position.y += floor(float(e) / 4) * 7
-			sprite.texture = load("trash_blue.png")
+			sprite.texture = load("res://colors/" + color + "/trash.png")
 			add_child(sprite)
 			last_position.x = max(last_position.x, sprite.position.x + 3)
 		if block + 1 > 3:

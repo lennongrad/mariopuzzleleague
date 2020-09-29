@@ -1,0 +1,13 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=2]
+
+[ext_resource path="res://noise.png" type="Texture" id=1]
+[ext_resource path="res://dissolve.shader" type="Shader" id=2]
+
+[resource]
+shader = ExtResource( 2 )
+shader_param/dissolveAmount = 0.0
+shader_param/edgeSize = 0.1
+shader_param/edgeThickness = 0.1
+shader_param/edgeColor = null
+shader_param/noiseTiling = 1.0
+shader_param/noiseTexture = ExtResource( 1 )

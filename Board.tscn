@@ -1,18 +1,18 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://BlockHolder.tscn" type="PackedScene" id=1]
-[ext_resource path="res://wall_red.png" type="Texture" id=2]
+[ext_resource path="res://colors/red/wall.png" type="Texture" id=2]
 [ext_resource path="res://Board.gd" type="Script" id=3]
 [ext_resource path="res://win_palette.png" type="Texture" id=4]
 [ext_resource path="res://loss_palette.png" type="Texture" id=5]
 [ext_resource path="res://lose.png" type="Texture" id=6]
 [ext_resource path="res://win.png" type="Texture" id=7]
-[ext_resource path="res://lip/portrait.png" type="Texture" id=8]
+[ext_resource path="res://characters/lip/portrait.png" type="Texture" id=8]
 [ext_resource path="res://star.png" type="Texture" id=9]
 [ext_resource path="res://ready3.png" type="Texture" id=10]
 [ext_resource path="res://ready.png" type="Texture" id=11]
 
-[sub_resource type="ParticlesMaterial" id=6]
+[sub_resource type="ParticlesMaterial" id=1]
 emission_shape = 2
 emission_box_extents = Vector3( 100, 5, 1 )
 flag_disable_z = true
@@ -30,7 +30,7 @@ scale_random = 0.13
 hue_variation = 1.0
 hue_variation_random = 1.0
 
-[sub_resource type="Shader" id=1]
+[sub_resource type="Shader" id=2]
 code = "shader_type canvas_item;
 render_mode blend_mix;
 
@@ -65,11 +65,11 @@ void fragment() {
 }"
 custom_defines = ""
 
-[sub_resource type="ShaderMaterial" id=2]
-shader = SubResource( 1 )
+[sub_resource type="ShaderMaterial" id=3]
+shader = SubResource( 2 )
 shader_param/base_palette = ExtResource( 4 )
 
-[sub_resource type="Shader" id=3]
+[sub_resource type="Shader" id=4]
 code = "shader_type canvas_item;
 render_mode blend_mix;
 
@@ -104,17 +104,16 @@ void fragment() {
 }"
 custom_defines = ""
 
-[sub_resource type="ShaderMaterial" id=4]
-shader = SubResource( 3 )
+[sub_resource type="ShaderMaterial" id=5]
+shader = SubResource( 4 )
 shader_param/base_palette = ExtResource( 5 )
-
-[sub_resource type="StyleBoxEmpty" id=5]
 
 [node name="Board" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_right = -160.0
 margin_bottom = -22.0
+rect_rotation = -0.6
 rect_clip_content = true
 script = ExtResource( 3 )
 __meta__ = {
@@ -130,45 +129,30 @@ position = Vector2( 47.6758, -10.5946 )
 emitting = false
 amount = 120
 lifetime = 4.0
-process_material = SubResource( 6 )
+process_material = SubResource( 1 )
 texture = ExtResource( 9 )
 
-[node name="Wall" type="Sprite" parent="."]
+[node name="Wall" type="Node2D" parent="."]
 position = Vector2( 48, 324 )
-texture = ExtResource( 2 )
+
+[node name="BlockHolder" parent="Wall" instance=ExtResource( 1 )]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( -48, -324 )
 
 [node name="Win" type="Sprite" parent="Wall"]
 visible = false
-material = SubResource( 2 )
+material = SubResource( 3 )
 position = Vector2( 0, -304 )
 texture = ExtResource( 7 )
 
 [node name="Loss" type="Sprite" parent="Wall"]
 visible = false
-material = SubResource( 4 )
+material = SubResource( 5 )
 position = Vector2( 0, -304 )
 texture = ExtResource( 6 )
 
-[node name="Blocks" type="Panel" parent="Wall"]
-modulate = Color( 1, 1, 1, 0 )
-show_behind_parent = true
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -48.0
-margin_top = -324.0
-margin_right = -48.0
-margin_bottom = -324.0
-rect_clip_content = true
-custom_styles/panel = SubResource( 5 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="BlockHolder" parent="Wall/Blocks" instance=ExtResource( 1 )]
-margin_left = 0.0
-margin_top = 0.0
-margin_right = 0.0
-margin_bottom = 0.0
+[node name="Wall" type="Sprite" parent="Wall"]
+texture = ExtResource( 2 )
 
 [node name="Ready" type="Sprite" parent="."]
 position = Vector2( -42.7027, 76 )

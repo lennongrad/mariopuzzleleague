@@ -1,5 +1,10 @@
 extends Control
 
+const color_choices = ["red", "green", "blue", "pink"]
+
+var stage
+var color_set = [null, null]
+
 var seed_to_use
 var player_one
 var player_two
@@ -13,21 +18,41 @@ var trash_timer = 0
 var time = 0.0
 
 func _ready():
-	start({"difficulty": enums.DIFFICULTY.EASY, "ai": false, "character": "lip"}, 
-		{"difficulty": enums.DIFFICULTY.EASY, "ai": true, "character": "seren"})
+	randomize()
+	color_set[0] = color_choices[randi() % color_choices.size()]
+	while color_set[1] == null or color_set[0] == color_set[1]:
+		color_set[1] = color_choices[randi() % color_choices.size()]
+	start({"difficulty": enums.DIFFICULTY.EASY, "ai": 0, "character": "lip", "colors": color_set[0]}, 
+		{"difficulty": enums.DIFFICULTY.EASY, "ai": 9, "character": "seren", "colors": color_set[1]})
 
 func start(player_one_data, player_two_data):
-	randomize()
 	seed_to_use = randi()
 	player_one = player_one_data
 	player_two = player_two_data
 	$Board1.start(seed_to_use, player_one_data, 1, true)
 	$Board2.start(seed_to_use, player_two_data, 2, true)
 	
-	$Board1.connect("has_won", $Board2, "lose_game")
-	$Board1.connect("has_lost", $Board2, "win_game")
-	$Board2.connect("has_won", $Board1, "lose_game")
-	$Board2.connect("has_lost", $Board1, "win_game")
+	var _err = $Board1.connect("has_won", $Board2, "lose_game")
+	_err = $Board1.connect("has_lost", $Board2, "win_game")
+	_err = $Board2.connect("has_won", $Board1, "lose_game")
+	_err = $Board2.connect("has_lost", $Board1, "win_game")
+	
+	$Frame/Score1.font = player_one_data["colors"]
+	$Frame/Score2.font = player_two_data["colors"]
+	$Frame/Level1.font = player_one_data["colors"]
+	$Frame/Level2.font = player_two_data["colors"]
+	$ItemFrame1.texture = load("res://colors/" + player_one_data["colors"] + "/itemframe.png")
+	$ItemFrame2.texture = load("res://colors/" + player_two_data["colors"] + "/itemframe.png")
+	$Frame/TrashPreview1.color =  player_one_data["colors"]
+	$Frame/TrashPreview2.color =  player_two_data["colors"]
+	$Frame/Level1.text = String(player_one_data["ai"])
+	$Frame/Level2.text = String(player_two_data["ai"])
+	$Frame.texture = load("res://colors/" + player_one_data["colors"] + "/leftframe.png")
+	$Frame/RightFrame.texture = load("res://colors/" + player_two_data["colors"] + "/rightframe.png")
+
+func set_stage(p_stage):
+	stage = p_stage
+	
 
 func _physics_process(_delta):
 	time += (1.0 / 60)
@@ -56,7 +81,7 @@ func _process(_delta):
 	$Frame/Score1.text = str($Board1.score).pad_zeros(4)
 	$Frame/Score2.text = str($Board2.score).pad_zeros(4)
 
-func _on_Board1_spawn_trash(combo, chain, p):
+func _on_Board1_spawn_trash(combo, _chain, p):
 	var trash = load("TrashMessage.tscn").instance()
 	trash.position = p
 	if board2_trash_waiting == -1:
@@ -70,7 +95,7 @@ func _on_Board1_spawn_trash(combo, chain, p):
 	trash.target = $Frame/TrashPreview2.last_pos() - Vector2(7, 0)
 	add_child(trash)
 
-func _on_Board2_spawn_trash(combo, chain, p): 
+func _on_Board2_spawn_trash(combo, _chain, p): 
 	var trash = load("TrashMessage.tscn").instance()
 	trash.position = p
 	if board1_trash_waiting == -1:
@@ -92,3 +117,18 @@ func remove_Board2_trash():
 	board2_trash_waiting -= 1
 	$Frame/TrashPreview2.shown = board2_trash_list.size() - board2_trash_waiting
 
+
+
+func _on_Board2_use_item():
+	pass # Replace with function body.
+
+
+func _on_Board2_won_item():
+	pass # Replace with function body.
+
+
+func _on_Board1_use_item():
+	print($ItemFrame1.use_item())
+
+func _on_Board1_won_item():
+	$ItemFrame1.start([enums.ITEMS.BOO, enums.ITEMS.MUSHROOM, enums.ITEMS.STAR, enums.ITEMS.COIN])

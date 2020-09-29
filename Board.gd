@@ -3,8 +3,10 @@ extends Control
 signal spawn_trash(combo, chain)
 signal has_lost()
 signal has_won()
+signal won_item()
+signal use_item()
 
-onready var holder = $Wall/Blocks/BlockHolder
+onready var holder = $Wall/BlockHolder
 var rand = RandomNumberGenerator.new()
 
 # constants
@@ -25,7 +27,6 @@ var player_number
 var unpressed_timer = 0
 var pressed_timer = 0
 var last_pressed = 0
-var ai_time = 1
 var ai_timer = 0
 
 # gameplay stats
@@ -58,13 +59,11 @@ func start(seed_to_use, player_data, p_player_number, multiplayer):
 	is_multiplayer = multiplayer
 	player_number = p_player_number
 	
-	$Portrait.texture = load("res://" + data.character + "/portrait.png")
+	$Portrait.texture = load("res://characters/" + data.character + "/portrait.png")
+	$Wall/Wall.texture = load("colors/" + player_data.colors + "/wall.png")
 	if player_number == 1:
-		$Wall.texture = load("wall_red.png")
 		$Portrait.flip_h = true
-	else:
-		$Wall.texture = load("wall_green.png")
-	
+	print(data.colors)
 	if not multiplayer:
 		match data.difficulty:
 			enums.DIFFICULTY.EASY:
@@ -131,20 +130,20 @@ func _physics_process(_delta):
 				$Wall.position.y = 132 + (324 - 132) * pow(float(min(100, end_timer - 175)) / 100, 4)
 				$Wall/Loss.visible = true
 			else:
-				pass
+				$Wall/Wall.position.y = -abs(sin(.2 * (end_timer - 275))) * (30 / pow(end_timer - 274, 1))
 			return
 		else:
 			if end_timer < 0:
 				pass
 			elif end_timer < 175: #324 #132
 				$Wall.position.y = 324 + (132 - 324) * pow(float(min(100, end_timer * 2)) / 100, 4)
-			elif end_timer < 275:
-				$Wall.position.y = 132 + (324 - 132) * pow(float(min(100, end_timer - 175)) / 100, 4)
+			elif end_timer < 265:
+				$Wall.position.y = 132 + (324 - 132) * pow(float(min(90, end_timer - 175)) / 90, 4)
 				$Wall/Win.visible = true
 				$WinConfetti.emitting = true
 				holder.visible = false
 			else:
-				pass
+				$Wall/Wall.position.y = -abs(sin(.2 * (end_timer - 265))) * (30 / pow(end_timer - 264, 1))
 			return
 	
 	##########################################
@@ -155,7 +154,7 @@ func _physics_process(_delta):
 		if start_timer < 75:
 			pass
 		elif start_timer < 150:
-			$Wall/Blocks.modulate.a += (1 - $Wall/Blocks.modulate.a) * .05
+			holder.modulate.a += (1 - holder.modulate.a) * .075
 			$Portrait.modulate.a += (.33 - $Portrait.modulate.a) * .05
 		elif start_timer < 250:
 			holder.has_started = true
@@ -200,7 +199,9 @@ func _physics_process(_delta):
 			block_scores.append(base_time + i * additional_block_time)
 		block_scores.sort()
 		increase_score(combo_values[min(matches["matches"].size(), combo_values.size())])
-
+	if matches["item"]:
+		emit_signal("won_item")
+#
 	if holder.update_matches():
 		bonus_time += 1.2
 
@@ -209,7 +210,7 @@ func _physics_process(_delta):
 	else:
 		row_timer += 1
 		chain = 1
-	
+
 	var at_zero = 0
 	for i in range(0, block_scores.size()):
 		if block_scores[i] > 0:
@@ -236,11 +237,6 @@ func _physics_process(_delta):
 		speed = next_speed
 	holder.set_progress(float(row_timer) / get_speed_timer())
 	
-	########### 
-	# trash
-	############
-	if Input.is_action_just_pressed("trash"):
-		drop_trash(4)
 	if Input.is_action_just_pressed("debug"):
 		holder.toggle()
 	
@@ -249,7 +245,7 @@ func _physics_process(_delta):
 		# ai control
 		############################
 		ai_timer += 1
-		if ai_timer > ai_time:
+		if ai_timer > (10 - data["ai"]):
 			ai_timer = 0
 			holder.ai()
 	else:
@@ -299,13 +295,16 @@ func _physics_process(_delta):
 		
 		if Input.is_action_just_pressed("ui_focus_next"):
 			holder.tab()
+		
+		if Input.is_action_just_pressed("trash"):
+			emit_signal("use_item")
 
 func _process(_delta):
 	animation_timer += 1
 	if animation_timer % 60 < 30:
-		$Wall/Win.position.y += (-299 - $Wall/Win.position.y) * .4
-	else:
 		$Wall/Win.position.y += (-294 - $Wall/Win.position.y) * .4
+	else:
+		$Wall/Win.position.y += (-289 - $Wall/Win.position.y) * .4
 	if animation_timer % 10 < 5:
 		$Wall/Loss.position.y += (-295 - $Wall/Loss.position.y) * .4
 	else:

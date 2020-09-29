@@ -31,7 +31,7 @@ func change_text(string):
 	var i = 0
 	for character in string:
 		var character_node = Sprite.new()
-		character_node.texture = load("font_" + font + ".png")
+		character_node.texture = load("res://colors/" + font + "/font.png")
 		character_node.region_enabled = true
 		character_node.region_rect = Rect2(font_locations[character] * 8,0,8,13)
 		character_node.position.x += i * separation

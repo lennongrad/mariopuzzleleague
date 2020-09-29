@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Block.gd" type="Script" id=1]
 [ext_resource path="res://paneldepon/blue.tres" type="SpriteFrames" id=2]
-[ext_resource path="res://lip/1.png" type="Texture" id=3]
+[ext_resource path="res://characters/lip/1.png" type="Texture" id=3]
 [ext_resource path="res://BlockParticle.tscn" type="PackedScene" id=4]
 
 [node name="Control" type="AnimatedSprite"]

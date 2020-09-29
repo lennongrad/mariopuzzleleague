@@ -28,7 +28,7 @@ _global_script_class_icons={
 
 config/name="PanelDePon"
 run/main_scene="res://MultiPlayer.tscn"
-config/icon="res://lip/1.png"
+config/icon="res://characters/lip/1.png"
 
 [display]
 
@@ -102,11 +102,6 @@ trash={
 debug={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777240,"unicode":0,"echo":false,"script":null)
- ]
-}
-ctrl={
-"deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777238,"unicode":0,"echo":false,"script":null)
  ]
 }
 

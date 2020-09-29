@@ -1,4 +1,4 @@
-extends Control
+extends Node2D
 
 var cursor_p = Vector2(4,-4)
 var preview_blocks = []
@@ -19,12 +19,12 @@ var block_graphics = {
 	enums.BLOCKTYPE.ITEM: load("res://paneldepon/item.tres")
 }
 var trash_graphics = {
-	Vector2(1,1): load("res://lip/1.png"),
-	Vector2(3,1): load("res://lip/2.png"),
-	Vector2(4,1): load("res://lip/3.png"),
-	Vector2(5,1): load("res://lip/4.png"),
-	Vector2(6,1): load("res://lip/5.png"),
-	Vector2(6,2): load("res://lip/6.png")
+	Vector2(1,1): load("res://characters/lip/1.png"),
+	Vector2(3,1): load("res://characters/lip/2.png"),
+	Vector2(4,1): load("res://characters/lip/3.png"),
+	Vector2(5,1): load("res://characters/lip/4.png"),
+	Vector2(6,1): load("res://characters/lip/5.png"),
+	Vector2(6,2): load("res://characters/lip/6.png")
 }
 var chain_graphics = {
 	2: load("res://chain/2.png"),
@@ -50,6 +50,7 @@ var progress = 0
 var rand
 
 var block_children
+var block_children_null
 
 var has_lost = false
 var has_started = false
@@ -81,7 +82,10 @@ func set_color_set(p_set):
 				enums.BLOCKTYPE.YELLOW, enums.BLOCKTYPE.CYAN, enums.BLOCKTYPE.ITEM]
 
 func get_random_color():
-	return colors[rand.randi() % (colors.size())]
+	var color
+	while color == null or (color == enums.BLOCKTYPE.ITEM and rand.randi() %7 < 3):
+		color = colors[rand.randi() % (colors.size())]
+	return color
 
 func shuffle_list(list):
 	var shuffledList = [] 
@@ -100,25 +104,29 @@ func block_comparison(a, b):
 
 func update_blocks():
 	block_children = []
+	block_children_null = {null: null}
+	for i in range(0, width):
+		for e in range(0, height):
+			block_children_null[Vector2(i,e)] = null
 	for child in get_children():
 		if child.get("is_block") != null:
 			if not child.preview and not child.removed:
 				block_children.append(child)
-	block_children.sort_custom(self, "block_comparison")
+				for i in range(child.p.x, child.p.x + child.size.x):
+					for e in range(child.p.y, child.p.y + child.size.y):
+						block_children_null[Vector2(i,e)] = child
+				block_children_null[child.p] = child
 
-func get_blocks():
+func get_blocks(do_null):
 	if block_children == null:
 		update_blocks()
-	return block_children
+	if do_null:
+		return block_children_null
+	else:
+		return block_children
 
 func get_block(index):
-	if index == null:
-		return
-	for block in get_blocks():
-		if ((block.p.x <= index.x) and (block.p.x + block.size.x > index.x)
-			and (block.p.y <= index.y) and (block.p.y + block.size.y > index.y)):
-			return block
-	return null
+	return get_blocks(true)[index]
 
 func get_p_adjacent_null(index, direction):
 	var result = index
@@ -250,7 +258,7 @@ func swap():
 	update_blocks()
 
 func drop():
-	var sorted_blocks = get_blocks()
+	var sorted_blocks = get_blocks(false)
 	for block in sorted_blocks:
 		var bottom_block
 		for i in range(0, block.size.x):
@@ -305,7 +313,7 @@ func push_preview_blocks():
 	for block in preview_blocks:
 		block.preview = false
 	update_blocks()
-	for block in get_blocks():
+	for block in get_blocks(false):
 		block.p.y -= 1
 	cursor_p.y -= 1
 	if cursor_p.y < 1:
@@ -345,7 +353,7 @@ func get_min_height(include_trash):
 	return {"count": count, "column": col}
 
 func lose_game():
-	for block in get_blocks() + preview_blocks:
+	for block in get_blocks(false) + preview_blocks:
 		block.lose()
 	has_lost = true
 
@@ -408,13 +416,16 @@ func check_matches():
 	for block in current_matches:
 		current_matches_array.append(block)
 	current_matches_array.sort_custom(self, "block_comparison")
-	
+
 	var chain_progress = false
+	var item_matched
 	for block in current_matches_array:
 		block.set_match(base_time + i * additional_block_time)
+		if block.type == enums.BLOCKTYPE.ITEM:
+			item_matched = true
 		if block.last_fell > 0 and block.fell_from_match:
 			chain_progress = true
-		
+
 		for bl in get_adjacent_blocks(block):
 			if bl.type == enums.BLOCKTYPE.TRASH:
 				trash_break(bl)
@@ -423,7 +434,7 @@ func check_matches():
 		match_sets.append(current_matches_array)
 	
 	update_blocks()
-	return {"matches": current_matches_array, "chain": chain_progress}
+	return {"matches": current_matches_array, "chain": chain_progress, "item": item_matched}
 
 func update_matches():
 	var blocks_remaining = false
@@ -444,7 +455,7 @@ func update_matches():
 	for match_set in sets_to_remove:
 		match_sets.remove(match_sets.find(match_set))
 	
-	for block in get_blocks():
+	for block in get_blocks(false):
 		if not block.update_popping():
 			blocks_remaining = true
 	return blocks_remaining
@@ -502,98 +513,100 @@ func get_row(id):
 	if id == height:
 		return preview_blocks
 	var arr = []
-	for block in get_blocks():
+	for block in get_blocks(false):
 		if block.p.y == id:
 			arr.append(block)
 	return arr
 
 func get_column(id):
 	var arr = []
-	for block in get_blocks():
+	for block in get_blocks(false):
 		if block.p.x == id:
 			arr.append(block)
 	return arr
 
 func get_new_targets():
-	var minimum_col = get_min_height(false)
-	if minimum_col.count + 1 < get_max_height(false):
-		for i in range(0, height):
-			var row = get_row(i)
-			for z in range(0, row.size()):
-				var block = row[z]
-				if block.type != enums.BLOCKTYPE.TRASH:
-					block_targets.append({"target": minimum_col.column, "block": block})
-					return
-	
-	match (randi() % 2):
-		0: 
+	if randi() % 4 == 0:
+		var minimum_col = get_min_height(false)
+		if minimum_col.count + 1 < get_max_height(false):
 			for i in range(0, height):
-				var color_dict = {}
-				for x in range(0, 7):
-					color_dict[x] = []
 				var row = get_row(i)
-				for block in row:
-					if not block.matching_timer > 0 and not block.type == enums.BLOCKTYPE.TRASH:
-						color_dict[block.type].append(block)
-				var target_color
-				for color in color_dict:
-					if color_dict[color].size() > 2:
-						target_color = color
-				if target_color != null:
-					var offset = color_dict[target_color][0].p.x
-					if color_dict[target_color].size() + offset > width - 1:
-						offset -= color_dict[target_color].size() + offset - width
-					for block in color_dict[target_color]:
-						block_targets.append({"target": offset, "block": block})
-						offset += 1
-					break
-		1:
-			var rows = [null, null, null, null, null]
-			for i in range(0, height + 1):
-				var color_dict = {}
-				for x in range(0, 7):
-					color_dict[x] = []
-				var row = get_row(i)
-				for block in row:
-					if not block.matching_timer > 0 and not block.type == enums.BLOCKTYPE.TRASH:
-						color_dict[block.type].append(block)
-				for color in color_dict:
-					color_dict[color].sort_custom(self, "block_comparison")
-				rows.append(color_dict)
-				rows.remove(0)
-				
-				var unnull_rows = []
-				for r in rows:
-					if r != null:
-						unnull_rows.append(r)
-				if unnull_rows.size() > 2:
-					var total_colors = {}
+				for z in range(0, row.size()):
+					var block = row[z]
+					if block.type != enums.BLOCKTYPE.TRASH:
+						block_targets.append({"target": minimum_col.column, "block": block})
+						return
+	
+	for threshold in range(6, 2 + randi() % 3 + randi() % 2, -1):
+		match (randi() % 2):
+			0: 
+				for i in range(0, height):
+					var color_dict = {}
 					for x in range(0, 7):
-						total_colors[x] = 0
-						for r in unnull_rows:
-							if r[x].size() > 0:
-								total_colors[x] += 1
-							else:
-								total_colors[x] = 0
-					var target_colors = []
-					for color in total_colors:
-						if total_colors[color] > 2:
-							target_colors.append(color)
-					target_colors = shuffle_list(target_colors)
-					var z = 0
-					for color in target_colors:
-#						var position_x 
-#						if target_colors.size() == 2:
-#							position_x = color_dict[color][0].p.x
-#						position_x += z
-						for r in range(i + 1 - unnull_rows.size(), i + 1):
-							var r_blocks = get_row(r)
-							var cease = false
-							for block in r_blocks:
-								if block.type == color and not cease:
-									block_targets.append({"target": color_dict[target_colors[0]][0].p.x + z, "block": block})
-									cease = true
-						z += 1
+						color_dict[x] = []
+					var row = get_row(i)
+					for block in row:
+						if not block.matching_timer > 0 and not block.type == enums.BLOCKTYPE.TRASH:
+							color_dict[block.type].append(block)
+					var target_color
+					for color in color_dict:
+						if color_dict[color].size() > threshold - 1:
+							target_color = color
+					if target_color != null:
+						var offset = color_dict[target_color][0].p.x
+						if color_dict[target_color].size() + offset > width - 1:
+							offset -= color_dict[target_color].size() + offset - width
+						for block in color_dict[target_color]:
+							block_targets.append({"target": offset, "block": block})
+							offset += 1
+						break
+			1:
+				var rows = [null, null, null, null, null]
+				for i in range(0, height + 1):
+					var color_dict = {}
+					for x in range(0, 7):
+						color_dict[x] = []
+					var row = get_row(i)
+					for block in row:
+						if not block.matching_timer > 0 and not block.type == enums.BLOCKTYPE.TRASH:
+							color_dict[block.type].append(block)
+					for color in color_dict:
+						color_dict[color].sort_custom(self, "block_comparison")
+					rows.append(color_dict)
+					rows.remove(0)
+					
+					var unnull_rows = []
+					for r in rows:
+						if r != null:
+							unnull_rows.append(r)
+					if unnull_rows.size() > threshold - 1:
+						var total_colors = {}
+						for x in range(0, 7):
+							total_colors[x] = 0
+							for r in unnull_rows:
+								if r[x].size() > 0:
+									total_colors[x] += 1
+								else:
+									total_colors[x] = 0
+						var target_colors = []
+						for color in total_colors:
+							if total_colors[color] > threshold - 1:
+								target_colors.append(color)
+						target_colors = shuffle_list(target_colors)
+						var z = 0
+						for color in target_colors:
+	#						var position_x 
+	#						if target_colors.size() == 2:
+	#							position_x = color_dict[color][0].p.x
+	#						position_x += z
+							for r in range(i + 1 - unnull_rows.size(), i + 1):
+								var r_blocks = get_row(r)
+								var cease = false
+								for block in r_blocks:
+									if block.type == color and not cease:
+										block_targets.append({"target": color_dict[target_colors[0]][0].p.x + z, "block": block})
+										cease = true
+							z += 1
 
 func ai():
 	if not ai_cursor():
@@ -642,7 +655,7 @@ func _process(_delta):
 	if has_started:
 		$Cursor.position += (get_position_vector(cursor_p) - $Cursor.position) * .4
 	
-	for block in (get_blocks() + preview_blocks):
+	for block in (get_blocks(false) + preview_blocks):
 		block.position += (get_position_vector(block.p) + Vector2(8 * block.size.x, 8 * block.size.y) - block.position) * .6
 		if get_column_height(block.p.x, true) > height - 2:
 			block.set_wobble()
