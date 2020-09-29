@@ -22,6 +22,7 @@ const chain_values = [0, 0, 50, 80, 150, 300, 400, 500, 700, 900, 1100, 1300, 15
 var data
 var is_multiplayer = false
 var player_number
+var other_player_has_star = false
 
 # controller data
 var unpressed_timer = 0
@@ -45,13 +46,19 @@ var start_timer = 0
 # misc animations timer
 var animation_timer = 0
 
+# power ups
+var star_timer = 0
+var ghost_timer = 0
+
 # endgame timer
 var has_lost = false
 var has_won = false
 var end_timer = -150
 
 func _ready():
-	pass
+	$Portrait.material = ShaderMaterial.new()
+	$Portrait.material.set_shader(load("Rainbow.shader"))
+	$Portrait.material.set_shader_param("noiseTexture", load("res://noise.png")) 
 
 func start(seed_to_use, player_data, p_player_number, multiplayer):
 	rand.set_seed(seed_to_use)
@@ -63,7 +70,6 @@ func start(seed_to_use, player_data, p_player_number, multiplayer):
 	$Wall/Wall.texture = load("colors/" + player_data.colors + "/wall.png")
 	if player_number == 1:
 		$Portrait.flip_h = true
-	print(data.colors)
 	if not multiplayer:
 		match data.difficulty:
 			enums.DIFFICULTY.EASY:
@@ -87,14 +93,33 @@ func start(seed_to_use, player_data, p_player_number, multiplayer):
 		holder.generate_preview_blocks()
 
 func drop_trash(severity):
-	holder.generate_trash_blocks(severity)
+	if star_timer == 0:
+		holder.generate_trash_blocks(severity)
+
+func start_star():
+	star_timer = 600
+	holder.destroy_all_trash()
+	ghost_timer = min(1, ghost_timer)
+
+func start_ghost():
+	if star_timer == 0:
+		ghost_timer = 800
 
 func lose_game():
 	has_lost = true
 	holder.lose_game()
+	game_over()
 
 func win_game():
 	has_won = true
+	game_over()
+
+func game_over():
+	ghost_timer = 0
+	star_timer = 0
+	$BooSmoke.modulate.a = 0
+	$BooParticles.emitting = false
+	$Portrait.material.set_shader_param("active", false)
 
 func announce_win():
 	emit_signal("has_won")
@@ -110,6 +135,7 @@ func get_speed_timer():
 func increase_score(amt):
 	score = min(9999, score + amt)
 	if score == 9999:
+		print("Won by score")
 		announce_win()
 
 var trash_timer = 0
@@ -163,11 +189,9 @@ func _physics_process(_delta):
 			$Ready.position.x += (50 - $Ready.position.x) * .7
 			$CountDown.position.x += (50 - $CountDown.position.x) * .7
 		elif start_timer < 300:
-			pass
-		elif start_timer < 350:
 			$CountDown.texture = load("ready2.png")
 			$Ready.modulate.a -= $Ready.modulate.a * .3
-		elif start_timer < 400:
+		elif start_timer < 350:
 			$CountDown.texture = load("ready1.png")
 		else:
 			has_started = true
@@ -205,7 +229,7 @@ func _physics_process(_delta):
 	if holder.update_matches():
 		bonus_time += 1.2
 
-	if bonus_time > 0:
+	if bonus_time > 0 or star_timer > 0:
 		bonus_time -= 1
 	else:
 		row_timer += 1
@@ -223,6 +247,25 @@ func _physics_process(_delta):
 	for e in range(0, at_zero):
 		block_scores.remove(0)
 	
+	######################### 
+	# power ups
+	#########################
+	if star_timer > 0:
+		star_timer -= 1
+		$Portrait.material.set_shader_param("active", true)
+	else:
+		$Portrait.material.set_shader_param("active", false)
+	
+	if ghost_timer > 0:
+		ghost_timer -= 1
+		$BooSmoke.modulate.a += (1 - $BooSmoke.modulate.a) * .1
+		$BooParticles.emitting = true
+		if ghost_timer % 4 == 0 and randi() % 4 == 0:
+			holder.swap_random()
+	else:
+		$BooSmoke.modulate.a -= $BooSmoke.modulate.a * .1
+		$BooParticles.emitting = false
+	
 	###################################
 	# move the board up / lose game
 	##################################	
@@ -232,6 +275,7 @@ func _physics_process(_delta):
 			holder.generate_preview_blocks()
 		else:
 			holder.generate_preview_blocks()
+			print("Lost by block height")
 			announce_loss()
 			return
 		speed = next_speed
@@ -248,6 +292,9 @@ func _physics_process(_delta):
 		if ai_timer > (10 - data["ai"]):
 			ai_timer = 0
 			holder.ai()
+		
+		if not other_player_has_star and randi() % 100 == 0:
+			emit_signal("use_item")
 	else:
 		############################
 		# human control
@@ -291,7 +338,7 @@ func _physics_process(_delta):
 		# other inputs
 		####################
 		if Input.is_action_just_pressed("ui_accept"):
-			holder.swap()
+			holder.swap_cursor()
 		
 		if Input.is_action_just_pressed("ui_focus_next"):
 			holder.tab()

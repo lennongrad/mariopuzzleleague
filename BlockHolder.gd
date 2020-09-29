@@ -60,6 +60,7 @@ var match_sets = []
 var cursor_target = Vector2(2, 7)
 var block_targets = []
 var ai_stalling = 0
+var first_time = true
 
 func _ready():
 	pass
@@ -83,7 +84,7 @@ func set_color_set(p_set):
 
 func get_random_color():
 	var color
-	while color == null or (color == enums.BLOCKTYPE.ITEM and rand.randi() %7 < 3):
+	while color == null or (color != enums.BLOCKTYPE.ITEM and rand.randi() %7 < 3):
 		color = colors[rand.randi() % (colors.size())]
 	return color
 
@@ -207,15 +208,22 @@ func generate_trash_blocks(severity):
 	if get_max_height(true) + size.y < height:
 		make_trash_block(size)
 
-func swap():
-	var first = get_block(cursor_p)
-	var second = get_block(cursor_p + Vector2(1, 0))
+func swap_cursor():
+	return swap(cursor_p)
+
+func swap_random():
+	var pos = Vector2(randi() % (width - 1), randi() % height)
+	return swap(pos)
+
+func swap(pos):
+	var first = get_block(pos)
+	var second = get_block(pos + Vector2(1, 0))
 	
-	var block_above = get_block(get_p_adjacent_null(cursor_p, enums.DIRECTION.UP))
+	var block_above = get_block(get_p_adjacent_null(pos, enums.DIRECTION.UP))
 	if block_above != null:
 		if block_above.drop_timer > 0:
 			return false
-	block_above = get_block(get_p_adjacent_null(cursor_p + Vector2(1, 0), enums.DIRECTION.UP))
+	block_above = get_block(get_p_adjacent_null(pos + Vector2(1, 0), enums.DIRECTION.UP))
 	if block_above != null:
 		if block_above.drop_timer > 0:
 			return false
@@ -238,7 +246,7 @@ func swap():
 				return false
 			if second.type == enums.BLOCKTYPE.TRASH:
 				return false
-		first.p = cursor_p + Vector2(1,0)
+		first.p = pos + Vector2(1,0)
 	if second != null:
 		if second.drop_timer > 0:
 			return false
@@ -248,11 +256,11 @@ func swap():
 			return false
 		if second.type == enums.BLOCKTYPE.TRASH:
 			return false
-		second.p = cursor_p
+		second.p = pos
 	return true
 	
-	for block in (get_column(cursor_p.x) + get_column(cursor_p.x + 1)):
-		if block.p.y <= cursor_p.y:
+	for block in (get_column(pos.x) + get_column(pos.x + 1)):
+		if block.p.y <= pos.y:
 			block.fell_from_match = false
 	
 	update_blocks()
@@ -480,6 +488,11 @@ func show_chain(chain, position, is_chain):
 		node.texture = combo_graphics[max(4, min(9, chain))]
 	add_child(node)
 
+func destroy_all_trash():
+	for block in get_blocks(false):
+		if block.type == enums.BLOCKTYPE.TRASH:
+			trash_break(block)
+
 func tab():
 	if not going_to_lose():
 		push_preview_blocks()
@@ -644,7 +657,8 @@ func ai_cursor():
 		move_cursor(direction)
 	else:
 		cursor_target = null
-		if not swap():
+		if first_time or not swap_cursor():
+			first_time = false
 			if block_targets.size() > 0:
 				block_targets.remove(0)
 	return true

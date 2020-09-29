@@ -55,7 +55,8 @@ func set_stage(p_stage):
 	
 
 func _physics_process(_delta):
-	time += (1.0 / 60)
+	if $Board1.has_started and not ($Board1.has_won or $Board1.has_lost):
+		time += (1.0 / 60)
 	$Frame/Time.text = str(floor(time / 60)).pad_zeros(2) + "'" + str(int(time) % 60).pad_zeros(2)
 	
 	trash_timer += 1
@@ -80,6 +81,19 @@ func _process(_delta):
 	$Label.text = str(Engine.get_frames_per_second()) + "fps"
 	$Frame/Score1.text = str($Board1.score).pad_zeros(4)
 	$Frame/Score2.text = str($Board2.score).pad_zeros(4)
+	
+	if $Board1.ghost_timer > 0:
+		$BlackWhite1.modulate.a += (1 - $BlackWhite1.modulate.a) * .1
+	else:
+		$BlackWhite1.modulate.a -= $BlackWhite1.modulate.a * .1
+	
+	if $Board2.ghost_timer > 0:
+		$BlackWhite2.modulate.a += (1 - $BlackWhite2.modulate.a) * .1
+	else:
+		$BlackWhite2.modulate.a -= $BlackWhite2.modulate.a * .1
+	
+	$Board1.other_player_has_star = $Board2.star_timer > 0
+	$Board2.other_player_has_star = $Board1.star_timer > 0
 
 func _on_Board1_spawn_trash(combo, _chain, p):
 	var trash = load("TrashMessage.tscn").instance()
@@ -117,18 +131,23 @@ func remove_Board2_trash():
 	board2_trash_waiting -= 1
 	$Frame/TrashPreview2.shown = board2_trash_list.size() - board2_trash_waiting
 
-
-
 func _on_Board2_use_item():
-	pass # Replace with function body.
-
+	used_item($Board2, $Board1, $ItemFrame2.use_item())
 
 func _on_Board2_won_item():
-	pass # Replace with function body.
-
+	won_item($ItemFrame2)
 
 func _on_Board1_use_item():
-	print($ItemFrame1.use_item())
+	used_item($Board1, $Board2, $ItemFrame1.use_item())
 
 func _on_Board1_won_item():
-	$ItemFrame1.start([enums.ITEMS.BOO, enums.ITEMS.MUSHROOM, enums.ITEMS.STAR, enums.ITEMS.COIN])
+	won_item($ItemFrame1)
+
+func used_item(user, target, item):
+	match item:
+		enums.ITEMS.STAR: user.start_star();
+		enums.ITEMS.BOO: target.start_ghost();
+		enums.ITEMS.COIN: user.increase_score(50);
+
+func won_item(target):
+	target.start([enums.ITEMS.BOO, enums.ITEMS.COIN, enums.ITEMS.STAR, enums.ITEMS.COIN])
