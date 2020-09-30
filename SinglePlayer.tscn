@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Board.tscn" type="PackedScene" id=1]
 [ext_resource path="res://SinglePlayer.gd" type="Script" id=2]
-[ext_resource path="res://lip/background.png" type="Texture" id=3]
+[ext_resource path="res://stages/grass/1pframe_frame.png" type="Texture" id=3]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.6, 0.6, 0.6, 0 )

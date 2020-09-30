@@ -7,6 +7,7 @@
 
 [node name="Control" type="AnimatedSprite"]
 frames = ExtResource( 2 )
+animation = "shock"
 script = ExtResource( 1 )
 
 [node name="BR" parent="." instance=ExtResource( 4 )]

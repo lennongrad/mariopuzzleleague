@@ -123,6 +123,8 @@ func _process(_delta):
 		loss_timer += 1
 		if loss_timer > 50:
 			$Dark.modulate.a += (1 - $Dark.modulate.a) * .1
+			if type == enums.BLOCKTYPE.TRASH:
+				self_modulate.v -= self_modulate.v * .25
 		if loss_timer > 125:
 			scale.y -= scale.y * .1
 		if loss_timer > 150:

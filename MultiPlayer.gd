@@ -22,8 +22,8 @@ func _ready():
 	color_set[0] = color_choices[randi() % color_choices.size()]
 	while color_set[1] == null or color_set[0] == color_set[1]:
 		color_set[1] = color_choices[randi() % color_choices.size()]
-	start({"difficulty": enums.DIFFICULTY.EASY, "ai": 0, "character": "lip", "colors": color_set[0]}, 
-		{"difficulty": enums.DIFFICULTY.EASY, "ai": 9, "character": "seren", "colors": color_set[1]})
+	start({"difficulty": enums.DIFFICULTY.EASY, "ai": 0, "character": "lip", "colors": color_set[0], "speed": 1}, 
+		{"difficulty": enums.DIFFICULTY.EASY, "ai": 9, "character": "seren", "colors": color_set[1], "speed": 1})
 
 func start(player_one_data, player_two_data):
 	seed_to_use = randi()
@@ -45,8 +45,6 @@ func start(player_one_data, player_two_data):
 	$ItemFrame2.texture = load("res://colors/" + player_two_data["colors"] + "/itemframe.png")
 	$Frame/TrashPreview1.color =  player_one_data["colors"]
 	$Frame/TrashPreview2.color =  player_two_data["colors"]
-	$Frame/Level1.text = String(player_one_data["ai"])
-	$Frame/Level2.text = String(player_two_data["ai"])
 	$Frame.texture = load("res://colors/" + player_one_data["colors"] + "/leftframe.png")
 	$Frame/RightFrame.texture = load("res://colors/" + player_two_data["colors"] + "/rightframe.png")
 
@@ -57,7 +55,7 @@ func set_stage(p_stage):
 func _physics_process(_delta):
 	if $Board1.has_started and not ($Board1.has_won or $Board1.has_lost):
 		time += (1.0 / 60)
-	$Frame/Time.text = str(floor(time / 60)).pad_zeros(2) + "'" + str(int(time) % 60).pad_zeros(2)
+	$Frame/Time.text = str(int(floor(time / 60))).pad_zeros(2) + "'" + str(int(time) % 60).pad_zeros(2)
 	
 	trash_timer += 1
 	if board2_trash_waiting == 0 and trash_timer % 60 == 0:
@@ -81,6 +79,8 @@ func _process(_delta):
 	$Label.text = str(Engine.get_frames_per_second()) + "fps"
 	$Frame/Score1.text = str($Board1.score).pad_zeros(4)
 	$Frame/Score2.text = str($Board2.score).pad_zeros(4)
+	$Frame/Level1.text = str(int($Board1.get_speed())).pad_zeros(2)
+	$Frame/Level2.text = str(int($Board2.get_speed())).pad_zeros(2)
 	
 	if $Board1.ghost_timer > 0:
 		$BlackWhite1.modulate.a += (1 - $BlackWhite1.modulate.a) * .1
@@ -94,6 +94,14 @@ func _process(_delta):
 	
 	$Board1.other_player_has_star = $Board2.star_timer > 0
 	$Board2.other_player_has_star = $Board1.star_timer > 0
+	if $Board1.star_timer > 0:
+		$Frame.material.set_shader_param("active", true)
+	else:
+		$Frame.material.set_shader_param("active", false)
+	if $Board2.star_timer > 0:
+		$Frame/RightFrame.material.set_shader_param("active", true)
+	else:
+		$Frame/RightFrame.material.set_shader_param("active", false)
 
 func _on_Board1_spawn_trash(combo, _chain, p):
 	var trash = load("TrashMessage.tscn").instance()

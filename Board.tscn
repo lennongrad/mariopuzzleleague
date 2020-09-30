@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=31 format=2]
 
 [ext_resource path="res://BlockHolder.tscn" type="PackedScene" id=1]
 [ext_resource path="res://colors/red/wall.png" type="Texture" id=2]
@@ -13,13 +13,14 @@
 [ext_resource path="res://ready.png" type="Texture" id=11]
 [ext_resource path="res://noise.png" type="Texture" id=12]
 [ext_resource path="res://boos.png" type="Texture" id=13]
+[ext_resource path="res://ParticlePlay.gd" type="Script" id=14]
 
 [sub_resource type="ParticlesMaterial" id=1]
 emission_shape = 2
 emission_box_extents = Vector3( 100, 5, 1 )
 flag_disable_z = true
 direction = Vector3( 0, 5, 0 )
-spread = 0.0
+spread = 9.12
 gravity = Vector3( 0, 0, 0 )
 initial_velocity = 300.0
 initial_velocity_random = 1.0
@@ -149,8 +150,9 @@ colors = PoolColorArray( 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 )
 gradient = SubResource( 9 )
 
 [sub_resource type="ParticlesMaterial" id=11]
+lifetime_randomness = 0.05
 emission_shape = 2
-emission_box_extents = Vector3( 40, 15, 1 )
+emission_box_extents = Vector3( 40, 90, 1 )
 flag_disable_z = true
 direction = Vector3( 0, 1, 0 )
 spread = 180.0
@@ -162,6 +164,37 @@ orbit_velocity_random = 0.0
 color_ramp = SubResource( 10 )
 anim_offset = 1.0
 anim_offset_random = 1.0
+
+[sub_resource type="CanvasItemMaterial" id=13]
+blend_mode = 1
+
+[sub_resource type="Gradient" id=14]
+offsets = PoolRealArray( 0, 0.741667 )
+colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=15]
+gradient = SubResource( 14 )
+
+[sub_resource type="ParticlesMaterial" id=12]
+emission_shape = 2
+emission_box_extents = Vector3( 100, 5, 1 )
+flag_disable_z = true
+direction = Vector3( 0, 5, 0 )
+spread = 15.95
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 300.0
+initial_velocity_random = 0.5
+angular_velocity = 109.37
+orbit_velocity = 0.01
+orbit_velocity_random = 0.0
+angle = 20.0
+angle_random = 1.0
+scale = 0.6
+scale_random = 0.4
+color_ramp = SubResource( 15 )
+
+[sub_resource type="StreamTexture" id=16]
+load_path = "res://.import/star.png-19e2a8935edef1994254d9cf64a4c2d9.stex"
 
 [node name="Board" type="Control"]
 anchor_right = 0.375
@@ -224,9 +257,18 @@ texture = ExtResource( 8 )
 
 [node name="BooParticles" type="Particles2D" parent="."]
 material = SubResource( 8 )
-position = Vector2( 47.8495, 19.9662 )
+position = Vector2( 47.4041, 112.174 )
 emitting = false
-amount = 12
+amount = 16
 lifetime = 3.0
 process_material = SubResource( 11 )
 texture = ExtResource( 13 )
+
+[node name="StarActivated" type="Particles2D" parent="."]
+material = SubResource( 13 )
+position = Vector2( 47.6758, -10.5946 )
+emitting = false
+amount = 240
+process_material = SubResource( 12 )
+texture = SubResource( 16 )
+script = ExtResource( 14 )

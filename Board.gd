@@ -12,7 +12,8 @@ var rand = RandomNumberGenerator.new()
 # constants
 const press_speed_limit = 15
 const press_speed_mod = 1
-const speed_base = 350
+const speed_base = .001
+const speed_base_modifier = .0005
 const base_time = 70
 const additional_block_time = 10
 const combo_values = [0, 0, 0, 0, 20, 30, 50, 60, 70, 80, 100, 140, 170]
@@ -33,8 +34,6 @@ var ai_timer = 0
 # gameplay stats
 var row_timer = 0
 var bonus_time = 0
-var speed = 1
-var next_speed = 1
 var score = 0.0
 var chain = 1
 var block_scores = []
@@ -100,6 +99,7 @@ func start_star():
 	star_timer = 600
 	holder.destroy_all_trash()
 	ghost_timer = min(1, ghost_timer)
+	$StarActivated.play(45)
 
 func start_ghost():
 	if star_timer == 0:
@@ -129,14 +129,14 @@ func announce_loss():
 	emit_signal("has_lost")
 	lose_game()
 
-func get_speed_timer():
-	return speed_base #- floor(speed) * 2
-
 func increase_score(amt):
 	score = min(9999, score + amt)
 	if score == 9999:
 		print("Won by score")
 		announce_win()
+
+func get_speed():
+	return min(99, data.speed + score / 100)
 
 var trash_timer = 0
 func _physics_process(_delta):
@@ -229,12 +229,6 @@ func _physics_process(_delta):
 	if holder.update_matches():
 		bonus_time += 1.2
 
-	if bonus_time > 0 or star_timer > 0:
-		bonus_time -= 1
-	else:
-		row_timer += 1
-		chain = 1
-
 	var at_zero = 0
 	for i in range(0, block_scores.size()):
 		if block_scores[i] > 0:
@@ -269,8 +263,14 @@ func _physics_process(_delta):
 	###################################
 	# move the board up / lose game
 	##################################	
-	if row_timer > get_speed_timer():
-		row_timer = 0
+	if bonus_time > 0 or star_timer > 0:
+		bonus_time -= 1
+	else:
+		row_timer += (speed_base + speed_base_modifier * get_speed())
+		chain = 1
+	
+	if row_timer >= 1:
+		row_timer -= 1
 		if holder.push_preview_blocks():
 			holder.generate_preview_blocks()
 		else:
@@ -278,8 +278,7 @@ func _physics_process(_delta):
 			print("Lost by block height")
 			announce_loss()
 			return
-		speed = next_speed
-	holder.set_progress(float(row_timer) / get_speed_timer())
+	holder.set_progress(min(1, row_timer))
 	
 	if Input.is_action_just_pressed("debug"):
 		holder.toggle()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Board.tscn" type="PackedScene" id=1]
 [ext_resource path="res://MultiPlayer.gd" type="Script" id=2]
@@ -10,6 +10,11 @@
 [ext_resource path="res://ItemFrame.tscn" type="PackedScene" id=8]
 [ext_resource path="res://noise.png" type="Texture" id=9]
 [ext_resource path="res://Rainbow.shader" type="Shader" id=10]
+
+[sub_resource type="ShaderMaterial" id=4]
+shader = ExtResource( 10 )
+shader_param/active = false
+shader_param/noiseTexture = ExtResource( 9 )
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 10 )
@@ -40,10 +45,11 @@ __meta__ = {
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 128, 112 )
 frames = ExtResource( 3 )
-frame = 8
+frame = 2
 playing = true
 
 [node name="Frame" type="Sprite" parent="."]
+material = SubResource( 4 )
 position = Vector2( 128, 127 )
 texture = ExtResource( 4 )
 
@@ -64,14 +70,14 @@ font = "green"
 separation = 8
 
 [node name="Level1" parent="Frame" instance=ExtResource( 5 )]
-position = Vector2( -8, -89 )
-text = "0"
+position = Vector2( -14, -91.5 )
+text = "00"
 font = "red"
 separation = 8
 
 [node name="Level2" parent="Frame" instance=ExtResource( 5 )]
-position = Vector2( 8, -89 )
-text = "0"
+position = Vector2( 6, -91.5 )
+text = "00"
 font = "green"
 separation = 8
 
