@@ -1,0 +1,15 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://graphics/characters/character_data.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+character_name = "Lip"
+character_identifier = "lip"
+trash_color = Color( 0.678431, 0.156863, 0.290196, 1 )
+do_tongue = false
+frames_default = 4
+frames_attack = 5
+frames_jump = 2
+frames_loss = 1
+frames_sad = 2

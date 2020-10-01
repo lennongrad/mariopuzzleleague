@@ -1,0 +1,274 @@
+[gd_scene load_steps=31 format=2]
+
+[ext_resource path="res://scenes/BlockHolder.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/Board.gd" type="Script" id=2]
+[ext_resource path="res://graphics/colors/red/wall.png" type="Texture" id=3]
+[ext_resource path="res://graphics/loss_palette.png" type="Texture" id=4]
+[ext_resource path="res://graphics/win_palette.png" type="Texture" id=5]
+[ext_resource path="res://graphics/ready.png" type="Texture" id=6]
+[ext_resource path="res://graphics/lose.png" type="Texture" id=7]
+[ext_resource path="res://graphics/ready3.png" type="Texture" id=8]
+[ext_resource path="res://graphics/noise.png" type="Texture" id=9]
+[ext_resource path="res://graphics/win.png" type="Texture" id=10]
+[ext_resource path="res://graphics/characters/lip/portrait.png" type="Texture" id=11]
+[ext_resource path="res://graphics/boos.png" type="Texture" id=12]
+[ext_resource path="res://graphics/star.png" type="Texture" id=13]
+[ext_resource path="res://scenes/ParticlePlay.gd" type="Script" id=14]
+
+[sub_resource type="ParticlesMaterial" id=1]
+emission_shape = 2
+emission_box_extents = Vector3( 100, 5, 1 )
+flag_disable_z = true
+direction = Vector3( 0, 5, 0 )
+spread = 9.12
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 300.0
+initial_velocity_random = 1.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+angle = 20.0
+angle_random = 1.0
+scale = 0.3
+scale_random = 0.13
+hue_variation = 1.0
+hue_variation_random = 1.0
+
+[sub_resource type="Shader" id=2]
+code = "shader_type canvas_item;
+render_mode blend_mix;
+
+uniform sampler2D base_palette;
+
+float find_color_in_base_palette(in vec4 color, float pal_size, float pixel_size) {
+    for(float x = 0.0; x <= pal_size; x += pixel_size)   {      
+        vec4 pal_col = texture(base_palette, vec2(x, 0.0));
+
+        if(pal_col.rgba == color.rgba) {
+            return x;
+        }
+    }
+
+    return -1.0;
+}
+
+void fragment() {
+    vec4 color = texture(TEXTURE, UV);
+    ivec2 size = textureSize(base_palette, 0);
+    float pos = find_color_in_base_palette(color, float(size.x), TEXTURE_PIXEL_SIZE.x); 
+
+    // We found the position of the color in the base palette, so fetch a new color from the new palette
+    if(pos != -1.0) {
+        //COLOR = texture(base_palette, vec2(float(int(pos + (3.0 * TEXTURE_PIXEL_SIZE.x)) % 7), 0.0));
+        COLOR = texture(base_palette, vec2(pos + TEXTURE_PIXEL_SIZE.x * 8.0 * float(int(TIME * 9.0) % 10), 0.0));
+    }
+    // The color is not in the base palette, so we don't know its position. Keep the base color.
+    else {
+        COLOR = color;
+    }   
+}"
+custom_defines = ""
+
+[sub_resource type="ShaderMaterial" id=3]
+shader = SubResource( 2 )
+shader_param/base_palette = ExtResource( 5 )
+
+[sub_resource type="Shader" id=4]
+code = "shader_type canvas_item;
+render_mode blend_mix;
+
+uniform sampler2D base_palette;
+
+float find_color_in_base_palette(in vec4 color, float pal_size, float pixel_size) {
+    for(float x = 0.0; x <= pal_size; x += pixel_size)   {      
+        vec4 pal_col = texture(base_palette, vec2(x, 0.0));
+
+        if(pal_col.rgba == color.rgba) {
+            return x;
+        }
+    }
+
+    return -1.0;
+}
+
+void fragment() {
+    vec4 color = texture(TEXTURE, UV);
+    ivec2 size = textureSize(base_palette, 0);
+    float pos = find_color_in_base_palette(color, float(size.x), TEXTURE_PIXEL_SIZE.x); 
+
+    // We found the position of the color in the base palette, so fetch a new color from the new palette
+    if(pos != -1.0) {
+        //COLOR = texture(base_palette, vec2(float(int(pos + (3.0 * TEXTURE_PIXEL_SIZE.x)) % 7), 0.0));
+        COLOR = texture(base_palette, vec2(pos + TEXTURE_PIXEL_SIZE.x * 4.0 * (12.0 - float(int(TIME * 15.0) % 12)), 0.0));
+    }
+    // The color is not in the base palette, so we don't know its position. Keep the base color.
+    else {
+        COLOR = color;
+    }   
+}"
+custom_defines = ""
+
+[sub_resource type="ShaderMaterial" id=5]
+shader = SubResource( 4 )
+shader_param/base_palette = ExtResource( 4 )
+
+[sub_resource type="Shader" id=6]
+code = "shader_type canvas_item;
+uniform sampler2D noiseTexture;
+uniform bool active;
+
+void fragment()
+{
+	vec4 originalTexture = texture(TEXTURE, UV);
+	if(active){
+		vec4 dissolveNoise = texture(noiseTexture, UV + vec2(TIME * .1, -TIME * .1));
+		vec4 dissolveNoise2 = texture(noiseTexture, UV + vec2(TIME * .2, -TIME * .2));
+		vec4 dissolveNoise3 = texture(noiseTexture, UV + vec2(TIME * .25, -TIME * .25));
+		COLOR = dissolveNoise * dissolveNoise2;
+		COLOR.a = dissolveNoise3.r *.5 + .2;
+	} else {
+		COLOR.a = 0.0;
+	}
+}"
+custom_defines = ""
+
+[sub_resource type="ShaderMaterial" id=7]
+shader = SubResource( 6 )
+shader_param/active = true
+shader_param/noiseTexture = ExtResource( 9 )
+
+[sub_resource type="CanvasItemMaterial" id=8]
+particles_animation = true
+particles_anim_h_frames = 3
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="Gradient" id=9]
+offsets = PoolRealArray( 0, 0.158333, 0.816667, 1 )
+colors = PoolColorArray( 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=10]
+gradient = SubResource( 9 )
+
+[sub_resource type="ParticlesMaterial" id=11]
+lifetime_randomness = 0.05
+emission_shape = 2
+emission_box_extents = Vector3( 40, 90, 1 )
+flag_disable_z = true
+direction = Vector3( 0, 1, 0 )
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 6.0
+initial_velocity_random = 1.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+color_ramp = SubResource( 10 )
+anim_offset = 1.0
+anim_offset_random = 1.0
+
+[sub_resource type="CanvasItemMaterial" id=12]
+blend_mode = 1
+
+[sub_resource type="Gradient" id=13]
+offsets = PoolRealArray( 0, 0.741667 )
+colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=14]
+gradient = SubResource( 13 )
+
+[sub_resource type="ParticlesMaterial" id=15]
+emission_shape = 2
+emission_box_extents = Vector3( 100, 5, 1 )
+flag_disable_z = true
+direction = Vector3( 0, 5, 0 )
+spread = 15.95
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 300.0
+initial_velocity_random = 0.5
+angular_velocity = 109.37
+orbit_velocity = 0.01
+orbit_velocity_random = 0.0
+angle = 20.0
+angle_random = 1.0
+scale = 0.6
+scale_random = 0.4
+color_ramp = SubResource( 14 )
+
+[sub_resource type="StreamTexture" id=16]
+load_path = "res://.import/star.png-19e2a8935edef1994254d9cf64a4c2d9.stex"
+
+[node name="Board" type="Control"]
+anchor_right = 0.375
+anchor_bottom = 0.902
+margin_right = -7.62939e-06
+margin_bottom = -0.0480194
+rect_clip_content = true
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Portrait" type="Sprite" parent="."]
+position = Vector2( 48, 96 )
+texture = ExtResource( 11 )
+
+[node name="WinConfetti" type="Particles2D" parent="."]
+position = Vector2( 47.6758, -10.5946 )
+emitting = false
+amount = 120
+lifetime = 4.0
+process_material = SubResource( 1 )
+texture = ExtResource( 13 )
+
+[node name="Wall" type="Node2D" parent="."]
+position = Vector2( 48, 324 )
+
+[node name="BlockHolder" parent="Wall" instance=ExtResource( 1 )]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( -48, -324 )
+
+[node name="Win" type="Sprite" parent="Wall"]
+visible = false
+material = SubResource( 3 )
+position = Vector2( 0, -304 )
+texture = ExtResource( 10 )
+
+[node name="Loss" type="Sprite" parent="Wall"]
+visible = false
+material = SubResource( 5 )
+position = Vector2( 0, -304 )
+texture = ExtResource( 7 )
+
+[node name="Wall" type="Sprite" parent="Wall"]
+texture = ExtResource( 3 )
+
+[node name="Ready" type="Sprite" parent="."]
+position = Vector2( -42.7027, 76 )
+texture = ExtResource( 6 )
+
+[node name="CountDown" type="Sprite" parent="."]
+position = Vector2( -42.7027, 97 )
+texture = ExtResource( 8 )
+
+[node name="BooSmoke" type="Sprite" parent="."]
+modulate = Color( 1, 1, 1, 0 )
+material = SubResource( 7 )
+position = Vector2( 48, 96 )
+texture = ExtResource( 11 )
+
+[node name="BooParticles" type="Particles2D" parent="."]
+material = SubResource( 8 )
+position = Vector2( 47.4041, 112.174 )
+emitting = false
+amount = 16
+lifetime = 3.0
+process_material = SubResource( 11 )
+texture = ExtResource( 12 )
+
+[node name="StarActivated" type="Particles2D" parent="."]
+material = SubResource( 12 )
+position = Vector2( 47.6758, -10.5946 )
+emitting = false
+amount = 240
+process_material = SubResource( 15 )
+texture = SubResource( 16 )
+script = ExtResource( 14 )

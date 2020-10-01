@@ -1,0 +1,1 @@
+individual\sprites_01.png.png 2 2, individual\sprites_02.png.png 22 1, individual\sprites_03.png.png 41 3, individual\sprites_04.png.png 61 1, individual\sprites_05.png.png 80 4, individual\sprites_06.png.png 100 5, individual\sprites_07.png.png 122 9, individual\sprites_08.png.png 142 8, individual\sprites_09.png.png 160 1.

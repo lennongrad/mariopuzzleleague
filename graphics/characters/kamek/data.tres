@@ -1,0 +1,15 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://graphics/characters/character_data.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+character_name = "Kamek"
+character_identifier = "kamek"
+trash_color = Color( 0.392157, 0, 0.54902, 1 )
+do_tongue = false
+frames_default = 2
+frames_attack = 2
+frames_jump = 1
+frames_loss = 1
+frames_sad = 2
