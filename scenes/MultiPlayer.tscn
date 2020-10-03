@@ -46,7 +46,7 @@ __meta__ = {
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 128, 112 )
 frames = ExtResource( 2 )
-frame = 4
+frame = 1
 playing = true
 
 [node name="Board1" parent="." instance=ExtResource( 4 )]

@@ -22,5 +22,6 @@ z_index = 4
 [node name="AnimatedSprite" type="AnimatedSprite" parent="Cursor"]
 position = Vector2( -2, -2 )
 frames = SubResource( 1 )
+frame = 1
 playing = true
 centered = false

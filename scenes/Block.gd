@@ -6,6 +6,9 @@ var size = Vector2(1, 1) setget change_size
 var character
 var opponent
 
+var destination_p = Vector2(0,0)
+var current_p = Vector2(0,0)
+
 onready var particles = [$BR, $BL, $TL, $TR]
 
 const is_block = true
@@ -117,6 +120,10 @@ func lose():
 func _process(_delta):
 	playing = false
 	last_p = p
+	
+	current_p += (destination_p - current_p) * .45
+	position.x = round(current_p.x)
+	position.y = round(current_p.y)
 	
 	if popping_timer > 20:
 		visible = false

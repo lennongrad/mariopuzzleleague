@@ -141,7 +141,7 @@ func get_speed():
 	return min(99, data.speed + score / 100)
 
 var trash_timer = 0
-func _physics_process(_delta):
+func tick(input):
 	#########################
 	# if the end game is here
 	#########################
@@ -286,9 +286,6 @@ func _physics_process(_delta):
 			return
 	holder.set_progress(min(1, row_timer))
 	
-	if Input.is_action_just_pressed("debug"):
-		holder.toggle()
-	
 	if data.ai:
 		############################
 		# ai control
@@ -313,19 +310,19 @@ func _physics_process(_delta):
 		var button_pressed_already = false
 		var pressed 
 		
-		if Input.is_action_pressed("ui_left"):
+		if Input.is_action_pressed("p1_left"):
 			button_pressed_already = true
 			pressed = enums.DIRECTION.LEFT
 		
-		if Input.is_action_pressed("ui_right") and not button_pressed_already:
+		if Input.is_action_pressed("p1_right") and not button_pressed_already:
 			button_pressed_already = true
 			pressed = enums.DIRECTION.RIGHT
 		
-		if Input.is_action_pressed("ui_up") and not button_pressed_already:
+		if Input.is_action_pressed("p1_up") and not button_pressed_already:
 			button_pressed_already = true
 			pressed = enums.DIRECTION.UP
 		
-		if Input.is_action_pressed("ui_down") and not button_pressed_already:
+		if Input.is_action_pressed("p1_down") and not button_pressed_already:
 			pressed = enums.DIRECTION.DOWN
 		
 		if pressed != null:
@@ -342,13 +339,13 @@ func _physics_process(_delta):
 		####################
 		# other inputs
 		####################
-		if Input.is_action_just_pressed("ui_accept"):
+		if Input.is_action_just_pressed("p1_a"):
 			holder.swap_cursor()
 		
-		if Input.is_action_just_pressed("ui_focus_next"):
+		if Input.is_action_just_pressed("p1_y"):
 			holder.tab()
 		
-		if Input.is_action_just_pressed("trash"):
+		if Input.is_action_just_pressed("p1_x"):
 			emit_signal("use_item")
 
 func _process(_delta):

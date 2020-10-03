@@ -687,7 +687,7 @@ func _process(_delta):
 		$Cursor.position += (get_position_vector(cursor_p) - $Cursor.position) * .4
 	
 	for block in (get_blocks(false) + preview_blocks):
-		block.position += (get_position_vector(block.p) + Vector2(8 * block.size.x, 8 * block.size.y) - block.position) * .6
+		block.destination_p = get_position_vector(block.p) + Vector2(8 * block.size.x, 8 * block.size.y)
 		if get_column_height(block.p.x, true) > height - 2:
 			block.set_wobble()
 			block.going_to_lose = true

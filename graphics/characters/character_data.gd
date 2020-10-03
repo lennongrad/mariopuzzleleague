@@ -84,9 +84,12 @@ func get_css():
 	var size_x = load(file_location).get_size().x
 	size_x /= 32
 	
-	for i in size_x:
+	for i in (size_x * 2 - 1):
 		var texture = AtlasTexture.new()
 		texture.set_atlas(load(file_location))
-		texture.region = Rect2(i * 32, 0, 32, 32)
+		if i < size_x:
+			texture.region = Rect2(i * 32, 0, 32, 32)
+		else:
+			texture.region = Rect2((size_x * 2 - 1 - i) * 32, 0, 32, 32)
 		frames.add_frame("default", texture)
 	return frames

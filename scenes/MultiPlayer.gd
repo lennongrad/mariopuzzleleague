@@ -1,5 +1,7 @@
 extends Control
 
+export(bool) var debug = false
+
 const color_choices = ["red", "green", "blue", "pink"]
 
 var stage
@@ -22,12 +24,13 @@ func _ready():
 	color_set[0] = color_choices[randi() % color_choices.size()]
 	while color_set[1] == null or color_set[0] == color_set[1]:
 		color_set[1] = color_choices[randi() % color_choices.size()]
-	start({"difficulty": enums.DIFFICULTY.EASY, "ai": 0, 
-			"character": load("res://graphics/characters/bowser/data.tres"), 
-			"colors": color_set[0], "speed": 1}, 
-		{"difficulty": enums.DIFFICULTY.EASY, "ai": 9, 
-			"character": load("res://graphics/characters/seren/data.tres"), 
-			"colors": color_set[1], "speed": 1})
+	if debug:
+		start({"difficulty": enums.DIFFICULTY.EASY, "ai": 0, 
+				"character": load("res://graphics/characters/bowser/data.tres"), 
+				"colors": color_set[0], "speed": 1}, 
+			{"difficulty": enums.DIFFICULTY.EASY, "ai": 9, 
+				"character": load("res://graphics/characters/seren/data.tres"), 
+				"colors": color_set[1], "speed": 1})
 
 func start(player_one_data, player_two_data):
 	seed_to_use = randi()
@@ -61,9 +64,8 @@ func start(player_one_data, player_two_data):
 
 func set_stage(p_stage):
 	stage = p_stage
-	
 
-func _physics_process(_delta):
+func tick(p1, p2):
 	if $Board1.has_started and not ($Board1.has_won or $Board1.has_lost):
 		time += (1.0 / 60)
 	$Frame/Time.text = str(int(floor(time / 60))).pad_zeros(2) + "'" + str(int(time) % 60).pad_zeros(2)
@@ -94,6 +96,9 @@ func _physics_process(_delta):
 			board1_trash_list.remove(0)
 			$Frame/TrashPreview1.shown = board1_trash_list.size() - board1_trash_waiting
 		$Frame/TrashPreview1.blocks = board1_trash_list
+	
+	$Board1.tick(p1)
+	$Board2.tick(p2)
 
 func _process(_delta):
 	$Label.text = str(Engine.get_frames_per_second()) + "fps"
