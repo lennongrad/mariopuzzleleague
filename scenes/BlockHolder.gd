@@ -90,7 +90,7 @@ func set_color_set(p_set):
 
 func get_random_color():
 	var color
-	while color == null or (color != enums.BLOCKTYPE.ITEM and rand.randi() %7 < 3):
+	while color == null or (color == enums.BLOCKTYPE.ITEM and rand.randi() % 7 < 3):
 		color = colors[rand.randi() % (colors.size())]
 	return color
 
@@ -324,7 +324,7 @@ func generate_preview_blocks():
 		block.preview = true
 		add_child(block)
 		preview_blocks.append(block)
-		block.position = get_position_vector(block.p + Vector2(0,1))
+		block.current_p = get_position_vector(block.p + Vector2(0,3))
 		last_two[0] = last_two[1]
 		last_two[1] = block.type
 	update_blocks()

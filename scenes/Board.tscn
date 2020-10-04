@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=2]
+[gd_scene load_steps=34 format=2]
 
 [ext_resource path="res://scenes/BlockHolder.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/Board.gd" type="Script" id=2]
@@ -14,6 +14,11 @@
 [ext_resource path="res://graphics/boos.png" type="Texture" id=12]
 [ext_resource path="res://graphics/star.png" type="Texture" id=13]
 [ext_resource path="res://scenes/ParticlePlay.gd" type="Script" id=14]
+[ext_resource path="res://graphics/a_rematch.png" type="Texture" id=15]
+[ext_resource path="res://graphics/b_back.png" type="Texture" id=16]
+
+[sub_resource type="StyleBoxFlat" id=17]
+bg_color = Color( 0, 0, 0, 0.568627 )
 
 [sub_resource type="ParticlesMaterial" id=1]
 emission_shape = 2
@@ -196,12 +201,13 @@ color_ramp = SubResource( 14 )
 [sub_resource type="StreamTexture" id=16]
 load_path = "res://.import/star.png-19e2a8935edef1994254d9cf64a4c2d9.stex"
 
-[node name="Board" type="Control"]
+[node name="Board" type="Panel"]
 anchor_right = 0.375
 anchor_bottom = 0.902
 margin_right = -7.62939e-06
 margin_bottom = -0.0480194
 rect_clip_content = true
+custom_styles/panel = SubResource( 17 )
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -240,6 +246,14 @@ texture = ExtResource( 7 )
 
 [node name="Wall" type="Sprite" parent="Wall"]
 texture = ExtResource( 3 )
+
+[node name="A" type="Sprite" parent="Wall"]
+position = Vector2( -110, -157.206 )
+texture = ExtResource( 15 )
+
+[node name="B" type="Sprite" parent="Wall"]
+position = Vector2( 91, -142 )
+texture = ExtResource( 16 )
 
 [node name="Ready" type="Sprite" parent="."]
 position = Vector2( -42.7027, 76 )

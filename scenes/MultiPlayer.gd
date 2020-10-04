@@ -1,5 +1,8 @@
 extends Control
 
+signal rematch(p1, p2)
+signal return_to_menu()
+
 export(bool) var debug = false
 
 const color_choices = ["red", "green", "blue", "pink"]
@@ -18,6 +21,8 @@ var board2_trash_list = []
 var trash_timer = 0
 
 var time = 0.0
+
+var done_timer = -1
 
 func _ready():
 	randomize()
@@ -65,10 +70,22 @@ func start(player_one_data, player_two_data):
 func set_stage(p_stage):
 	stage = p_stage
 
+func rematch():
+	emit_signal("rematch", player_one, player_two)
+	done_timer = 0
+ 
+func return_to_menu():
+	emit_signal("return_to_menu")
+	done_timer = 0
+
 func tick(p1, p2):
 	if $Board1.has_started and not ($Board1.has_won or $Board1.has_lost):
 		time += (1.0 / 60)
 	$Frame/Time.text = str(int(floor(time / 60))).pad_zeros(2) + "'" + str(int(time) % 60).pad_zeros(2)
+	
+	if $Board1.has_stopped:
+		if p1.a: rematch()
+		if p1.b: return_to_menu()
 	
 	if $Board1.has_won:
 		$Frame/Character1.win()
@@ -127,6 +144,11 @@ func _process(_delta):
 		$Frame/RightFrame.material.set_shader_param("active", true)
 	else:
 		$Frame/RightFrame.material.set_shader_param("active", false)
+	
+	if done_timer != -1:
+		done_timer += 1
+		if done_timer > 100:
+			queue_free()
 
 func _on_Board1_spawn_trash(combo, _chain, p):
 	var trash = load("res://scenes/TrashMessage.tscn").instance()

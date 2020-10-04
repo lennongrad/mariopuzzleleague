@@ -28,6 +28,7 @@ _global_script_class_icons={
 
 config/name="PanelDePon"
 run/main_scene="res://scenes/Main.tscn"
+config/icon="res://graphics/characters/lip/trash.png"
 
 [display]
 

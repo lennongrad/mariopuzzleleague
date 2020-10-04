@@ -1,5 +1,6 @@
-[gd_scene load_steps=39 format=2]
+[gd_scene load_steps=42 format=2]
 
+[ext_resource path="res://scenes/Stats_Single.gd" type="Script" id=1]
 [ext_resource path="res://scenes/Text.tscn" type="PackedScene" id=2]
 [ext_resource path="res://graphics/css_back.png" type="Texture" id=3]
 [ext_resource path="res://graphics/1p_select.png" type="Texture" id=4]
@@ -21,6 +22,8 @@
 [ext_resource path="res://graphics/colors/blue/medium.png" type="Texture" id=20]
 [ext_resource path="res://scenes/SideCursor.gd" type="Script" id=21]
 [ext_resource path="res://graphics/a_button.png" type="Texture" id=22]
+[ext_resource path="res://scenes/Player_Single.gd" type="Script" id=23]
+[ext_resource path="res://graphics/easy.png" type="Texture" id=24]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -69,22 +72,6 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="AtlasTexture" id=9]
-atlas = ExtResource( 17 )
-region = Rect2( 0, 0, 8, 8 )
-
-[sub_resource type="AtlasTexture" id=10]
-atlas = ExtResource( 17 )
-region = Rect2( 8, 0, 8, 8 )
-
-[sub_resource type="SpriteFrames" id=11]
-animations = [ {
-"frames": [ SubResource( 9 ), SubResource( 10 ) ],
-"loop": true,
-"name": "default",
-"speed": 3.0
-} ]
-
 [sub_resource type="AtlasTexture" id=12]
 atlas = ExtResource( 18 )
 region = Rect2( 0, 0, 8, 8 )
@@ -115,6 +102,22 @@ animations = [ {
 "loop": true,
 "name": "default",
 "speed": 2.0
+} ]
+
+[sub_resource type="AtlasTexture" id=9]
+atlas = ExtResource( 17 )
+region = Rect2( 0, 0, 8, 8 )
+
+[sub_resource type="AtlasTexture" id=10]
+atlas = ExtResource( 17 )
+region = Rect2( 8, 0, 8, 8 )
+
+[sub_resource type="SpriteFrames" id=11]
+animations = [ {
+"frames": [ SubResource( 9 ), SubResource( 10 ) ],
+"loop": true,
+"name": "default",
+"speed": 3.0
 } ]
 
 [node name="CSS" type="Control"]
@@ -189,7 +192,6 @@ __meta__ = {
 position = Vector2( 25, 25 )
 z_index = 1
 frames = SubResource( 5 )
-frame = 1
 playing = true
 script = ExtResource( 8 )
 
@@ -197,11 +199,13 @@ script = ExtResource( 8 )
 position = Vector2( 25, 25 )
 z_index = 2
 frames = SubResource( 8 )
+frame = 1
 playing = true
 script = ExtResource( 8 )
 cursor_number = "2"
 
 [node name="Stats" type="Control" parent="."]
+visible = false
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
@@ -268,13 +272,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Selected" type="AnimatedSprite" parent="Stats/Player1/Level"]
-position = Vector2( 16, -1 )
-rotation = 3.14159
-frames = SubResource( 11 )
-frame = 1
-playing = true
-
 [node name="Text" parent="Stats/Player1/Level" instance=ExtResource( 2 )]
 position = Vector2( 13, 17 )
 text = "09"
@@ -332,6 +329,7 @@ texture = ExtResource( 20 )
 visible = false
 position = Vector2( 99, 51 )
 frames = SubResource( 17 )
+frame = 1
 playing = true
 
 [node name="Player2" type="NinePatchRect" parent="Stats"]
@@ -392,7 +390,6 @@ __meta__ = {
 position = Vector2( 16, -1 )
 rotation = 3.14159
 frames = SubResource( 11 )
-frame = 1
 playing = true
 
 [node name="Text" parent="Stats/Player2/Level" instance=ExtResource( 2 )]
@@ -454,7 +451,157 @@ position = Vector2( 99, 51 )
 frames = SubResource( 17 )
 frame = 1
 playing = true
+
+[node name="Stats_Single" type="Control" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -20.0
+margin_top = -38.0
+margin_right = 20.0
+margin_bottom = 2.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Player_Time" type="NinePatchRect" parent="Stats_Single"]
+anchor_left = 0.412
+anchor_right = 0.412
+margin_left = -77.48
+margin_top = -20.0
+margin_right = 77.52
+margin_bottom = 22.0
+texture = ExtResource( 14 )
+patch_margin_left = 5
+patch_margin_top = 5
+patch_margin_right = 5
+patch_margin_bottom = 5
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+script = ExtResource( 23 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="Stats_Single/Player_Time"]
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 2.0
+margin_top = 2.0
+margin_right = -2.0
+margin_bottom = -3.0
+texture = ExtResource( 3 )
+stretch_mode = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Level" type="TextureRect" parent="Stats_Single/Player_Time"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 45.0
+margin_bottom = 21.0
+texture = ExtResource( 12 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Text" parent="Stats_Single/Player_Time/Level" instance=ExtResource( 2 )]
+position = Vector2( 13, 17 )
+text = "09"
+font = "red"
+separation = 8
+
+[node name="Left" type="AnimatedSprite" parent="Stats_Single/Player_Time/Level"]
+visible = false
+position = Vector2( 4, 17 )
+rotation = -1.5708
+frames = SubResource( 14 )
+frame = 1
+playing = true
+script = ExtResource( 21 )
+
+[node name="Right" type="AnimatedSprite" parent="Stats_Single/Player_Time/Level"]
+visible = false
+position = Vector2( 30, 17 )
+rotation = 1.5708
+frames = SubResource( 14 )
+frame = 1
+playing = true
+script = ExtResource( 21 )
+
+[node name="Difficulty" type="Control" parent="Stats_Single/Player_Time"]
+self_modulate = Color( 1, 1, 1, 0 )
+margin_left = 43.0
+margin_top = 11.0
+margin_right = 101.0
+margin_bottom = 22.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Up" type="AnimatedSprite" parent="Stats_Single/Player_Time/Difficulty"]
+position = Vector2( 29, 0 )
+frames = SubResource( 14 )
+frame = 1
+playing = true
+script = ExtResource( 21 )
+
+[node name="Down" type="AnimatedSprite" parent="Stats_Single/Player_Time/Difficulty"]
+position = Vector2( 29, 21 )
+rotation = 3.14159
+frames = SubResource( 14 )
+frame = 1
+playing = true
+script = ExtResource( 21 )
+
+[node name="Text" type="Sprite" parent="Stats_Single/Player_Time/Difficulty"]
+position = Vector2( 30, 10 )
+texture = ExtResource( 24 )
+
+[node name="Time" type="Control" parent="Stats_Single/Player_Time"]
+self_modulate = Color( 1, 1, 1, 0 )
+margin_left = 94.0
+margin_top = 11.0
+margin_right = 94.0
+margin_bottom = 22.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Up" type="AnimatedSprite" parent="Stats_Single/Player_Time/Time"]
+position = Vector2( 29, 0 )
+frames = SubResource( 14 )
+frame = 1
+playing = true
+script = ExtResource( 21 )
+
+[node name="Down" type="AnimatedSprite" parent="Stats_Single/Player_Time/Time"]
+position = Vector2( 29, 21 )
+rotation = 3.14159
+frames = SubResource( 14 )
+frame = 1
+playing = true
+script = ExtResource( 21 )
+
+[node name="Text" parent="Stats_Single/Player_Time/Time" instance=ExtResource( 2 )]
+position = Vector2( 13, 10 )
+text = "00'00"
+separation = 8
+
+[node name="AButton" type="AnimatedSprite" parent="Stats_Single/Player_Time"]
+visible = false
+position = Vector2( 99, 51 )
+frames = SubResource( 17 )
+frame = 1
+playing = true
 [connection signal="done" from="CharacterSelect" to="." method="_on_CharacterSelect_done"]
+[connection signal="go_back" from="CharacterSelect" to="." method="_on_CharacterSelect_go_back"]
 [connection signal="done" from="Stats" to="." method="_on_Stats_done"]
 [connection signal="go_back" from="Stats" to="." method="_on_Stats_go_back"]
 [connection signal="go_back" from="Stats/Player2" to="Stats" method="_on_Player2_go_back"]
+[connection signal="done" from="Stats_Single" to="." method="_on_Stats_Single_done"]
+[connection signal="go_back" from="Stats_Single" to="." method="_on_Stats_go_back"]

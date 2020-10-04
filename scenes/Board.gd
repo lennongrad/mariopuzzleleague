@@ -52,6 +52,7 @@ var ghost_timer = 0
 # endgame timer
 var has_lost = false
 var has_won = false
+var has_stopped = false
 var end_timer = -150
 
 func _ready():
@@ -65,7 +66,8 @@ func start(seed_to_use, player_data, p_player_number, multiplayer, opponent):
 	is_multiplayer = multiplayer
 	player_number = p_player_number
 	holder.character = data.character
-	holder.opponent = opponent.character
+	if multiplayer:
+		holder.opponent = opponent.character
 	
 	$Portrait.texture = data.character.get_portrait()
 	$Wall/Wall.texture = load("res://graphics/colors/" + player_data.colors + "/wall.png")
@@ -145,7 +147,13 @@ func tick(input):
 	#########################
 	# if the end game is here
 	#########################
-	if has_lost or has_won:
+	if has_stopped:
+		if player_number == 1:
+			$Wall/A.position.x += (-4 - $Wall/A.position.x) * .1
+			$Wall/B.position.x += (-4 - $Wall/B.position.x) * .1
+		return
+	
+	if (has_lost or has_won) and not has_stopped:
 		end_timer += 1
 		if has_lost:
 			if end_timer < 50:
@@ -161,6 +169,7 @@ func tick(input):
 				$Wall/Wall.position.y = -abs(sin(.2 * (end_timer - 275))) * (30 / pow(end_timer - 274, 1))
 			else:
 				$Wall/Wall.position.y = 0
+				has_stopped = true
 			return
 		else:
 			if end_timer < 0:
@@ -176,6 +185,7 @@ func tick(input):
 				$Wall/Wall.position.y = -abs(sin(.2 * (end_timer - 265))) * (30 / pow(end_timer - 264, 1))
 			else:
 				$Wall/Wall.position.y = 0
+				has_stopped = true
 			return
 	
 	##########################################
@@ -310,19 +320,19 @@ func tick(input):
 		var button_pressed_already = false
 		var pressed 
 		
-		if Input.is_action_pressed("p1_left"):
+		if input.left:
 			button_pressed_already = true
 			pressed = enums.DIRECTION.LEFT
 		
-		if Input.is_action_pressed("p1_right") and not button_pressed_already:
+		if input.right and not button_pressed_already:
 			button_pressed_already = true
 			pressed = enums.DIRECTION.RIGHT
 		
-		if Input.is_action_pressed("p1_up") and not button_pressed_already:
+		if input.up and not button_pressed_already:
 			button_pressed_already = true
 			pressed = enums.DIRECTION.UP
 		
-		if Input.is_action_pressed("p1_down") and not button_pressed_already:
+		if input.down and not button_pressed_already:
 			pressed = enums.DIRECTION.DOWN
 		
 		if pressed != null:
@@ -339,13 +349,13 @@ func tick(input):
 		####################
 		# other inputs
 		####################
-		if Input.is_action_just_pressed("p1_a"):
+		if input.a:
 			holder.swap_cursor()
 		
-		if Input.is_action_just_pressed("p1_y"):
+		if input.y:
 			holder.tab()
 		
-		if Input.is_action_just_pressed("p1_x"):
+		if input.x:
 			emit_signal("use_item")
 
 func _process(_delta):

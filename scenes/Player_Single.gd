@@ -8,7 +8,9 @@ var level = 1
 var difficulty = enums.DIFFICULTY.EASY
 var time = 120
 
-enum SEQUENCE{LEVEL, DIFFICULTY, INACTIVE, DONE}
+var do_time = true
+
+enum SEQUENCE{LEVEL, DIFFICULTY, TIME, INACTIVE, DONE}
 var current_sequence = SEQUENCE.INACTIVE
 
 var counter_timer = 0
@@ -19,13 +21,26 @@ var action_timer = 0
 
 func color_change(color):
 	texture = load("res://graphics/colors/" + color + "/css_ridge.png")
-	$PlayerTitle.texture = load("res://graphics/colors/" + color + "/player" + player_number + ".png")
+	$Time/Text.font = color
+	change_time()
 	$Level/Text.font = color
 	$Level.texture = load("res://graphics/colors/" + color + "/level.png")
 	$Level/Left.change_color(color)
 	$Level/Right.change_color(color)
 	$Difficulty/Up.change_color(color)
 	$Difficulty/Down.change_color(color)
+	$Time/Up.change_color(color)
+	$Time/Down.change_color(color)
+
+func change_time():
+	$Time/Text.text = str(int(floor(time / 60))).pad_zeros(2) + "'" + str(int(time) % 60).pad_zeros(2)
+
+func set_timed(timed):
+	do_time = timed
+	if not timed:
+		$Time.visible = false
+		rect_position.x = -33
+		rect_size.x = 102
 
 func start():
 	current_sequence = SEQUENCE.LEVEL
@@ -87,6 +102,47 @@ func tick(input):
 				current_sequence = SEQUENCE.LEVEL
 				action_timer = 0
 			if input.a:
+				if do_time:
+					current_sequence = SEQUENCE.TIME
+				else:
+					finish()
+				action_timer = 0
+		SEQUENCE.TIME:
+			counter_timer += 1
+			if counter_timer > (10 - successive_count):
+				if input.up or input.right:
+					$Time/Up.frame = 0
+					var increment = 1
+					if input.right:
+						increment = 15
+					time = min(60 * 60 - 1, time + increment)
+					counter_timer = 0
+					if last_direction != 1:
+						successive_count = 0
+					else:
+						successive_count = min(9, successive_count + 1)
+					last_direction = 1
+					action_timer = 0
+				if input.down or input.left:
+					$Time/Down.frame = 0
+					var increment = 1
+					if input.left:
+						increment = 15
+					time = max(1, time - increment)
+					counter_timer = 0
+					if last_direction != -1:
+						successive_count = 0
+					else:
+						successive_count = min(9, successive_count + 1)
+					last_direction = -1
+					action_timer = 0
+			if counter_timer > (10 - successive_count) or not (input.down or input.up or input.left or input.right):
+				successive_count = 0
+			change_time()
+			if input.b:
+				current_sequence = SEQUENCE.DIFFICULTY
+				action_timer = 0
+			if input.a:
 				finish()
 				action_timer = 0
 
@@ -111,6 +167,8 @@ func _process(_delta):
 				$Level/Right.visible = false
 			$Difficulty/Up.visible = false
 			$Difficulty/Down.visible = false
+			$Time/Up.visible = false
+			$Time/Down.visible = false
 			modulate.v += (1 - modulate.v) * .1
 			if action_timer > 150:
 				$AButton.visible = true
@@ -127,6 +185,26 @@ func _process(_delta):
 				$Difficulty/Up.visible = false
 			$Level/Left.visible = false
 			$Level/Right.visible = false
+			$Time/Up.visible = false
+			$Time/Down.visible = false
+			modulate.v += (1 - modulate.v) * .1
+			if action_timer > 150:
+				$AButton.visible = true
+			else:
+				$AButton.visible = false
+		SEQUENCE.TIME:
+			if time > 1:
+				$Time/Down.visible = true
+			else:
+				$Time/Down.visible = false
+			if time < (60 * 60 - 1):
+				$Time/Up.visible = true
+			else:
+				$Time/Up.visible = false
+			$Level/Left.visible = false
+			$Level/Right.visible = false
+			$Difficulty/Up.visible = false
+			$Difficulty/Down.visible = false
 			modulate.v += (1 - modulate.v) * .1
 			if action_timer > 150:
 				$AButton.visible = true
@@ -137,6 +215,8 @@ func _process(_delta):
 			$Level/Right.visible = false
 			$Difficulty/Up.visible = false
 			$Difficulty/Down.visible = false
+			$Time/Up.visible = false
+			$Time/Down.visible = false
 			modulate.v += (.6 - modulate.v) * .1
 			$AButton.visible = false
 		SEQUENCE.INACTIVE:
@@ -144,6 +224,8 @@ func _process(_delta):
 			$Level/Right.visible = false
 			$Difficulty/Up.visible = false
 			$Difficulty/Down.visible = false
+			$Time/Up.visible = false
+			$Time/Down.visible = false
 			modulate.v += (.6 - modulate.v) * .1
 			$AButton.visible = false
 

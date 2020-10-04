@@ -1,7 +1,6 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://graphics/background.png" type="Texture" id=1]
-[ext_resource path="res://scenes/CSS.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/Main.gd" type="Script" id=3]
 
 [sub_resource type="Shader" id=1]
@@ -20,6 +19,7 @@ custom_defines = ""
 shader = SubResource( 1 )
 
 [node name="Main" type="TextureRect"]
+self_modulate = Color( 0.294118, 0.847059, 0.921569, 1 )
 material = SubResource( 2 )
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -31,6 +31,3 @@ __meta__ = {
 }
 
 [node name="Black" type="CanvasModulate" parent="."]
-
-[node name="CSS" parent="." instance=ExtResource( 2 )]
-[connection signal="done" from="CSS" to="." method="_on_CSS_done"]

@@ -59,7 +59,8 @@ func change_type(p_type):
 		frames = block_graphics[type]
 		$Face.visible = false
 	$Trash.texture = trash_graphics[Vector2(1,1)]
-	$Trash.self_modulate = opponent.trash_color
+	if opponent != null:
+		$Trash.self_modulate = opponent.trash_color
 
 func drop():
 	drop_timer += 1
