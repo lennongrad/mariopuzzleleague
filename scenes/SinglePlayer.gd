@@ -71,6 +71,7 @@ func tick(p1, _p2):
 				time = 0
 				if $Board.score > high_score:
 					$Board.announce_win()
+					$Frame/HighScore.text = str($Board.score).pad_zeros(4)
 				else:
 					$Board.announce_loss()
 		else:

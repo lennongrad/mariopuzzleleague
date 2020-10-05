@@ -17,10 +17,10 @@
 [ext_resource path="res://graphics/a_rematch.png" type="Texture" id=15]
 [ext_resource path="res://graphics/b_back.png" type="Texture" id=16]
 
-[sub_resource type="StyleBoxFlat" id=17]
+[sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 0.568627 )
 
-[sub_resource type="ParticlesMaterial" id=1]
+[sub_resource type="ParticlesMaterial" id=2]
 emission_shape = 2
 emission_box_extents = Vector3( 100, 5, 1 )
 flag_disable_z = true
@@ -38,7 +38,7 @@ scale_random = 0.13
 hue_variation = 1.0
 hue_variation_random = 1.0
 
-[sub_resource type="Shader" id=2]
+[sub_resource type="Shader" id=3]
 code = "shader_type canvas_item;
 render_mode blend_mix;
 
@@ -73,11 +73,11 @@ void fragment() {
 }"
 custom_defines = ""
 
-[sub_resource type="ShaderMaterial" id=3]
-shader = SubResource( 2 )
+[sub_resource type="ShaderMaterial" id=4]
+shader = SubResource( 3 )
 shader_param/base_palette = ExtResource( 5 )
 
-[sub_resource type="Shader" id=4]
+[sub_resource type="Shader" id=5]
 code = "shader_type canvas_item;
 render_mode blend_mix;
 
@@ -112,11 +112,11 @@ void fragment() {
 }"
 custom_defines = ""
 
-[sub_resource type="ShaderMaterial" id=5]
-shader = SubResource( 4 )
+[sub_resource type="ShaderMaterial" id=6]
+shader = SubResource( 5 )
 shader_param/base_palette = ExtResource( 4 )
 
-[sub_resource type="Shader" id=6]
+[sub_resource type="Shader" id=7]
 code = "shader_type canvas_item;
 uniform sampler2D noiseTexture;
 uniform bool active;
@@ -136,25 +136,25 @@ void fragment()
 }"
 custom_defines = ""
 
-[sub_resource type="ShaderMaterial" id=7]
-shader = SubResource( 6 )
+[sub_resource type="ShaderMaterial" id=8]
+shader = SubResource( 7 )
 shader_param/active = true
 shader_param/noiseTexture = ExtResource( 9 )
 
-[sub_resource type="CanvasItemMaterial" id=8]
+[sub_resource type="CanvasItemMaterial" id=9]
 particles_animation = true
 particles_anim_h_frames = 3
 particles_anim_v_frames = 1
 particles_anim_loop = false
 
-[sub_resource type="Gradient" id=9]
+[sub_resource type="Gradient" id=10]
 offsets = PoolRealArray( 0, 0.158333, 0.816667, 1 )
 colors = PoolColorArray( 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 )
 
-[sub_resource type="GradientTexture" id=10]
-gradient = SubResource( 9 )
+[sub_resource type="GradientTexture" id=11]
+gradient = SubResource( 10 )
 
-[sub_resource type="ParticlesMaterial" id=11]
+[sub_resource type="ParticlesMaterial" id=12]
 lifetime_randomness = 0.05
 emission_shape = 2
 emission_box_extents = Vector3( 40, 90, 1 )
@@ -166,21 +166,21 @@ initial_velocity = 6.0
 initial_velocity_random = 1.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
-color_ramp = SubResource( 10 )
+color_ramp = SubResource( 11 )
 anim_offset = 1.0
 anim_offset_random = 1.0
 
-[sub_resource type="CanvasItemMaterial" id=12]
+[sub_resource type="CanvasItemMaterial" id=13]
 blend_mode = 1
 
-[sub_resource type="Gradient" id=13]
+[sub_resource type="Gradient" id=14]
 offsets = PoolRealArray( 0, 0.741667 )
 colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 0 )
 
-[sub_resource type="GradientTexture" id=14]
-gradient = SubResource( 13 )
+[sub_resource type="GradientTexture" id=15]
+gradient = SubResource( 14 )
 
-[sub_resource type="ParticlesMaterial" id=15]
+[sub_resource type="ParticlesMaterial" id=16]
 emission_shape = 2
 emission_box_extents = Vector3( 100, 5, 1 )
 flag_disable_z = true
@@ -196,9 +196,9 @@ angle = 20.0
 angle_random = 1.0
 scale = 0.6
 scale_random = 0.4
-color_ramp = SubResource( 14 )
+color_ramp = SubResource( 15 )
 
-[sub_resource type="StreamTexture" id=16]
+[sub_resource type="StreamTexture" id=17]
 load_path = "res://.import/star.png-19e2a8935edef1994254d9cf64a4c2d9.stex"
 
 [node name="Board" type="Panel"]
@@ -207,7 +207,7 @@ anchor_bottom = 0.902
 margin_right = -7.62939e-06
 margin_bottom = -0.0480194
 rect_clip_content = true
-custom_styles/panel = SubResource( 17 )
+custom_styles/panel = SubResource( 1 )
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -222,7 +222,7 @@ position = Vector2( 47.6758, -10.5946 )
 emitting = false
 amount = 120
 lifetime = 4.0
-process_material = SubResource( 1 )
+process_material = SubResource( 2 )
 texture = ExtResource( 13 )
 
 [node name="Wall" type="Node2D" parent="."]
@@ -234,13 +234,13 @@ position = Vector2( -48, -324 )
 
 [node name="Win" type="Sprite" parent="Wall"]
 visible = false
-material = SubResource( 3 )
+material = SubResource( 4 )
 position = Vector2( 0, -304 )
 texture = ExtResource( 10 )
 
 [node name="Loss" type="Sprite" parent="Wall"]
 visible = false
-material = SubResource( 5 )
+material = SubResource( 6 )
 position = Vector2( 0, -304 )
 texture = ExtResource( 7 )
 
@@ -265,24 +265,24 @@ texture = ExtResource( 8 )
 
 [node name="BooSmoke" type="Sprite" parent="."]
 modulate = Color( 1, 1, 1, 0 )
-material = SubResource( 7 )
+material = SubResource( 8 )
 position = Vector2( 48, 96 )
 texture = ExtResource( 11 )
 
 [node name="BooParticles" type="Particles2D" parent="."]
-material = SubResource( 8 )
+material = SubResource( 9 )
 position = Vector2( 47.4041, 112.174 )
 emitting = false
 amount = 16
 lifetime = 3.0
-process_material = SubResource( 11 )
+process_material = SubResource( 12 )
 texture = ExtResource( 12 )
 
 [node name="StarActivated" type="Particles2D" parent="."]
-material = SubResource( 12 )
+material = SubResource( 13 )
 position = Vector2( 47.6758, -10.5946 )
 emitting = false
 amount = 240
-process_material = SubResource( 15 )
-texture = SubResource( 16 )
+process_material = SubResource( 16 )
+texture = SubResource( 17 )
 script = ExtResource( 14 )

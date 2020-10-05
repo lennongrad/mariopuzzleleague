@@ -6,8 +6,11 @@ var target_color = null
 
 func _ready():
 	randomize()
-	start_main_menu()
-	$MainMenu.start(true)
+	if true:
+		start_control_configuration()
+	else:
+		start_main_menu()
+		$MainMenu.start(true)
 
 func _physics_process(_delta):
 	var player_one_input = {
@@ -22,7 +25,8 @@ func _physics_process(_delta):
 		"a": Input.is_action_just_pressed("p1_a"),
 		"b": Input.is_action_just_pressed("p1_b"),
 		"x": Input.is_action_just_pressed("p1_x"),
-		"y": Input.is_action_just_pressed("p1_y")
+		"y": Input.is_action_just_pressed("p1_y"),
+		"start": Input.is_action_just_pressed("p1_start")
 	}
 	var player_two_input = {
 		"left": Input.is_action_pressed("p2_left"),
@@ -36,7 +40,8 @@ func _physics_process(_delta):
 		"a": Input.is_action_just_pressed("p2_a"),
 		"b": Input.is_action_just_pressed("p2_b"),
 		"x": Input.is_action_just_pressed("p2_x"),
-		"y": Input.is_action_just_pressed("p2_y")
+		"y": Input.is_action_just_pressed("p2_y"),
+		"start": Input.is_action_just_pressed("p2_start")
 	}
 	
 	if current_target != null:
@@ -59,16 +64,23 @@ func _process(_delta):
 		else:
 			$Black.color.v += (1 - $Black.color.v) * .1
 
+func start_control_configuration():
+	current_target = load("res://scenes/InputConfig.tscn").instance()
+	add_child(current_target)
+	target_color = Color(0.533333, 0.921569, 0.294118)
+	current_target.connect("done", self, "start_main_menu_begin")
+
 func start_main_menu():
 	current_target = load("res://scenes/MainMenu.tscn").instance()
 	add_child(current_target)
 	target_color = Color(0.294118, 0.847059, 0.921569)
 	current_target.connect("goto_twoplayer", self, "_on_MainMenu_to2p")
 	current_target.connect("goto_oneplayer", self, "_on_MainMenu_to1p")
+	current_target.connect("goto_input", self, "_on_MainMenu_toInput")
 
-func start_main_menu_begin():
+func start_main_menu_begin(do_animation):
 	start_main_menu()
-	current_target.start(false)
+	current_target.start(do_animation)
 
 func start_css(cpu_level, multi):
 	current_target = load("res://scenes/CSS.tscn").instance()
@@ -105,6 +117,9 @@ func _on_MainMenu_to1p(timed):
 		start_css(1, false)
 	else:
 		start_css(0, false)
+
+func _on_MainMenu_toInput():
+	start_control_configuration()
 
 func return_to_main():
 	start_main_menu()

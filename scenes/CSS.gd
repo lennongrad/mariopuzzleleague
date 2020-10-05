@@ -56,7 +56,7 @@ func color_change2():
 	$Stats.color_change2(colors[player2_data.colors])
 
 func _on_CharacterSelect_go_back():
-	emit_signal("go_back")
+	emit_signal("go_back", false)
 	return_timer = 0
 
 func _on_CharacterSelect_done(character1, character2):

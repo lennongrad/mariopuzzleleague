@@ -1,0 +1,507 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://graphics/controller.png" type="Texture" id=1]
+[ext_resource path="res://prstartk.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://graphics/pointer.png" type="Texture" id=3]
+[ext_resource path="res://scenes/InputConfig.gd" type="Script" id=4]
+[ext_resource path="res://scenes/PlayerNumber.gd" type="Script" id=5]
+[ext_resource path="res://graphics/colors/black/css_ridge.png" type="Texture" id=6]
+[ext_resource path="res://scenes/Input.tscn" type="PackedScene" id=7]
+[ext_resource path="res://graphics/a_set.png" type="Texture" id=8]
+
+[sub_resource type="StyleBoxFlat" id=5]
+
+[sub_resource type="DynamicFont" id=6]
+size = 8
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 8
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 2 )
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 3 )
+region = Rect2( 0, 0, 8, 8 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 3 )
+region = Rect2( 8, 0, 8, 8 )
+
+[sub_resource type="SpriteFrames" id=3]
+animations = [ {
+"frames": [ SubResource( 1 ), SubResource( 2 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[node name="InputConfig" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ControllerDiagram" type="NinePatchRect" parent="."]
+anchor_left = 0.267
+anchor_top = 0.057
+anchor_right = 0.267
+anchor_bottom = 0.057
+margin_left = -44.352
+margin_top = 14.232
+margin_right = 171.648
+margin_bottom = 181.232
+grow_horizontal = 2
+grow_vertical = 2
+rect_pivot_offset = Vector2( 71, 34 )
+focus_neighbour_left = NodePath("../InputUp")
+focus_neighbour_right = NodePath("../InputX")
+focus_neighbour_bottom = NodePath("../InputUp")
+texture = ExtResource( 6 )
+patch_margin_left = 5
+patch_margin_top = 5
+patch_margin_right = 5
+patch_margin_bottom = 5
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Shadow" type="NinePatchRect" parent="ControllerDiagram"]
+modulate = Color( 0, 0, 0, 0.270588 )
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 2.0
+margin_top = 3.0
+margin_right = 2.0
+margin_bottom = 3.0
+texture = ExtResource( 6 )
+patch_margin_left = 5
+patch_margin_top = 5
+patch_margin_right = 5
+patch_margin_bottom = 5
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="ControllerDiagram"]
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 2.0
+margin_top = 2.0
+margin_right = -2.0
+margin_bottom = -2.0
+custom_styles/panel = SubResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="ControllerDiagram"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = -6.0
+texture = ExtResource( 1 )
+stretch_mode = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Feedback" type="Label" parent="ControllerDiagram"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 7.0
+margin_top = -15.0
+margin_right = 143.0
+margin_bottom = -1.0
+custom_fonts/font = SubResource( 6 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+text = "PRESS KEY: Start"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AButton" type="TextureRect" parent="ControllerDiagram"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -50.0
+margin_top = -18.0
+margin_right = -7.0
+margin_bottom = -6.0
+texture = ExtResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="InputUp" parent="." instance=ExtResource( 7 )]
+margin_left = 39.0
+margin_top = 41.0
+margin_right = 86.0
+margin_bottom = 50.0
+focus_neighbour_left = NodePath("../InputX")
+focus_neighbour_top = NodePath("../PlayerNumber")
+focus_neighbour_right = NodePath("../InputX")
+focus_neighbour_bottom = NodePath("../InputLeft")
+action_name = "up"
+
+[node name="InputLeft" parent="." instance=ExtResource( 7 )]
+margin_left = 42.0
+margin_top = 76.0
+margin_right = 89.0
+margin_bottom = 85.0
+focus_neighbour_left = NodePath("../InputA")
+focus_neighbour_top = NodePath("../InputUp")
+focus_neighbour_right = NodePath("../InputA")
+focus_neighbour_bottom = NodePath("../InputDown")
+action_name = "left"
+
+[node name="InputDown" parent="." instance=ExtResource( 7 )]
+margin_left = 42.0
+margin_top = 129.0
+margin_right = 89.0
+margin_bottom = 138.0
+focus_neighbour_left = NodePath("../InputB")
+focus_neighbour_top = NodePath("../InputLeft")
+focus_neighbour_right = NodePath("../InputStart")
+focus_neighbour_bottom = NodePath("../InputRight")
+action_name = "down"
+
+[node name="InputRight" parent="." instance=ExtResource( 7 )]
+margin_left = 40.0
+margin_top = 157.0
+margin_right = 87.0
+margin_bottom = 166.0
+focus_neighbour_left = NodePath("../InputY")
+focus_neighbour_top = NodePath("../InputDown")
+focus_neighbour_right = NodePath("../InputStart")
+focus_neighbour_bottom = NodePath("../Reset")
+action_name = "right"
+
+[node name="InputStart" parent="." instance=ExtResource( 7 )]
+margin_left = 113.0
+margin_top = 149.0
+margin_right = 160.0
+margin_bottom = 158.0
+focus_neighbour_left = NodePath("../InputRight")
+focus_neighbour_top = NodePath("../PlayerNumber")
+focus_neighbour_right = NodePath("../InputY")
+focus_neighbour_bottom = NodePath("../SaveExit")
+
+[node name="InputY" parent="." instance=ExtResource( 7 )]
+margin_left = 174.0
+margin_top = 156.0
+margin_right = 221.0
+margin_bottom = 165.0
+focus_neighbour_left = NodePath("../InputStart")
+focus_neighbour_top = NodePath("../InputB")
+focus_neighbour_right = NodePath("../InputRight")
+focus_neighbour_bottom = NodePath("../SaveExit")
+action_name = "y"
+
+[node name="InputB" parent="." instance=ExtResource( 7 )]
+margin_left = 173.0
+margin_top = 133.0
+margin_right = 220.0
+margin_bottom = 142.0
+focus_neighbour_left = NodePath("../InputStart")
+focus_neighbour_top = NodePath("../InputA")
+focus_neighbour_right = NodePath("../InputDown")
+focus_neighbour_bottom = NodePath("../InputY")
+action_name = "b"
+
+[node name="InputA" parent="." instance=ExtResource( 7 )]
+margin_left = 174.0
+margin_top = 72.0
+margin_right = 221.0
+margin_bottom = 81.0
+focus_neighbour_left = NodePath("../InputLeft")
+focus_neighbour_top = NodePath("../InputX")
+focus_neighbour_right = NodePath("../InputLeft")
+focus_neighbour_bottom = NodePath("../InputB")
+action_name = "a"
+
+[node name="InputX" parent="." instance=ExtResource( 7 )]
+margin_left = 177.0
+margin_top = 38.0
+margin_right = 224.0
+margin_bottom = 47.0
+focus_neighbour_left = NodePath("../InputUp")
+focus_neighbour_top = NodePath("../PlayerNumber")
+focus_neighbour_right = NodePath("../InputUp")
+focus_neighbour_bottom = NodePath("../InputA")
+action_name = "x"
+
+[node name="PlayerNumber" type="NinePatchRect" parent="."]
+anchor_left = 0.267
+anchor_top = 0.057
+anchor_right = 0.267
+anchor_bottom = 0.057
+margin_left = 11.648
+margin_top = -9.768
+margin_right = 107.648
+margin_bottom = 11.232
+grow_horizontal = 2
+grow_vertical = 2
+rect_pivot_offset = Vector2( 71, 34 )
+focus_neighbour_left = NodePath("../InputUp")
+focus_neighbour_top = NodePath("../SaveExit")
+focus_neighbour_right = NodePath("../InputX")
+focus_neighbour_bottom = NodePath("../InputUp")
+focus_mode = 2
+texture = ExtResource( 6 )
+patch_margin_left = 5
+patch_margin_top = 5
+patch_margin_right = 5
+patch_margin_bottom = 5
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Shadow" type="NinePatchRect" parent="PlayerNumber"]
+modulate = Color( 0, 0, 0, 0.270588 )
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 1.0
+margin_top = 1.0
+margin_right = 1.0
+margin_bottom = 1.0
+texture = ExtResource( 6 )
+patch_margin_left = 5
+patch_margin_top = 5
+patch_margin_right = 5
+patch_margin_bottom = 5
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="PlayerNumber"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 1.0
+margin_bottom = 1.0
+custom_fonts/font = SubResource( 4 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "Player 1"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="PlayerNumber"]
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 2.0
+margin_top = 2.0
+margin_right = -2.0
+margin_bottom = -2.0
+custom_styles/panel = SubResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="PlayerNumber"]
+modulate = Color( 1, 1, 1, 0 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+focus_mode = 0
+
+[node name="SaveExit" type="NinePatchRect" parent="."]
+anchor_left = 0.267
+anchor_top = 0.057
+anchor_right = 0.267
+anchor_bottom = 0.057
+margin_left = 65.648
+margin_top = 186.232
+margin_right = 177.648
+margin_bottom = 207.232
+grow_horizontal = 2
+grow_vertical = 2
+rect_pivot_offset = Vector2( 71, 34 )
+focus_neighbour_left = NodePath("../Reset")
+focus_neighbour_top = NodePath("../InputY")
+focus_neighbour_right = NodePath("../Reset")
+focus_neighbour_bottom = NodePath("../PlayerNumber")
+focus_mode = 2
+texture = ExtResource( 6 )
+patch_margin_left = 5
+patch_margin_top = 5
+patch_margin_right = 5
+patch_margin_bottom = 5
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Shadow" type="NinePatchRect" parent="SaveExit"]
+modulate = Color( 0, 0, 0, 0.270588 )
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 1.0
+margin_top = 1.0
+margin_right = 1.0
+margin_bottom = 1.0
+texture = ExtResource( 6 )
+patch_margin_left = 5
+patch_margin_top = 5
+patch_margin_right = 5
+patch_margin_bottom = 5
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="SaveExit"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 1.0
+margin_bottom = 1.0
+custom_fonts/font = SubResource( 4 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "Save / Exit"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="SaveExit"]
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 2.0
+margin_top = 2.0
+margin_right = -2.0
+margin_bottom = -2.0
+custom_styles/panel = SubResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="SaveExit"]
+modulate = Color( 1, 1, 1, 0 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+focus_mode = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Reset" type="NinePatchRect" parent="."]
+anchor_left = 0.267
+anchor_top = 0.057
+anchor_right = 0.267
+anchor_bottom = 0.057
+margin_left = -53.352
+margin_top = 186.232
+margin_right = 58.648
+margin_bottom = 207.232
+grow_horizontal = 2
+grow_vertical = 2
+rect_pivot_offset = Vector2( 71, 34 )
+focus_neighbour_left = NodePath("../SaveExit")
+focus_neighbour_top = NodePath("../InputRight")
+focus_neighbour_right = NodePath("../SaveExit")
+focus_neighbour_bottom = NodePath("../PlayerNumber")
+focus_mode = 2
+texture = ExtResource( 6 )
+patch_margin_left = 5
+patch_margin_top = 5
+patch_margin_right = 5
+patch_margin_bottom = 5
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Shadow" type="NinePatchRect" parent="Reset"]
+modulate = Color( 0, 0, 0, 0.270588 )
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 1.0
+margin_top = 1.0
+margin_right = 1.0
+margin_bottom = 1.0
+texture = ExtResource( 6 )
+patch_margin_left = 5
+patch_margin_top = 5
+patch_margin_right = 5
+patch_margin_bottom = 5
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Reset"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 1.0
+margin_bottom = 1.0
+custom_fonts/font = SubResource( 4 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "Defaults"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="Reset"]
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 2.0
+margin_top = 2.0
+margin_right = -2.0
+margin_bottom = -2.0
+custom_styles/panel = SubResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="Reset"]
+modulate = Color( 1, 1, 1, 0 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+focus_mode = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Cursor" type="AnimatedSprite" parent="."]
+position = Vector2( 63, 40 )
+rotation = -3.14159
+frames = SubResource( 3 )
+frame = 1
+playing = true
+[connection signal="pressed" from="PlayerNumber/Button" to="." method="toggle_player_number"]
+[connection signal="pressed" from="SaveExit/Button" to="." method="save_and_exit"]
+[connection signal="pressed" from="Reset/Button" to="." method="reset_inputs"]

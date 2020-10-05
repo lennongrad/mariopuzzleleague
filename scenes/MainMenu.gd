@@ -9,7 +9,7 @@ enum CHOICE{ONE_PLAYER, TWO_PLAYER, OPTIONS, ENDLESS, TIME_TRIAL, LOCAL, ONLINE,
 var choice_info = {
 	CHOICE.ONE_PLAYER: {"name": "1Player", "color": Color(0.682353, 0, 0.368627)},
 	CHOICE.TWO_PLAYER: {"name": "2Player", "color": Color(0.682353, 0.368627, 0)},
-	CHOICE.OPTIONS: {"name": "2Player", "color": Color(0.682353, 0.368627, 0)},
+	CHOICE.OPTIONS: {"name": "Options", "color": Color(0.192461, 0.605469, 0.00473)},
 	CHOICE.ENDLESS: {"name": "Endless"},
 	CHOICE.TIME_TRIAL: {"name": "TimeTrial"},
 	CHOICE.LOCAL: {"name": "Local"},
@@ -19,7 +19,7 @@ var choice_info = {
 	}
 
 var store_selection = {}
-var first_choices = [CHOICE.ONE_PLAYER, CHOICE.TWO_PLAYER]
+var first_choices = [CHOICE.ONE_PLAYER, CHOICE.TWO_PLAYER, CHOICE.OPTIONS]
 
 var current_choices
 var current_selection = 0
@@ -68,6 +68,8 @@ func tick(p1, _p2):
 					CHOICE.ONE_PLAYER: change_choices([CHOICE.ENDLESS, CHOICE.TIME_TRIAL], "1Player", Color(0.682353, 0, 0.368627))
 					CHOICE.TWO_PLAYER: change_choices([CHOICE.LOCAL, CHOICE.AI#, CHOICE.ONLINE
 					], "2Player", Color(0.682353, 0.368627, 0))
+					CHOICE.OPTIONS: change_choices([CHOICE.INPUT#, CHOICE.AI#, CHOICE.ONLINE
+					], "Options", Color(0.192461, 0.605469, 0.00473))
 					CHOICE.ENDLESS:
 						emit_signal("goto_oneplayer", false)
 						end_menu()
@@ -80,6 +82,9 @@ func tick(p1, _p2):
 					CHOICE.LOCAL:
 						emit_signal("goto_twoplayer", 0)
 						end_menu()
+					CHOICE.INPUT:
+						emit_signal("goto_input")
+						end_menu()
 			if p1.b:
 				match current_choices[current_selection]:
 					CHOICE.ENDLESS: change_choices(first_choices, "", Color(0, 0.294118, 0.682353))
@@ -87,6 +92,7 @@ func tick(p1, _p2):
 					CHOICE.LOCAL: change_choices(first_choices, "", Color(0, 0.294118, 0.682353))
 					CHOICE.AI: change_choices(first_choices, "", Color(0, 0.294118, 0.682353))
 					CHOICE.ONLINE: change_choices(first_choices, "", Color(0, 0.294118, 0.682353))
+					CHOICE.INPUT: change_choices(first_choices, "", Color(0, 0.294118, 0.682353))
 
 func change_choices(choices, title, color):
 	store_selection[current_choices] = current_selection

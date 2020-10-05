@@ -72,49 +72,49 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="AtlasTexture" id=12]
-atlas = ExtResource( 18 )
-region = Rect2( 0, 0, 8, 8 )
-
-[sub_resource type="AtlasTexture" id=13]
-atlas = ExtResource( 18 )
-region = Rect2( 8, 0, 8, 8 )
-
-[sub_resource type="SpriteFrames" id=14]
-animations = [ {
-"frames": [ SubResource( 12 ), SubResource( 13 ) ],
-"loop": false,
-"name": "default",
-"speed": 3.0
-} ]
-
-[sub_resource type="AtlasTexture" id=15]
-atlas = ExtResource( 22 )
-region = Rect2( 0, 0, 11, 12 )
-
-[sub_resource type="AtlasTexture" id=16]
-atlas = ExtResource( 22 )
-region = Rect2( 11, 0, 11, 12 )
-
-[sub_resource type="SpriteFrames" id=17]
-animations = [ {
-"frames": [ SubResource( 15 ), SubResource( 16 ) ],
-"loop": true,
-"name": "default",
-"speed": 2.0
-} ]
-
 [sub_resource type="AtlasTexture" id=9]
-atlas = ExtResource( 17 )
+atlas = ExtResource( 18 )
 region = Rect2( 0, 0, 8, 8 )
 
 [sub_resource type="AtlasTexture" id=10]
-atlas = ExtResource( 17 )
+atlas = ExtResource( 18 )
 region = Rect2( 8, 0, 8, 8 )
 
 [sub_resource type="SpriteFrames" id=11]
 animations = [ {
 "frames": [ SubResource( 9 ), SubResource( 10 ) ],
+"loop": false,
+"name": "default",
+"speed": 3.0
+} ]
+
+[sub_resource type="AtlasTexture" id=12]
+atlas = ExtResource( 22 )
+region = Rect2( 0, 0, 11, 12 )
+
+[sub_resource type="AtlasTexture" id=13]
+atlas = ExtResource( 22 )
+region = Rect2( 11, 0, 11, 12 )
+
+[sub_resource type="SpriteFrames" id=14]
+animations = [ {
+"frames": [ SubResource( 12 ), SubResource( 13 ) ],
+"loop": true,
+"name": "default",
+"speed": 2.0
+} ]
+
+[sub_resource type="AtlasTexture" id=15]
+atlas = ExtResource( 17 )
+region = Rect2( 0, 0, 8, 8 )
+
+[sub_resource type="AtlasTexture" id=16]
+atlas = ExtResource( 17 )
+region = Rect2( 8, 0, 8, 8 )
+
+[sub_resource type="SpriteFrames" id=17]
+animations = [ {
+"frames": [ SubResource( 15 ), SubResource( 16 ) ],
 "loop": true,
 "name": "default",
 "speed": 3.0
@@ -282,7 +282,7 @@ separation = 8
 visible = false
 position = Vector2( 4, 17 )
 rotation = -1.5708
-frames = SubResource( 14 )
+frames = SubResource( 11 )
 frame = 1
 playing = true
 script = ExtResource( 21 )
@@ -291,7 +291,7 @@ script = ExtResource( 21 )
 visible = false
 position = Vector2( 30, 17 )
 rotation = 1.5708
-frames = SubResource( 14 )
+frames = SubResource( 11 )
 frame = 1
 playing = true
 script = ExtResource( 21 )
@@ -308,7 +308,7 @@ __meta__ = {
 
 [node name="Up" type="AnimatedSprite" parent="Stats/Player1/Difficulty"]
 position = Vector2( 29, 1 )
-frames = SubResource( 14 )
+frames = SubResource( 11 )
 frame = 1
 playing = true
 script = ExtResource( 21 )
@@ -316,7 +316,7 @@ script = ExtResource( 21 )
 [node name="Down" type="AnimatedSprite" parent="Stats/Player1/Difficulty"]
 position = Vector2( 29, 20 )
 rotation = 3.14159
-frames = SubResource( 14 )
+frames = SubResource( 11 )
 frame = 1
 playing = true
 script = ExtResource( 21 )
@@ -328,7 +328,7 @@ texture = ExtResource( 20 )
 [node name="AButton" type="AnimatedSprite" parent="Stats/Player1"]
 visible = false
 position = Vector2( 99, 51 )
-frames = SubResource( 17 )
+frames = SubResource( 14 )
 frame = 1
 playing = true
 
@@ -389,7 +389,7 @@ __meta__ = {
 [node name="Selected" type="AnimatedSprite" parent="Stats/Player2/Level"]
 position = Vector2( 16, -1 )
 rotation = 3.14159
-frames = SubResource( 11 )
+frames = SubResource( 17 )
 playing = true
 
 [node name="Text" parent="Stats/Player2/Level" instance=ExtResource( 2 )]
@@ -402,7 +402,7 @@ separation = 8
 visible = false
 position = Vector2( 4, 17 )
 rotation = -1.5708
-frames = SubResource( 14 )
+frames = SubResource( 11 )
 frame = 1
 playing = true
 script = ExtResource( 21 )
@@ -411,7 +411,7 @@ script = ExtResource( 21 )
 visible = false
 position = Vector2( 30, 17 )
 rotation = 1.5708
-frames = SubResource( 14 )
+frames = SubResource( 11 )
 frame = 1
 playing = true
 script = ExtResource( 21 )
@@ -428,7 +428,7 @@ __meta__ = {
 
 [node name="Up" type="AnimatedSprite" parent="Stats/Player2/Difficulty"]
 position = Vector2( 29, 1 )
-frames = SubResource( 14 )
+frames = SubResource( 11 )
 frame = 1
 playing = true
 script = ExtResource( 21 )
@@ -436,7 +436,7 @@ script = ExtResource( 21 )
 [node name="Down" type="AnimatedSprite" parent="Stats/Player2/Difficulty"]
 position = Vector2( 29, 20 )
 rotation = 3.14159
-frames = SubResource( 14 )
+frames = SubResource( 11 )
 frame = 1
 playing = true
 script = ExtResource( 21 )
@@ -448,7 +448,7 @@ texture = ExtResource( 20 )
 [node name="AButton" type="AnimatedSprite" parent="Stats/Player2"]
 visible = false
 position = Vector2( 99, 51 )
-frames = SubResource( 17 )
+frames = SubResource( 14 )
 frame = 1
 playing = true
 
@@ -519,7 +519,7 @@ separation = 8
 visible = false
 position = Vector2( 4, 17 )
 rotation = -1.5708
-frames = SubResource( 14 )
+frames = SubResource( 11 )
 frame = 1
 playing = true
 script = ExtResource( 21 )
@@ -528,7 +528,7 @@ script = ExtResource( 21 )
 visible = false
 position = Vector2( 30, 17 )
 rotation = 1.5708
-frames = SubResource( 14 )
+frames = SubResource( 11 )
 frame = 1
 playing = true
 script = ExtResource( 21 )
@@ -545,7 +545,7 @@ __meta__ = {
 
 [node name="Up" type="AnimatedSprite" parent="Stats_Single/Player_Time/Difficulty"]
 position = Vector2( 29, 0 )
-frames = SubResource( 14 )
+frames = SubResource( 11 )
 frame = 1
 playing = true
 script = ExtResource( 21 )
@@ -553,7 +553,7 @@ script = ExtResource( 21 )
 [node name="Down" type="AnimatedSprite" parent="Stats_Single/Player_Time/Difficulty"]
 position = Vector2( 29, 21 )
 rotation = 3.14159
-frames = SubResource( 14 )
+frames = SubResource( 11 )
 frame = 1
 playing = true
 script = ExtResource( 21 )
@@ -574,7 +574,7 @@ __meta__ = {
 
 [node name="Up" type="AnimatedSprite" parent="Stats_Single/Player_Time/Time"]
 position = Vector2( 29, 0 )
-frames = SubResource( 14 )
+frames = SubResource( 11 )
 frame = 1
 playing = true
 script = ExtResource( 21 )
@@ -582,7 +582,7 @@ script = ExtResource( 21 )
 [node name="Down" type="AnimatedSprite" parent="Stats_Single/Player_Time/Time"]
 position = Vector2( 29, 21 )
 rotation = 3.14159
-frames = SubResource( 14 )
+frames = SubResource( 11 )
 frame = 1
 playing = true
 script = ExtResource( 21 )
@@ -595,7 +595,7 @@ separation = 8
 [node name="AButton" type="AnimatedSprite" parent="Stats_Single/Player_Time"]
 visible = false
 position = Vector2( 99, 51 )
-frames = SubResource( 17 )
+frames = SubResource( 14 )
 frame = 1
 playing = true
 [connection signal="done" from="CharacterSelect" to="." method="_on_CharacterSelect_done"]
