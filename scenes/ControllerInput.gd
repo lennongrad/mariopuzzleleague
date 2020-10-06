@@ -30,18 +30,18 @@ func _unhandled_input(event):
 								return
 				InputMap.action_erase_events(get_action_name())
 				InputMap.action_add_event(get_action_name(), event)
-				if get_action_name() == "p1_down":
-					InputMap.action_erase_events("ui_down")
-					InputMap.action_add_event("ui_down", event)
-				if get_action_name() == "p1_left":
-					InputMap.action_erase_events("ui_left")
-					InputMap.action_add_event("ui_left", event)
-				if get_action_name() == "p1_right":
-					InputMap.action_erase_events("ui_right")
-					InputMap.action_add_event("ui_right", event)
-				if get_action_name() == "p1_up":
-					InputMap.action_erase_events("ui_up")
-					InputMap.action_add_event("ui_up", event)
+#				if get_action_name() == "p1_down":
+#					InputMap.action_erase_events("ui_down")
+#					InputMap.action_add_event("ui_down", event)
+#				if get_action_name() == "p1_left":
+#					InputMap.action_erase_events("ui_left")
+#					InputMap.action_add_event("ui_left", event)
+#				if get_action_name() == "p1_right":
+#					InputMap.action_erase_events("ui_right")
+#					InputMap.action_add_event("ui_right", event)
+#				if get_action_name() == "p1_up":
+#					InputMap.action_erase_events("ui_up")
+#					InputMap.action_add_event("ui_up", event)
 				is_listening = false
 				emit_signal("bound", self)
 

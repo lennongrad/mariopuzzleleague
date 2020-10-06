@@ -4,6 +4,8 @@ export(bool) var debug = false
 
 signal rematch(p1)
 signal return_to_menu()
+signal ping()
+signal play_music(music)
 
 const color_choices = ["red", "green", "blue", "pink"]
 var stage
@@ -18,6 +20,7 @@ var count_down = false
 
 func _ready():
 	randomize()
+	$Board.connect("play_music", self, "play_music")
 	color_set[0] = color_choices[randi() % color_choices.size()]
 	while color_set[1] == null or color_set[0] == color_set[1]:
 		color_set[1] = color_choices[randi() % color_choices.size()]
@@ -25,9 +28,12 @@ func _ready():
 	if debug:
 		start({"difficulty": enums.DIFFICULTY.EASY, "ai": 0, 
 				"character": load("res://graphics/characters/bowser/data.tres"), 
-				"colors": color_set[0], "speed": 1})
+				"colors": color_set[0], "speed": 1}, {})
 
-func start(player_one_data):
+func play_music(music):
+	emit_signal("play_music", music)
+
+func start(player_one_data, save_data):
 	seed_to_use = randi()
 	player_one = player_one_data
 	$Board.start(seed_to_use, player_one_data, 1, false, null)
@@ -35,6 +41,8 @@ func start(player_one_data):
 	if player_one_data.has("time"):
 		time = player_one_data["time"]
 		count_down = true
+		if not save_data.high_scores.has(str(player_one["time"])):
+			save_data.high_scores[str(player_one["time"])] = str(0)
 	
 	$Frame/Score.font = player_one_data["colors"]
 	$Frame/HighScore.font = player_one_data["colors"]
@@ -59,7 +67,7 @@ func return_to_menu():
 	emit_signal("return_to_menu")
 	done_timer = 0
 
-func tick(p1, _p2):
+func tick(p1, _p2, save_data):
 	if $Board.has_stopped:
 		if p1.a: rematch()
 		if p1.b: return_to_menu()
@@ -69,21 +77,28 @@ func tick(p1, _p2):
 			time -= (1.0 / 60)
 			if time < 0:
 				time = 0
-				if $Board.score > high_score:
+				if $Board.score > int(save_data.high_scores[str(player_one["time"])]):
 					$Board.announce_win()
 					$Frame/HighScore.text = str($Board.score).pad_zeros(4)
+					save_data.high_scores[str(player_one["time"])] = str($Board.score)
 				else:
 					$Board.announce_loss()
 		else:
 			time += (1.0 / 60)
 	$Frame/Time.text = str(int(floor(time / 60))).pad_zeros(2) + "'" + str(int(time) % 60).pad_zeros(2)
+	$Frame/HighScore.text = save_data.high_scores[str(player_one["time"])].pad_zeros(4)
 	
 	$Board.tick(p1)
+	
+	return save_data
 
+var has_begun = false
 func _process(_delta):
+	if $Board.has_started and not has_begun:
+		play_music("athletic")
+		has_begun = true
 	$Label.text = str(Engine.get_frames_per_second()) + "fps"
 	$Frame/Score.text = str($Board.score).pad_zeros(4)
-	$Frame/HighScore.text = str(high_score).pad_zeros(4)
 	$Frame/Level.text = str(int($Board.get_speed())).pad_zeros(2)
 	
 	if done_timer != -1:

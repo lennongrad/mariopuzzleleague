@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://shaders/Rainbow.shader" type="Shader" id=1]
 [ext_resource path="res://graphics/stages/water/2p.tres" type="SpriteFrames" id=2]
@@ -11,6 +11,9 @@
 [ext_resource path="res://graphics/noise.png" type="Texture" id=9]
 [ext_resource path="res://graphics/colors/green/rightframe.png" type="Texture" id=10]
 [ext_resource path="res://scenes/CharacterSprite.tscn" type="PackedScene" id=11]
+[ext_resource path="res://sounds/starman-low.wav" type="AudioStream" id=12]
+[ext_resource path="res://sounds/magic.wav" type="AudioStream" id=13]
+[ext_resource path="res://sounds/slam.wav" type="AudioStream" id=14]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 1 )
@@ -35,6 +38,15 @@ custom_defines = ""
 [sub_resource type="ShaderMaterial" id=4]
 shader = SubResource( 3 )
 
+[sub_resource type="AudioStreamRandomPitch" id=5]
+audio_stream = ExtResource( 13 )
+
+[sub_resource type="AudioStreamRandomPitch" id=6]
+audio_stream = ExtResource( 12 )
+
+[sub_resource type="AudioStreamRandomPitch" id=7]
+audio_stream = ExtResource( 14 )
+
 [node name="MultiPlayer" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -43,10 +55,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+[node name="StageBackground" type="AnimatedSprite" parent="."]
 position = Vector2( 128, 112 )
 frames = ExtResource( 2 )
-frame = 8
+frame = 7
 playing = true
 
 [node name="Board1" parent="." instance=ExtResource( 4 )]
@@ -162,6 +174,18 @@ margin_bottom = 214.5
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Boo" type="AudioStreamPlayer" parent="."]
+stream = SubResource( 5 )
+volume_db = -6.0
+
+[node name="Star" type="AudioStreamPlayer" parent="."]
+stream = SubResource( 6 )
+volume_db = -7.0
+
+[node name="Coin" type="AudioStreamPlayer" parent="."]
+stream = SubResource( 7 )
+volume_db = -6.0
 [connection signal="spawn_trash" from="Board1" to="." method="_on_Board1_spawn_trash"]
 [connection signal="use_item" from="Board1" to="." method="_on_Board1_use_item"]
 [connection signal="won_item" from="Board1" to="." method="_on_Board1_won_item"]

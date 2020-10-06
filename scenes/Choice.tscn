@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://graphics/ui_round.png" type="Texture" id=1]
 [ext_resource path="res://graphics/pointer.png" type="Texture" id=2]
@@ -26,6 +26,14 @@ animations = [ {
 "speed": 5.0
 } ]
 
+[sub_resource type="SpriteFrames" id=5]
+animations = [ {
+"frames": [ SubResource( 3 ), SubResource( 2 ) ],
+"loop": false,
+"name": "default",
+"speed": 15.0
+} ]
+
 [node name="Choice" type="TextureRect"]
 margin_right = 140.0
 margin_bottom = 25.0
@@ -42,7 +50,7 @@ margin_left = 7.0
 margin_top = 3.0
 custom_fonts/font = SubResource( 1 )
 custom_colors/font_color = Color( 0.682353, 0, 0.368627, 1 )
-text = "2PGame"
+text = " CPU "
 align = 1
 valign = 1
 __meta__ = {
@@ -60,6 +68,49 @@ playing = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 texture = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Count" type="Control" parent="."]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -41.0
+margin_top = -19.0
+margin_right = -1.0
+margin_bottom = 21.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Right" type="AnimatedSprite" parent="Count"]
+position = Vector2( 27, 19 )
+rotation = 1.5708
+frames = SubResource( 5 )
+frame = 1
+playing = true
+
+[node name="Left" type="AnimatedSprite" parent="Count"]
+position = Vector2( -3, 19 )
+rotation = -1.5708
+frames = SubResource( 5 )
+frame = 1
+playing = true
+
+[node name="Label" type="Label" parent="Count"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -35.0
+margin_top = 2.5
+margin_right = 21.0
+margin_bottom = -0.5
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 0.682353, 0, 0.368627, 1 )
+text = "9"
+align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }

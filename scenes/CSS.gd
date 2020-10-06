@@ -3,6 +3,7 @@ extends Control
 signal go_back()
 signal done_multi(p1_data, p2_data)
 signal done_single(p1_data)
+signal ping()
 var player1_data = {"ai": 0, "colors": -1} 
 var player2_data = {"colors": -1}
 var is_ai = false
@@ -33,12 +34,29 @@ func start(ai_level, multi):
 		$Stats_Single.set_timed(is_ai)
 	$CharacterSelect.start(is_multi)
 
-func tick(p1_input, p2_input):
+func tick(p1_input, p2_input, save_data):
 	current_menu.tick(p1_input, p2_input, is_ai)
+	
+	var has_pinged = false
+	for input in p1_input.keys() + p2_input.keys():
+		var do_ping = true
+		if has_pinged: 
+			do_ping = false
+		match input:
+			"left": do_ping = false
+			"right": do_ping = false
+			"up": do_ping = false
+			"down": do_ping = false
+		if do_ping and (p1_input[input] or p2_input[input]):
+			emit_signal("ping")
+			has_pinged = true
 	if p1_input.x:
+		emit_signal("ping")
 		color_change1()
 	if p2_input.x:
+		emit_signal("ping")
 		color_change2()
+	return save_data
 
 func color_change1():
 	player1_data.colors = (player1_data.colors + 1) % 4

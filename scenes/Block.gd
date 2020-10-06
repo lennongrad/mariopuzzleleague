@@ -6,6 +6,8 @@ var size = Vector2(1, 1) setget change_size
 var character
 var opponent
 
+var has_thudded = false
+
 var destination_p = Vector2(0,0)
 var current_p = Vector2(0,0)
 
@@ -70,6 +72,12 @@ func drop():
 func on_bottom(timer):
 	if drop_timer > 0:
 		set_wobble()
+		if not has_thudded:
+			if type == enums.BLOCKTYPE.TRASH:
+				$Thud.play()
+			else:
+				$Minithud.play()
+			has_thudded = true
 		last_fell = 5
 	drop_timer = timer
 	if last_fell > 0:

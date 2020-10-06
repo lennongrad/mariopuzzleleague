@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/athletic.ogg-56b1cec4a3644f478dba68776b9022a8.oggstr"
+
+[deps]
+
+source_file="res://sounds/music/athletic.ogg"
+dest_files=[ "res://.import/athletic.ogg-56b1cec4a3644f478dba68776b9022a8.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

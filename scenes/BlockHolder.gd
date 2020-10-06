@@ -3,6 +3,7 @@ extends Node2D
 var cursor_p = Vector2(4,-4)
 var preview_blocks = []
 
+var is_ai = false
 var character
 var opponent
 
@@ -90,7 +91,8 @@ func set_color_set(p_set):
 
 func get_random_color():
 	var color
-	while color == null or (color == enums.BLOCKTYPE.ITEM and rand.randi() % 7 < 3):
+	#while color == null or (color == enums.BLOCKTYPE.ITEM and rand.randi() % 7 < 3):
+	while color == null or (color != enums.BLOCKTYPE.ITEM and rand.randi() % 7 < 6):
 		color = colors[rand.randi() % (colors.size())]
 	return color
 
@@ -219,12 +221,15 @@ func generate_trash_blocks(severity):
 	var size = severity_sizes[min(4, severity)]
 	if get_max_height(true) + size.y < height:
 		make_trash_block(size)
+	$Fall.play()
 
 func swap_cursor():
 	return swap(cursor_p)
 
 func swap_random():
 	var pos = Vector2(randi() % (width - 1), randi() % height)
+	if randi() % 2 == 0:
+		$Laugh.play()
 	return swap(pos)
 
 func swap(pos):
@@ -269,13 +274,15 @@ func swap(pos):
 		if second.type == enums.BLOCKTYPE.TRASH:
 			return false
 		second.p = pos
-		return true
 	
 	for block in (get_column(pos.x) + get_column(pos.x + 1)):
 		if block.p.y <= pos.y:
 			block.fell_from_match = false
 	
+	if not is_ai:
+		$Swap.play()
 	update_blocks()
+	return true
 
 func drop():
 	var sorted_blocks = get_blocks(false)
@@ -639,6 +646,7 @@ func get_new_targets():
 							z += 1
 
 func ai():
+	is_ai = true
 	if not ai_cursor():
 		if block_targets.size() == 0:
 			get_new_targets()

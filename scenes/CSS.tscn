@@ -192,6 +192,7 @@ __meta__ = {
 position = Vector2( 25, 25 )
 z_index = 1
 frames = SubResource( 5 )
+frame = 1
 playing = true
 script = ExtResource( 8 )
 
@@ -199,7 +200,6 @@ script = ExtResource( 8 )
 position = Vector2( 25, 25 )
 z_index = 2
 frames = SubResource( 8 )
-frame = 1
 playing = true
 script = ExtResource( 8 )
 cursor_number = "2"
@@ -329,7 +329,6 @@ texture = ExtResource( 20 )
 visible = false
 position = Vector2( 99, 51 )
 frames = SubResource( 14 )
-frame = 1
 playing = true
 
 [node name="Player2" type="NinePatchRect" parent="Stats"]
@@ -449,7 +448,6 @@ texture = ExtResource( 20 )
 visible = false
 position = Vector2( 99, 51 )
 frames = SubResource( 14 )
-frame = 1
 playing = true
 
 [node name="Stats_Single" type="Control" parent="."]
@@ -596,7 +594,6 @@ separation = 8
 visible = false
 position = Vector2( 99, 51 )
 frames = SubResource( 14 )
-frame = 1
 playing = true
 [connection signal="done" from="CharacterSelect" to="." method="_on_CharacterSelect_done"]
 [connection signal="go_back" from="CharacterSelect" to="." method="_on_CharacterSelect_go_back"]

@@ -7,6 +7,7 @@ var next_rect_size
 var next_position
 var next_selection
 var current_color
+var last_count = 1
 
 func set_selected(selected):
 	if is_animating():
@@ -27,6 +28,11 @@ func make_choices(list, info, title, color):
 	$Title/Label.text = title
 	current_color = color
 
+func set_count(p_count):
+	last_count = p_count
+	for child in container.get_children():
+		child.set_count(p_count)
+
 func _process(_delta):
 	if next_list != null:
 		rect_size.y -= 7
@@ -35,6 +41,8 @@ func _process(_delta):
 				child.free()
 			for element in next_list:
 				var new_choice = load("res://scenes/Choice.tscn").instance()
+				if element.has("show_count"):
+					new_choice.show_count = true
 				new_choice.set_text(element.name)
 				new_choice.set_color(current_color)
 				if element.has("color"):
@@ -47,6 +55,7 @@ func _process(_delta):
 			var color_lighter = current_color
 			color_lighter.v = min(2, current_color.v + .9)
 			self_modulate = color_lighter
+			set_count(last_count)
 	if next_rect_size != null:
 		rect_size.y += 7
 		if rect_size.y >= next_rect_size:

@@ -5,6 +5,7 @@ signal has_lost()
 signal has_won()
 signal won_item()
 signal use_item()
+signal play_music(music)
 
 onready var holder = $Wall/BlockHolder
 var rand = RandomNumberGenerator.new()
@@ -109,13 +110,19 @@ func start_ghost():
 	if star_timer == 0:
 		ghost_timer = 800
 
-func lose_game():
-	has_lost = true
-	holder.lose_game()
+func win_game():
+	if data.ai == 0:
+		emit_signal("play_music", "win")
+	else:
+		emit_signal("play_music", "loss")
+	has_won = true
 	game_over()
 
-func win_game():
-	has_won = true
+func lose_game():
+	if not is_multiplayer:
+		emit_signal("play_music", "loss")
+	has_lost = true
+	holder.lose_game()
 	game_over()
 
 func game_over():
@@ -200,17 +207,26 @@ func tick(input):
 			$Portrait.modulate.a += (.33 - $Portrait.modulate.a) * .05
 		elif start_timer < 250:
 			holder.has_started = true
-			if start_timer % 8 == 0:
+			if int(start_timer) % 8 == 0:
 				holder.ai_cursor()
 			$Ready.position.x += (50 - $Ready.position.x) * .7
 			$CountDown.position.x += (50 - $CountDown.position.x) * .7
-		elif start_timer < 300:
+			if start_timer == 205:
+				$StartTick.play()
+		elif start_timer < 350:
 			$CountDown.texture = load("res://graphics/ready2.png")
 			$Ready.modulate.a -= $Ready.modulate.a * .3
-		elif start_timer < 350:
+			if start_timer == 275:
+				$StartTick.pitch_scale = 1.1
+				$StartTick.play()
+		elif start_timer < 425:
 			$CountDown.texture = load("res://graphics/ready1.png")
+			if start_timer == 350:
+				$StartTick.pitch_scale = 1.2
+				$StartTick.play()
 		else:
 			has_started = true
+			$KickOff.play()
 		return
 	$CountDown.modulate.a -= $CountDown.modulate.a * .3
 	
@@ -223,12 +239,16 @@ func tick(input):
 		holder.show_chain(chain, matches["matches"][floor(float(matches["matches"].size()) / 2)].p, true)
 		increase_score(chain_values[min(chain, chain_values.size())])
 	if matches["matches"].size() > 3:
+		if data.ai == 0:
+			$Spin.play()
 		var p = matches["matches"][floor(float(matches["matches"].size()) / 2)].p
 		if matches["chain"]:
 			p.y -= 30
 		holder.show_chain(matches["matches"].size(), p, false)
 		emit_signal("spawn_trash", matches["matches"].size() - 1, chain, get_global_position() + holder.get_position_vector(matches["matches"][floor(float(matches["matches"].size()) / 2)].p))
 	if matches["matches"].size() > 0:
+		if data.ai == 0:
+			$Clap.play()
 		for i in range(0, matches["matches"].size()):
 			block_scores.append(base_time + i * additional_block_time)
 		block_scores.sort()
@@ -244,6 +264,8 @@ func tick(input):
 		if block_scores[i] > 0:
 			block_scores[i] -= 1
 		else:
+			if data.ai == 0:
+				$MatchBroke.play()
 			increase_score(10)
 			at_zero += 1
 	# remove as many blocks as there are blocks that have time of zero left

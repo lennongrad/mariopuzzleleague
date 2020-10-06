@@ -2,6 +2,8 @@ extends Control
 
 signal rematch(p1, p2)
 signal return_to_menu()
+signal ping()
+signal play_music(music)
 
 export(bool) var debug = false
 
@@ -24,8 +26,12 @@ var time = 0.0
 
 var done_timer = -1
 
+var stages = ["grass", "water"]
+
 func _ready():
 	randomize()
+	$Board1.connect("play_music", self, "play_music")
+	$Board2.connect("play_music", self, "play_music")
 	color_set[0] = color_choices[randi() % color_choices.size()]
 	while color_set[1] == null or color_set[0] == color_set[1]:
 		color_set[1] = color_choices[randi() % color_choices.size()]
@@ -37,10 +43,14 @@ func _ready():
 				"character": load("res://graphics/characters/seren/data.tres"), 
 				"colors": color_set[1], "speed": 1})
 
+func play_music(music):
+	emit_signal("play_music", music)
+
 func start(player_one_data, player_two_data):
 	seed_to_use = randi()
 	player_one = player_one_data
 	player_two = player_two_data
+	set_stage(stages[randi() % stages.size()])
 	$Board1.start(seed_to_use, player_one_data, 1, true, player_two_data)
 	$Board2.start(seed_to_use, player_two_data, 2, true, player_one_data)
 	
@@ -69,6 +79,7 @@ func start(player_one_data, player_two_data):
 
 func set_stage(p_stage):
 	stage = p_stage
+	$StageBackground.frames = load("res://graphics/stages/" + stage + "/2p.tres")
 
 func rematch():
 	emit_signal("rematch", player_one, player_two)
@@ -78,7 +89,7 @@ func return_to_menu():
 	emit_signal("return_to_menu")
 	done_timer = 0
 
-func tick(p1, p2):
+func tick(p1, p2, save_data):
 	if $Board1.has_started and not ($Board1.has_won or $Board1.has_lost):
 		time += (1.0 / 60)
 	$Frame/Time.text = str(int(floor(time / 60))).pad_zeros(2) + "'" + str(int(time) % 60).pad_zeros(2)
@@ -116,8 +127,15 @@ func tick(p1, p2):
 	
 	$Board1.tick(p1)
 	$Board2.tick(p2)
+	
+	return save_data
 
+var has_begun = false
 func _process(_delta):
+	if $Board1.has_started and not has_begun:
+		play_music(stage)
+		has_begun = true
+	
 	$Label.text = str(Engine.get_frames_per_second()) + "fps"
 	$Frame/Score1.text = str($Board1.score).pad_zeros(4)
 	$Frame/Score2.text = str($Board2.score).pad_zeros(4)
@@ -207,15 +225,59 @@ func _on_Board2_won_item():
 func used_item(user, target, item):
 	match item:
 		enums.ITEMS.STAR: 
+			$Star.play()
 			user.start_star(); 
 			return true;
 		enums.ITEMS.BOO: 
+			$Boo.play()
 			target.start_ghost(); 
 			return true;
 		enums.ITEMS.COIN: 
+			$Coin.play()
 			user.increase_score(50); 
 			return true;
 	return false
 
 func won_item(target):
 	target.start([enums.ITEMS.BOO, enums.ITEMS.COIN, enums.ITEMS.STAR, enums.ITEMS.COIN])
+	
+	
+	
+	
+	
+
+func _physics_process(_delta):
+	if not debug:
+		return
+	var player_one_input = {
+		"left": Input.is_action_pressed("p1_left"),
+		"right": Input.is_action_pressed("p1_right"),
+		"up": Input.is_action_pressed("p1_up"),
+		"down": Input.is_action_pressed("p1_down"),
+		"just_left": Input.is_action_just_pressed("p1_left"),
+		"just_right": Input.is_action_just_pressed("p1_right"),
+		"just_up": Input.is_action_just_pressed("p1_up"),
+		"just_down": Input.is_action_just_pressed("p1_down"),
+		"a": Input.is_action_just_pressed("p1_a"),
+		"b": Input.is_action_just_pressed("p1_b"),
+		"x": Input.is_action_just_pressed("p1_x"),
+		"y": Input.is_action_just_pressed("p1_y"),
+		"start": Input.is_action_just_pressed("p1_start")
+	}
+	var player_two_input = {
+		"left": Input.is_action_pressed("p2_left"),
+		"right": Input.is_action_pressed("p2_right"),
+		"up": Input.is_action_pressed("p2_up"),
+		"down": Input.is_action_pressed("p2_down"),
+		"just_left": Input.is_action_just_pressed("p2_left"),
+		"just_right": Input.is_action_just_pressed("p2_right"),
+		"just_up": Input.is_action_just_pressed("p2_up"),
+		"just_down": Input.is_action_just_pressed("p2_down"),
+		"a": Input.is_action_just_pressed("p2_a"),
+		"b": Input.is_action_just_pressed("p2_b"),
+		"x": Input.is_action_just_pressed("p2_x"),
+		"y": Input.is_action_just_pressed("p2_y"),
+		"start": Input.is_action_just_pressed("p2_start")
+	}
+	
+	tick(player_one_input, player_two_input, {})

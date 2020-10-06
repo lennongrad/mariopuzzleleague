@@ -18,6 +18,8 @@ var timer = -1
 var selected = null
 var dissolve_timer = -1
 var begin_timer = 0
+var blink_timer = 0
+
 func start(items):
 	if timer != -1 or selected != null:
 		return
@@ -53,7 +55,12 @@ func use_item():
 		return sprites[selected]["item"]
 
 func _process(_delta):
+	$XButton.visible = false
 	if selected != null:
+		blink_timer += 1
+		if blink_timer % 32 < 24:
+			$XButton.visible = true
+		
 		$Panel.modulate.v += (1 - $Panel.modulate.v) * .1
 		$Flash.modulate.a -= $Flash.modulate.a * .2
 		if dissolve_timer != -1 and selected != null:
@@ -64,6 +71,8 @@ func _process(_delta):
 	elif timer != -1:
 		if begin_timer > 0:
 			begin_timer -= 1
+			if begin_timer == 0:
+				$RouletteStart.play()
 		else:
 			timer = max(10, timer - 1)
 			if timer < 30:
@@ -77,6 +86,7 @@ func _process(_delta):
 					if timer < 15:
 						selected = (i + 1) % item_list.size()
 						timer = -1
+						$RouletteEnd.play()
 						for particle in particles:
 							particle.texture = character.get_particle()
 							particle.play()

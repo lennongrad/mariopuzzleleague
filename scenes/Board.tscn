@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=2]
+[gd_scene load_steps=42 format=2]
 
 [ext_resource path="res://scenes/BlockHolder.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/Board.gd" type="Script" id=2]
@@ -16,6 +16,11 @@
 [ext_resource path="res://scenes/ParticlePlay.gd" type="Script" id=14]
 [ext_resource path="res://graphics/a_rematch.png" type="Texture" id=15]
 [ext_resource path="res://graphics/b_back.png" type="Texture" id=16]
+[ext_resource path="res://sounds/shatter.wav" type="AudioStream" id=17]
+[ext_resource path="res://sounds/start_tick.wav" type="AudioStream" id=18]
+[ext_resource path="res://sounds/kick_off.wav" type="AudioStream" id=19]
+[ext_resource path="res://sounds/clap.wav" type="AudioStream" id=20]
+[ext_resource path="res://sounds/spin.wav" type="AudioStream" id=21]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 0.568627 )
@@ -201,6 +206,16 @@ color_ramp = SubResource( 15 )
 [sub_resource type="StreamTexture" id=17]
 load_path = "res://.import/star.png-19e2a8935edef1994254d9cf64a4c2d9.stex"
 
+[sub_resource type="AudioStreamRandomPitch" id=18]
+audio_stream = ExtResource( 17 )
+random_pitch = 1.2
+
+[sub_resource type="AudioStreamRandomPitch" id=19]
+audio_stream = ExtResource( 20 )
+
+[sub_resource type="AudioStreamRandomPitch" id=20]
+audio_stream = ExtResource( 21 )
+
 [node name="Board" type="Panel"]
 anchor_right = 0.375
 anchor_bottom = 0.902
@@ -286,3 +301,23 @@ amount = 240
 process_material = SubResource( 16 )
 texture = SubResource( 17 )
 script = ExtResource( 14 )
+
+[node name="MatchBroke" type="AudioStreamPlayer" parent="."]
+stream = SubResource( 18 )
+volume_db = -10.0
+
+[node name="StartTick" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 18 )
+volume_db = -11.0
+
+[node name="KickOff" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 19 )
+volume_db = -11.0
+
+[node name="Clap" type="AudioStreamPlayer" parent="."]
+stream = SubResource( 19 )
+volume_db = -11.0
+
+[node name="Spin" type="AudioStreamPlayer" parent="."]
+stream = SubResource( 20 )
+volume_db = -11.0

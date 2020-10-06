@@ -4,6 +4,7 @@ signal goto_online()
 signal goto_twoplayer(cpu)
 signal goto_oneplayer(rules)
 signal goto_input()
+signal ping()
 
 enum CHOICE{ONE_PLAYER, TWO_PLAYER, OPTIONS, ENDLESS, TIME_TRIAL, LOCAL, ONLINE, AI, INPUT}
 var choice_info = {
@@ -13,7 +14,7 @@ var choice_info = {
 	CHOICE.ENDLESS: {"name": "Endless"},
 	CHOICE.TIME_TRIAL: {"name": "TimeTrial"},
 	CHOICE.LOCAL: {"name": "Local"},
-	CHOICE.AI: {"name": "vs.CPU"},
+	CHOICE.AI: {"name": "vs.CPU", "show_count": true},
 	CHOICE.ONLINE: {"name": "Online"},
 	CHOICE.INPUT: {"name": "Input"}
 	}
@@ -35,7 +36,7 @@ var cpu_level = 1
 func _ready():
 	change_choices(first_choices, "", Color(0, 0.294118, 0.682353))
 
-func tick(p1, _p2):
+func tick(p1, _p2, save_data):
 	if has_started:
 		if do_animation:
 			if bumpty_timer > 0:
@@ -58,12 +59,15 @@ func tick(p1, _p2):
 		
 		if not $Choices.is_animating():
 			if p1.just_up:
+				emit_signal("ping")
 				current_selection = (current_selection + current_choices.size() - 1) % current_choices.size()
 				$Choices.set_selected(current_selection)
 			if p1.just_down:
+				emit_signal("ping")
 				current_selection = (current_selection + 1) % current_choices.size()
 				$Choices.set_selected(current_selection)
 			if p1.a:
+				emit_signal("ping")
 				match current_choices[current_selection]:
 					CHOICE.ONE_PLAYER: change_choices([CHOICE.ENDLESS, CHOICE.TIME_TRIAL], "1Player", Color(0.682353, 0, 0.368627))
 					CHOICE.TWO_PLAYER: change_choices([CHOICE.LOCAL, CHOICE.AI#, CHOICE.ONLINE
@@ -86,6 +90,7 @@ func tick(p1, _p2):
 						emit_signal("goto_input")
 						end_menu()
 			if p1.b:
+				emit_signal("ping")
 				match current_choices[current_selection]:
 					CHOICE.ENDLESS: change_choices(first_choices, "", Color(0, 0.294118, 0.682353))
 					CHOICE.TIME_TRIAL: change_choices(first_choices, "", Color(0, 0.294118, 0.682353))
@@ -93,6 +98,19 @@ func tick(p1, _p2):
 					CHOICE.AI: change_choices(first_choices, "", Color(0, 0.294118, 0.682353))
 					CHOICE.ONLINE: change_choices(first_choices, "", Color(0, 0.294118, 0.682353))
 					CHOICE.INPUT: change_choices(first_choices, "", Color(0, 0.294118, 0.682353))
+			if p1.just_left:
+				emit_signal("ping")
+				match current_choices[current_selection]:
+					CHOICE.AI:
+						cpu_level = max(1, cpu_level - 1)
+						$Choices.set_count(cpu_level)
+			if p1.just_right:
+				emit_signal("ping")
+				match current_choices[current_selection]:
+					CHOICE.AI:
+						cpu_level = min(9, cpu_level + 1)
+						$Choices.set_count(cpu_level)
+	return save_data
 
 func change_choices(choices, title, color):
 	store_selection[current_choices] = current_selection
@@ -120,3 +138,6 @@ func _process(_delta):
 		if modulate.a < .01:
 			queue_free()
 
+func _on_Button_pressed():
+	emit_signal("goto_input")
+	end_menu()

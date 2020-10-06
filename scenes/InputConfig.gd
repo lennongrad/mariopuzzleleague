@@ -1,6 +1,7 @@
 extends Control
 
 signal done()
+signal ping()
 
 var selected 
 var inputs = []
@@ -18,8 +19,8 @@ func _ready():
 	set_first_needs_input()
 	$InputUp.grab_focus()
 
-func tick(_p1, _p2):
-	pass
+func tick(_p1, _p2, save_data):
+	return save_data
 
 func _process(_delta):
 	start_timer += 1
@@ -44,7 +45,24 @@ func _process(_delta):
 		else:
 			$ControllerDiagram/AButton.visible = false
 	
+	var next
+	if Input.is_action_just_pressed("p1_down"):
+		emit_signal("ping")
+		next = get_node(focused.focus_neighbour_bottom.get_name(1))
+	if Input.is_action_just_pressed("p1_up"):
+		emit_signal("ping")
+		next = get_node(focused.focus_neighbour_top.get_name(1))
+	if Input.is_action_just_pressed("p1_left"):
+		emit_signal("ping")
+		next = get_node(focused.focus_neighbour_left.get_name(1))
+	if Input.is_action_just_pressed("p1_right"):
+		emit_signal("ping")
+		next = get_node(focused.focus_neighbour_right.get_name(1))
+	if next != null: 
+		next.grab_focus()
+	
 	if Input.is_action_just_pressed("p1_a") and start_timer > 50:
+		emit_signal("ping")
 		if focused.name == "PlayerNumber":
 			toggle_player_number()
 		elif focused.name == "SaveExit":
@@ -53,6 +71,10 @@ func _process(_delta):
 			reset_inputs()
 		else:
 			set_ready(focused)
+	
+	if Input.is_action_just_pressed("p1_x") and start_timer > 50:
+		emit_signal("ping")
+		toggle_player_number()
 
 func is_binding():
 	for input in inputs:
@@ -78,6 +100,8 @@ func set_ready(p_input):
 	p_input.is_listening = true
 
 func toggle_player_number():
+	if set_first_needs_input():
+		return
 	var new_player_number = $PlayerNumber.toggle()
 	for input in inputs:
 		if new_player_number:
@@ -88,6 +112,12 @@ func toggle_player_number():
 func save_and_exit():
 	if set_first_needs_input():
 		return
+	var config = ConfigFile.new()
+	for action in InputMap.get_actions():
+		if action.substr(0, 2) != "ui":
+			if InputMap.get_action_list(action).size() > 0:
+				config.set_value("input", action, InputMap.get_action_list(action)[0].get_scancode())
+	config.save("user://settings.cfg")
 	emit_signal("done", true)
 	done_timer = 0
 

@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/grass.ogg-641ad94c7db16b371b5e709cb2facb8f.oggstr"
+
+[deps]
+
+source_file="res://sounds/music/grass.ogg"
+dest_files=[ "res://.import/grass.ogg-641ad94c7db16b371b5e709cb2facb8f.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
