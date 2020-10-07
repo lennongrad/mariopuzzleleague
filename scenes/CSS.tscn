@@ -192,7 +192,6 @@ __meta__ = {
 position = Vector2( 25, 25 )
 z_index = 1
 frames = SubResource( 5 )
-frame = 1
 playing = true
 script = ExtResource( 8 )
 
@@ -200,6 +199,7 @@ script = ExtResource( 8 )
 position = Vector2( 25, 25 )
 z_index = 2
 frames = SubResource( 8 )
+frame = 1
 playing = true
 script = ExtResource( 8 )
 cursor_number = "2"
@@ -389,6 +389,7 @@ __meta__ = {
 position = Vector2( 16, -1 )
 rotation = 3.14159
 frames = SubResource( 17 )
+frame = 1
 playing = true
 
 [node name="Text" parent="Stats/Player2/Level" instance=ExtResource( 2 )]

@@ -4,6 +4,7 @@ signal go_back()
 signal done(character1, character2)
 
 var characters = []
+var characters_list = ["yoshi", "bowser", "lip", "seren", "lakitu", "kamek"]
 var p1_selection = 0
 var p2_selection = 1
 var p1_selected = false
@@ -15,18 +16,9 @@ var active = false
 var is_multi =  false
 
 func _ready():
-	var dir = Directory.new()
-	if dir.open("res://graphics/characters/") == OK:
-		dir.list_dir_begin()
-		var file_name = dir.get_next()
-		while file_name != "":
-			if dir.current_is_dir() and file_name != "." and file_name != ".." and file_name != "default":
-				if dir.file_exists(file_name + "/data.tres"):
-					var choice_path = "res://graphics/characters/" + file_name + "/data.tres"
-					characters.append({"data": load(choice_path)})
-			file_name = dir.get_next()
-	else:
-		print("Could not open files")
+	for character in characters_list:
+		var choice_path = "res://graphics/characters/" + character + "/data.tres"
+		characters.append({"data": load(choice_path)})
 	characters.sort_custom(self, "character_comparison")
 	
 	for i in range(0, characters.size()):

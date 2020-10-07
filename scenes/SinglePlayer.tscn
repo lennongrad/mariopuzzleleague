@@ -87,18 +87,3 @@ separation = 8
 [node name="Difficulty" type="Sprite" parent="Frame"]
 position = Vector2( 88, 15 )
 texture = ExtResource( 7 )
-
-[node name="Label" type="Label" parent="."]
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -21.1906
-margin_top = -220.362
-margin_right = 18.8094
-margin_bottom = -206.362
-text = "60"
-align = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}

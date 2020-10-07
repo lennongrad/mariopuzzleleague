@@ -21,3 +21,4 @@ enum DIFFICULTY{
 enum ITEMS{
 	STAR, BOO, MUSHROOM, COIN
 }
+

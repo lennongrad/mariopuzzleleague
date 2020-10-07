@@ -13,37 +13,37 @@ export(int) var frames_sad
 
 func get_portrait():
 	var file_location = "res://graphics/characters/" + character_identifier + "/portrait.png"
-	var directory = Directory.new();
-	if not directory.file_exists(file_location):
-		return load("res://graphics/characters/default/data.tres").get_portrait()
+#	var directory = Directory.new();
+#	if not directory.file_exists(file_location):
+#		return load("res://graphics/characters/default/data.tres").get_portrait()
 	return load(file_location)
 
 func get_face():
 	var file_location = "res://graphics/characters/" + character_identifier + "/face.png"
-	var directory = Directory.new();
-	if not directory.file_exists(file_location):
-		return load("res://graphics/characters/default/data.tres").get_face()
+#	var directory = Directory.new();
+#	if not directory.file_exists(file_location):
+#		return load("res://graphics/characters/default/data.tres").get_face()
 	return load(file_location)
 
 func get_particle():
 	var file_location = "res://graphics/characters/" + character_identifier + "/particle.png"
-	var directory = Directory.new();
-	if not directory.file_exists(file_location):
-		return load("res://graphics/characters/default/data.tres").get_particle()
+#	var directory = Directory.new();
+#	if not directory.file_exists(file_location):
+#		return load("res://graphics/characters/default/data.tres").get_particle()
 	return load(file_location)
 
 func get_trash():
 	var file_location = "res://graphics/characters/" + character_identifier + "/trash.png"
-	var directory = Directory.new();
-	if not directory.file_exists(file_location):
-		return load("res://graphics/characters/default/data.tres").get_trash()
+#	var directory = Directory.new();
+#	if not directory.file_exists(file_location):
+#		return load("res://graphics/characters/default/data.tres").get_trash()
 	return load(file_location)
 
 func get_frames():
 	var file_location = "res://graphics/characters/" + character_identifier + "/main.png"
-	var directory = Directory.new();
-	if not directory.file_exists(file_location):
-		return load("res://graphics/characters/default/data.tres").get_frames()
+#	var directory = Directory.new();
+#	if not directory.file_exists(file_location):
+#		return load("res://graphics/characters/default/data.tres").get_frames()
 	
 	var frames = SpriteFrames.new()
 	var current_animation = "default"
@@ -77,9 +77,9 @@ func get_frames():
 
 func get_css():
 	var file_location = "res://graphics/characters/" + character_identifier + "/css.png"
-	var directory = Directory.new();
-	if not directory.file_exists(file_location):
-		return load("res://graphics/characters/default/data.tres").get_css()
+#	var directory = Directory.new();
+#	if not directory.file_exists(file_location):
+#		return load("res://graphics/characters/default/data.tres").get_css()
 	
 	var frames = SpriteFrames.new()
 	var size_x = load(file_location).get_size().x

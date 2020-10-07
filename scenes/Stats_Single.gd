@@ -18,7 +18,7 @@ func set_timed(timed):
 	is_timed = timed
 	$Player_Time.set_timed(timed)
 
-func tick(p1, p2, _ai):
+func tick(p1, _p2, _ai):
 	if not $Player_Time.is_done():
 		$Player_Time.tick(p1)
 	if $Player_Time.is_inactive():

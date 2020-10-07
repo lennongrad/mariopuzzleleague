@@ -58,7 +58,7 @@ __meta__ = {
 [node name="StageBackground" type="AnimatedSprite" parent="."]
 position = Vector2( 128, 112 )
 frames = ExtResource( 2 )
-frame = 7
+frame = 6
 playing = true
 
 [node name="Board1" parent="." instance=ExtResource( 4 )]
@@ -133,6 +133,7 @@ position = Vector2( 11, -49 )
 scale = Vector2( -1, 1 )
 
 [node name="Label" type="Label" parent="."]
+visible = false
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5

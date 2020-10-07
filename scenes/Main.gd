@@ -9,16 +9,19 @@ func _ready():
 	randomize()
 	
 	#load save data
-	var save_game = File.new()
-	if not save_game.file_exists("user://savegame.save"):
-		save_game.open("user://savegame.save", File.WRITE)
-		save_game.store_line(to_json({}))
-		save_game.close()
+	var saved_game = File.new()
+	if not saved_game.file_exists("user://savegame.save"):
+		saved_game.open("user://savegame.save", File.WRITE)
+		saved_game.store_line(to_json({}))
+		saved_game.close()
 	
-	save_game.open("user://savegame.save", File.READ)
-	while save_game.get_position() < save_game.get_len():
-		save_data = parse_json(save_game.get_line())
-	save_game.close()
+	saved_game.open("user://savegame.save", File.READ)
+	while saved_game.get_position() < saved_game.get_len():
+		save_data = parse_json(saved_game.get_line())
+	saved_game.close()
+	
+	if not save_data.has("high_scores"):
+		save_data["high_scores"] = {}
 	
 	# get input config, go to configuration screen if empty
 	var config = ConfigFile.new()

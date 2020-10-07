@@ -7,6 +7,6 @@ func color_change(color):
 	
 	for i in 2:
 		var texture = AtlasTexture.new()
-		texture.set_atlas(load("res://graphics/colors/" + color + "/" + cursor_number + "p_select.png"))
+		texture.set_atlas(load("res://graphics/colors/" + color + "/" + str(cursor_number) + "p_select.png"))
 		texture.region = Rect2(i * 36, 0, 36, 36)
 		frames.add_frame("default", texture)
