@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/icon.svg-497111bfcdb0b9dd996d646163572e32.stex"
+path="res://.import/splash.png-8688852de6d7ad994703109c834fdeb1.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/monitor_overlay/icon.svg"
-dest_files=[ "res://.import/icon.svg-497111bfcdb0b9dd996d646163572e32.stex" ]
+source_file="res://graphics/splash.png"
+dest_files=[ "res://.import/splash.png-8688852de6d7ad994703109c834fdeb1.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

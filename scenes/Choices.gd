@@ -7,7 +7,7 @@ var next_rect_size
 var next_position
 var next_selection
 var current_color
-var last_count = 1
+var last_count = {"vs.CPU": 1, "SFX": 5, "Music": 5}
 
 func set_selected(selected):
 	if is_animating():
@@ -28,10 +28,11 @@ func make_choices(list, info, title, color):
 	$Title/Label.text = title
 	current_color = color
 
-func set_count(p_count):
-	last_count = p_count
+func set_count(type, p_count):
+	last_count[type] = p_count
 	for child in container.get_children():
-		child.set_count(p_count)
+		if child.name_string == type:
+			child.set_count(p_count)
 
 func _process(_delta):
 	if next_list != null:
@@ -55,7 +56,8 @@ func _process(_delta):
 			var color_lighter = current_color
 			color_lighter.v = min(2, current_color.v + .9)
 			self_modulate = color_lighter
-			set_count(last_count)
+			for type in last_count:
+				set_count(type, last_count[type])
 	if next_rect_size != null:
 		rect_size.y += 7
 		if rect_size.y >= next_rect_size:

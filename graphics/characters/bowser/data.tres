@@ -7,6 +7,7 @@ script = ExtResource( 1 )
 character_name = "Bowser"
 character_identifier = "bowser"
 trash_color = Color( 0.66, 0.594, 0, 1 )
+order = 4
 do_tongue = false
 frames_default = 2
 frames_attack = 3

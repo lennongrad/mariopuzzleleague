@@ -2,6 +2,7 @@ extends TextureRect
 
 var show_count = false
 var current_count = 1
+var name_string
 
 func _ready():
 	$Count.visible = show_count
@@ -23,6 +24,7 @@ func set_active(is_active):
 	$AnimatedSprite.visible = is_active
 
 func set_text(string):
+	name_string = string
 	$Label.text = string
 	if show_count:
 		$Label.text = " " + $Label.text

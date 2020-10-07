@@ -27,6 +27,7 @@ func _ready():
 			file_name = dir.get_next()
 	else:
 		print("Could not open files")
+	characters.sort_custom(self, "character_comparison")
 	
 	for i in range(0, characters.size()):
 		characters[i].node = load("scenes/CharacterIcon.tscn").instance()
@@ -39,6 +40,9 @@ func start(multi):
 	p1_selected = false
 	p2_selected = false
 	is_multi = multi
+
+func character_comparison(a, b):
+	return a.data.order < b.data.order
 
 func _process(_delta):
 	for i in range(0, characters.size()):

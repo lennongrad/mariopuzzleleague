@@ -3,6 +3,7 @@ extends Resource
 export(String) var character_name
 export(String) var character_identifier
 export(Color) var trash_color
+export(int) var order
 export(bool) var do_tongue
 export(int) var frames_default
 export(int) var frames_attack

@@ -91,8 +91,8 @@ func set_color_set(p_set):
 
 func get_random_color():
 	var color
-	#while color == null or (color == enums.BLOCKTYPE.ITEM and rand.randi() % 7 < 3):
-	while color == null or (color != enums.BLOCKTYPE.ITEM and rand.randi() % 7 < 6):
+	while color == null or (color == enums.BLOCKTYPE.ITEM and rand.randi() % 7 < 3):
+	#while color == null or (color != enums.BLOCKTYPE.ITEM and rand.randi() % 7 < 6):
 		color = colors[rand.randi() % (colors.size())]
 	return color
 

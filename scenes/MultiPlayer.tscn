@@ -13,7 +13,7 @@
 [ext_resource path="res://scenes/CharacterSprite.tscn" type="PackedScene" id=11]
 [ext_resource path="res://sounds/starman-low.wav" type="AudioStream" id=12]
 [ext_resource path="res://sounds/magic.wav" type="AudioStream" id=13]
-[ext_resource path="res://sounds/slam.wav" type="AudioStream" id=14]
+[ext_resource path="res://sounds/coin.wav" type="AudioStream" id=14]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 1 )
@@ -177,15 +177,18 @@ __meta__ = {
 
 [node name="Boo" type="AudioStreamPlayer" parent="."]
 stream = SubResource( 5 )
-volume_db = -6.0
+volume_db = 8.0
+bus = "Sound Effects"
 
 [node name="Star" type="AudioStreamPlayer" parent="."]
 stream = SubResource( 6 )
-volume_db = -7.0
+volume_db = 10.0
+bus = "Sound Effects"
 
 [node name="Coin" type="AudioStreamPlayer" parent="."]
 stream = SubResource( 7 )
-volume_db = -6.0
+volume_db = 14.0
+bus = "Sound Effects"
 [connection signal="spawn_trash" from="Board1" to="." method="_on_Board1_spawn_trash"]
 [connection signal="use_item" from="Board1" to="." method="_on_Board1_use_item"]
 [connection signal="won_item" from="Board1" to="." method="_on_Board1_won_item"]

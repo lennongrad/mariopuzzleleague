@@ -51,7 +51,9 @@ texture = ExtResource( 3 )
 
 [node name="Thud" type="AudioStreamPlayer" parent="."]
 stream = SubResource( 2 )
+bus = "Sound Effects"
 
 [node name="Minithud" type="AudioStreamPlayer" parent="."]
 stream = SubResource( 3 )
 volume_db = -10.0
+bus = "Sound Effects"

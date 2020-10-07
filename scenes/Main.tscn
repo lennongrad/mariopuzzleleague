@@ -32,15 +32,17 @@ texture = ExtResource( 1 )
 stretch_mode = 2
 script = ExtResource( 3 )
 __meta__ = {
-"_edit_use_anchors_": false
+"_edit_use_anchors_": true
 }
 
 [node name="Black" type="CanvasModulate" parent="."]
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
-volume_db = -8.0
+volume_db = 10.0
+bus = "Music"
 
 [node name="Ping" type="AudioStreamPlayer" parent="."]
 stream = SubResource( 3 )
-volume_db = -4.0
+volume_db = 5.0
+bus = "Sound Effects"
 [connection signal="finished" from="Music" to="." method="_on_Music_finished"]

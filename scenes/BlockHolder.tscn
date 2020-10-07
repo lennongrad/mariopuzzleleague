@@ -42,12 +42,15 @@ centered = false
 
 [node name="Swap" type="AudioStreamPlayer" parent="."]
 stream = SubResource( 2 )
-volume_db = -11.664
+volume_db = 11.0
+bus = "Sound Effects"
 
 [node name="Laugh" type="AudioStreamPlayer" parent="."]
 stream = SubResource( 3 )
-volume_db = -11.664
+volume_db = 14.0
+bus = "Sound Effects"
 
 [node name="Fall" type="AudioStreamPlayer" parent="."]
 stream = SubResource( 4 )
-volume_db = -11.664
+volume_db = 12.0
+bus = "Sound Effects"

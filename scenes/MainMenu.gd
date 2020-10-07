@@ -6,7 +6,7 @@ signal goto_oneplayer(rules)
 signal goto_input()
 signal ping()
 
-enum CHOICE{ONE_PLAYER, TWO_PLAYER, OPTIONS, ENDLESS, TIME_TRIAL, LOCAL, ONLINE, AI, INPUT}
+enum CHOICE{ONE_PLAYER, TWO_PLAYER, OPTIONS, ENDLESS, TIME_TRIAL, LOCAL, ONLINE, AI, SOUND_EFFECTS, MUSIC, INPUT}
 var choice_info = {
 	CHOICE.ONE_PLAYER: {"name": "1Player", "color": Color(0.682353, 0, 0.368627)},
 	CHOICE.TWO_PLAYER: {"name": "2Player", "color": Color(0.682353, 0.368627, 0)},
@@ -16,6 +16,8 @@ var choice_info = {
 	CHOICE.LOCAL: {"name": "Local"},
 	CHOICE.AI: {"name": "vs.CPU", "show_count": true},
 	CHOICE.ONLINE: {"name": "Online"},
+	CHOICE.SOUND_EFFECTS: {"name": "SFX", "show_count": true},
+	CHOICE.MUSIC: {"name": "Music", "show_count": true},
 	CHOICE.INPUT: {"name": "Input"}
 	}
 
@@ -32,6 +34,8 @@ var has_started = false
 var do_animation = false
 
 var cpu_level = 1
+var music_volume = 5
+var sound_effects_volume = 5
 
 func _ready():
 	change_choices(first_choices, "", Color(0, 0.294118, 0.682353))
@@ -72,7 +76,7 @@ func tick(p1, _p2, save_data):
 					CHOICE.ONE_PLAYER: change_choices([CHOICE.ENDLESS, CHOICE.TIME_TRIAL], "1Player", Color(0.682353, 0, 0.368627))
 					CHOICE.TWO_PLAYER: change_choices([CHOICE.LOCAL, CHOICE.AI#, CHOICE.ONLINE
 					], "2Player", Color(0.682353, 0.368627, 0))
-					CHOICE.OPTIONS: change_choices([CHOICE.INPUT#, CHOICE.AI#, CHOICE.ONLINE
+					CHOICE.OPTIONS: change_choices([CHOICE.MUSIC, CHOICE.SOUND_EFFECTS, CHOICE.INPUT
 					], "Options", Color(0.192461, 0.605469, 0.00473))
 					CHOICE.ENDLESS:
 						emit_signal("goto_oneplayer", false)
@@ -98,19 +102,41 @@ func tick(p1, _p2, save_data):
 					CHOICE.AI: change_choices(first_choices, "", Color(0, 0.294118, 0.682353))
 					CHOICE.ONLINE: change_choices(first_choices, "", Color(0, 0.294118, 0.682353))
 					CHOICE.INPUT: change_choices(first_choices, "", Color(0, 0.294118, 0.682353))
+					CHOICE.SOUND_EFFECTS: change_choices(first_choices, "", Color(0, 0.294118, 0.682353))
+					CHOICE.MUSIC: change_choices(first_choices, "", Color(0, 0.294118, 0.682353))
 			if p1.just_left:
 				emit_signal("ping")
 				match current_choices[current_selection]:
 					CHOICE.AI:
 						cpu_level = max(1, cpu_level - 1)
-						$Choices.set_count(cpu_level)
+						$Choices.set_count("vs.CPU", cpu_level)
+					CHOICE.SOUND_EFFECTS:
+						sound_effects_volume = max(1, sound_effects_volume - 1)
+						$Choices.set_count("SFX", sound_effects_volume)
+					CHOICE.MUSIC:
+						music_volume = max(1, music_volume - 1)
+						$Choices.set_count("Music", music_volume)
+				set_volume()
 			if p1.just_right:
 				emit_signal("ping")
 				match current_choices[current_selection]:
 					CHOICE.AI:
 						cpu_level = min(9, cpu_level + 1)
-						$Choices.set_count(cpu_level)
+						$Choices.set_count("vs.CPU", cpu_level)
+					CHOICE.SOUND_EFFECTS:
+						sound_effects_volume = min(9, sound_effects_volume + 1)
+						$Choices.set_count("SFX", sound_effects_volume)
+					CHOICE.MUSIC:
+						music_volume = min(9, music_volume + 1)
+						$Choices.set_count("Music", music_volume)
+				set_volume()
 	return save_data
+
+func set_volume():
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), music_volume * 5 - 45)
+	AudioServer.set_bus_mute(AudioServer.get_bus_index("Music"), music_volume == 1)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Sound Effects"), sound_effects_volume * 5 - 45)
+	AudioServer.set_bus_mute(AudioServer.get_bus_index("Sound Effects"), sound_effects_volume == 1)
 
 func change_choices(choices, title, color):
 	store_selection[current_choices] = current_selection

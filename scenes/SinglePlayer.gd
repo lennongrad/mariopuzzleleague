@@ -41,8 +41,10 @@ func start(player_one_data, save_data):
 	if player_one_data.has("time"):
 		time = player_one_data["time"]
 		count_down = true
-		if not save_data.high_scores.has(str(player_one["time"])):
-			save_data.high_scores[str(player_one["time"])] = str(0)
+	else:
+		player_one_data["time"] = 0
+	if not save_data.high_scores.has(str(player_one["time"])):
+		save_data.high_scores[str(player_one["time"])] = str(0)
 	
 	$Frame/Score.font = player_one_data["colors"]
 	$Frame/HighScore.font = player_one_data["colors"]
@@ -72,6 +74,10 @@ func tick(p1, _p2, save_data):
 		if p1.a: rematch()
 		if p1.b: return_to_menu()
 	
+	if $Board.score > int(save_data.high_scores[str(player_one["time"])]):
+		$Frame/HighScore.text = str($Board.score).pad_zeros(4)
+		save_data.high_scores[str(player_one["time"])] = str($Board.score)
+	
 	if $Board.has_started and not ($Board.has_won or $Board.has_lost):
 		if count_down:
 			time -= (1.0 / 60)
@@ -79,8 +85,6 @@ func tick(p1, _p2, save_data):
 				time = 0
 				if $Board.score > int(save_data.high_scores[str(player_one["time"])]):
 					$Board.announce_win()
-					$Frame/HighScore.text = str($Board.score).pad_zeros(4)
-					save_data.high_scores[str(player_one["time"])] = str($Board.score)
 				else:
 					$Board.announce_loss()
 		else:

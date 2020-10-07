@@ -7,6 +7,7 @@ script = ExtResource( 1 )
 character_name = "Lakitu"
 character_identifier = "lakitu"
 trash_color = Color( 0.87451, 0.87451, 0.87451, 1 )
+order = 2
 do_tongue = false
 frames_default = 3
 frames_attack = 3

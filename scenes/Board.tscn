@@ -304,20 +304,25 @@ script = ExtResource( 14 )
 
 [node name="MatchBroke" type="AudioStreamPlayer" parent="."]
 stream = SubResource( 18 )
-volume_db = -10.0
+volume_db = 15.0
+bus = "Sound Effects"
 
 [node name="StartTick" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 18 )
-volume_db = -11.0
+volume_db = 10.0
+bus = "Sound Effects"
 
 [node name="KickOff" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 19 )
-volume_db = -11.0
+volume_db = 15.0
+bus = "Sound Effects"
 
 [node name="Clap" type="AudioStreamPlayer" parent="."]
 stream = SubResource( 19 )
-volume_db = -11.0
+volume_db = 10.0
+bus = "Sound Effects"
 
 [node name="Spin" type="AudioStreamPlayer" parent="."]
 stream = SubResource( 20 )
-volume_db = -11.0
+volume_db = 12.0
+bus = "Sound Effects"

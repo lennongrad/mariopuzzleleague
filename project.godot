@@ -26,9 +26,12 @@ _global_script_class_icons={
 
 [application]
 
-config/name="PanelDePon"
+config/name="Mario Puzzle League"
+config/description="The Puzzle League sensation has landed in Dinosaur Land. Help Mario compete against Bowser and other foes in a test of dexterity, with a demanding race of strategic moves and thoughtful analysis."
 run/main_scene="res://scenes/Main.tscn"
+boot_splash/image="res://graphics/splash.png"
 config/icon="res://graphics/characters/lip/trash.png"
+config/windows_native_icon="res://graphics/windows_icon.ico"
 
 [display]
 
@@ -211,5 +214,6 @@ p2_start={
 
 [rendering]
 
+quality/2d/use_pixel_snap=true
 vram_compression/import_etc=true
 vram_compression/import_etc2=false

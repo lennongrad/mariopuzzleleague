@@ -71,7 +71,9 @@ texture = ExtResource( 4 )
 [node name="RouletteStart" type="AudioStreamPlayer" parent="."]
 stream = SubResource( 3 )
 volume_db = -8.0
+bus = "Sound Effects"
 
 [node name="RouletteEnd" type="AudioStreamPlayer" parent="."]
 stream = SubResource( 4 )
 volume_db = -8.0
+bus = "Sound Effects"

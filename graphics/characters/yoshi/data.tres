@@ -7,6 +7,7 @@ script = ExtResource( 1 )
 character_name = "Yoshi"
 character_identifier = "yoshi"
 trash_color = Color( 0.44781, 0.69, 0.1518, 1 )
+order = 1
 do_tongue = true
 frames_default = 4
 frames_attack = 2

@@ -295,9 +295,10 @@ margin_bottom = -2.0
 custom_styles/panel = SubResource( 5 )
 
 [node name="Sprite" type="Sprite" parent="Controller"]
-position = Vector2( 22, 14 )
+position = Vector2( 7, 7 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 10 )
+centered = false
 
 [node name="Button" type="Button" parent="Controller"]
 anchor_right = 1.0
