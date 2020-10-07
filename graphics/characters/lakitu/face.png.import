@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/background.png-cdc019ddeeba51170c71b03d56b708b7.stex"
+path="res://.import/face.png-aa51c9afb990e69e7d0bc63c5f388cdd.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://lip/background.png"
-dest_files=[ "res://.import/background.png-cdc019ddeeba51170c71b03d56b708b7.stex" ]
+source_file="res://graphics/characters/lakitu/face.png"
+dest_files=[ "res://.import/face.png-aa51c9afb990e69e7d0bc63c5f388cdd.stex" ]
 
 [params]
 

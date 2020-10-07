@@ -101,7 +101,6 @@ func _process(_delta):
 	if $Board.has_started and not has_begun:
 		play_music("athletic")
 		has_begun = true
-	$Label.text = str(Engine.get_frames_per_second()) + "fps"
 	$Frame/Score.text = str($Board.score).pad_zeros(4)
 	$Frame/Level.text = str(int($Board.get_speed())).pad_zeros(2)
 	
