@@ -21,7 +21,7 @@ From the back of the box:
 
 ## Development
 
-The graphics and original concepts for the game are developed by a team composed of [Sam](https://twitter.com/zieghostly), [Rick](https://twitter.com/rickenart), and [Bean](https://twitter.com/kumuhmuh), while the programming and project management is lead by [lennongrad](http://lennongrad.com/).
+The graphics and original concepts for the game are developed by a team composed of [Rick](https://twitter.com/rickenart) and [Blue](https://twitter.com/kumuhmuh), while the programming and project management is lead by [lennongrad](http://lennongrad.com/).
 
 ### Goals
 - [X] Release the first version
