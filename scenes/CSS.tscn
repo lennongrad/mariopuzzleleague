@@ -231,7 +231,6 @@ frame = 1
 script = ExtResource("8")
 
 [node name="Stats" type="Control" parent="."]
-visible = false
 anchors_preset = 0
 anchor_left = 0.5
 anchor_top = 1.0
@@ -244,6 +243,7 @@ offset_bottom = 2.0
 script = ExtResource("16")
 
 [node name="Player1" type="NinePatchRect" parent="Stats"]
+texture_filter = 1
 layout_mode = 0
 offset_left = -91.0
 offset_top = -25.0
@@ -260,6 +260,7 @@ script = ExtResource("19")
 
 [node name="TextureRect" type="TextureRect" parent="Stats/Player1"]
 show_behind_parent = true
+texture_filter = 1
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -268,7 +269,7 @@ offset_top = 2.0
 offset_right = -2.0
 offset_bottom = -3.0
 texture = ExtResource("3")
-stretch_mode = 2
+stretch_mode = 1
 
 [node name="PlayerTitle" type="TextureRect" parent="Stats/Player1"]
 layout_mode = 0
@@ -366,7 +367,7 @@ offset_top = 2.0
 offset_right = -2.0
 offset_bottom = -3.0
 texture = ExtResource("3")
-stretch_mode = 2
+stretch_mode = 1
 
 [node name="PlayerTitle" type="TextureRect" parent="Stats/Player2"]
 layout_mode = 0
@@ -445,6 +446,7 @@ position = Vector2(99, 51)
 sprite_frames = SubResource("14")
 
 [node name="Stats_Single" type="Control" parent="."]
+visible = false
 texture_filter = 1
 anchors_preset = 0
 anchor_left = 0.5

@@ -14,7 +14,9 @@ config/name="Mario Puzzle League"
 config/description="The Puzzle League sensation has landed in Dinosaur Land. Help Mario compete against Bowser and other foes in a test of dexterity, with a demanding race of strategic moves and thoughtful analysis."
 run/main_scene="res://scenes/Main.tscn"
 config/features=PackedStringArray("4.2")
-boot_splash/image="res://graphics/splash.png"
+boot_splash/image="res://graphics/background_splash.png"
+boot_splash/fullsize=false
+boot_splash/use_filter=false
 config/icon="res://graphics/characters/lip/trash.png"
 config/windows_native_icon="res://graphics/windows_icon.ico"
 

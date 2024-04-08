@@ -90,7 +90,7 @@ func do_return_to_menu():
 	done_timer = 0
 
 func tick(p1, p2, save_data):
-	if $Board1.has_started and not ($Board1.has_won or $Board1.has_lost):
+	if $Board1.has_started and not ($Board1.is_has_won or $Board1.is_has_lost):
 		time += (1.0 / 60)
 	$Frame/Time.text = str(int(floor(time / 60))).pad_zeros(2) + "'" + str(int(time) % 60).pad_zeros(2)
 	
