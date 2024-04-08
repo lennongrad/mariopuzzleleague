@@ -1,13 +1,14 @@
 [remap]
 
 importer="wav"
-type="AudioStreamSample"
-path="res://.import/laugh.wav-e4b224d199bfc689a1a7d99f33015802.sample"
+type="AudioStreamWAV"
+uid="uid://bfeokv8mny5nv"
+path="res://.godot/imported/laugh.wav-e4b224d199bfc689a1a7d99f33015802.sample"
 
 [deps]
 
 source_file="res://sounds/laugh.wav"
-dest_files=[ "res://.import/laugh.wav-e4b224d199bfc689a1a7d99f33015802.sample" ]
+dest_files=["res://.godot/imported/laugh.wav-e4b224d199bfc689a1a7d99f33015802.sample"]
 
 [params]
 
@@ -17,5 +18,7 @@ force/max_rate=false
 force/max_rate_hz=44100
 edit/trim=false
 edit/normalize=false
-edit/loop=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
 compress/mode=0

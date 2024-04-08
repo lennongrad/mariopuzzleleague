@@ -2,8 +2,8 @@
 
 [ext_resource path="res://scenes/BlockParticle.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/ItemFrame.gd" type="Script" id=2]
-[ext_resource path="res://graphics/itemframe.png" type="Texture" id=3]
-[ext_resource path="res://graphics/x_button.png" type="Texture" id=4]
+[ext_resource path="res://graphics/itemframe.png" type="Texture2D" id=3]
+[ext_resource path="res://graphics/x_button.png" type="Texture2D" id=4]
 [ext_resource path="res://sounds/item-get.wav" type="AudioStream" id=5]
 [ext_resource path="res://sounds/sprout-item.wav" type="AudioStream" id=6]
 
@@ -13,25 +13,25 @@ bg_color = Color( 0, 0, 0, 1 )
 [sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 1, 1, 1, 1 )
 
-[sub_resource type="AudioStreamRandomPitch" id=3]
+[sub_resource type="AudioStreamRandomizer" id=3]
 audio_stream = ExtResource( 6 )
 
-[sub_resource type="AudioStreamRandomPitch" id=4]
+[sub_resource type="AudioStreamRandomizer" id=4]
 audio_stream = ExtResource( 5 )
 
-[node name="ItemFrame" type="Sprite"]
+[node name="ItemFrame" type="Sprite2D"]
 texture = ExtResource( 3 )
 script = ExtResource( 2 )
 
 [node name="Panel" type="Panel" parent="."]
 modulate = Color( 0.6, 0.6, 0.6, 1 )
 show_behind_parent = true
-margin_left = -10.0
-margin_top = -7.0
-margin_right = 10.0
-margin_bottom = 7.0
-rect_clip_content = true
-custom_styles/panel = SubResource( 1 )
+offset_left = -10.0
+offset_top = -7.0
+offset_right = 10.0
+offset_bottom = 7.0
+clip_contents = true
+theme_override_styles/panel = SubResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -39,12 +39,12 @@ __meta__ = {
 [node name="Flash" type="Panel" parent="."]
 modulate = Color( 1, 1, 1, 0 )
 show_behind_parent = true
-margin_left = -10.0
-margin_top = -7.0
-margin_right = 10.0
-margin_bottom = 7.0
-rect_clip_content = true
-custom_styles/panel = SubResource( 2 )
+offset_left = -10.0
+offset_top = -7.0
+offset_right = 10.0
+offset_bottom = 7.0
+clip_contents = true
+theme_override_styles/panel = SubResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -64,7 +64,7 @@ rotation = -3.14159
 position = Vector2( 0, 0 )
 rotation = -1.5708
 
-[node name="XButton" type="Sprite" parent="."]
+[node name="XButton" type="Sprite2D" parent="."]
 position = Vector2( 0, -12 )
 texture = ExtResource( 4 )
 

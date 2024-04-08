@@ -1,13 +1,14 @@
 [remap]
 
 importer="wav"
-type="AudioStreamSample"
-path="res://.import/starman-low.wav-35c2534f94ab677c4f12db0fb71a500a.sample"
+type="AudioStreamWAV"
+uid="uid://dqec40k4cpf37"
+path="res://.godot/imported/starman-low.wav-35c2534f94ab677c4f12db0fb71a500a.sample"
 
 [deps]
 
 source_file="res://sounds/starman-low.wav"
-dest_files=[ "res://.import/starman-low.wav-35c2534f94ab677c4f12db0fb71a500a.sample" ]
+dest_files=["res://.godot/imported/starman-low.wav-35c2534f94ab677c4f12db0fb71a500a.sample"]
 
 [params]
 
@@ -17,5 +18,7 @@ force/max_rate=false
 force/max_rate_hz=44100
 edit/trim=false
 edit/normalize=false
-edit/loop=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
 compress/mode=0

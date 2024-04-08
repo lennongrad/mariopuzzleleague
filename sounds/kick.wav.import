@@ -1,13 +1,14 @@
 [remap]
 
 importer="wav"
-type="AudioStreamSample"
-path="res://.import/kick.wav-11f16ebab5485e0c2cda5f9bd25b98fb.sample"
+type="AudioStreamWAV"
+uid="uid://5377uwatdavc"
+path="res://.godot/imported/kick.wav-11f16ebab5485e0c2cda5f9bd25b98fb.sample"
 
 [deps]
 
 source_file="res://sounds/kick.wav"
-dest_files=[ "res://.import/kick.wav-11f16ebab5485e0c2cda5f9bd25b98fb.sample" ]
+dest_files=["res://.godot/imported/kick.wav-11f16ebab5485e0c2cda5f9bd25b98fb.sample"]
 
 [params]
 
@@ -17,5 +18,7 @@ force/max_rate=false
 force/max_rate_hz=44100
 edit/trim=false
 edit/normalize=false
-edit/loop=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
 compress/mode=0

@@ -1,13 +1,14 @@
 [remap]
 
 importer="wav"
-type="AudioStreamSample"
-path="res://.import/map-spot.wav-b28826305a4c3bde4ca43ef2557211bd.sample"
+type="AudioStreamWAV"
+uid="uid://bivkvx1c32ol0"
+path="res://.godot/imported/map-spot.wav-b28826305a4c3bde4ca43ef2557211bd.sample"
 
 [deps]
 
 source_file="res://sounds/map-spot.wav"
-dest_files=[ "res://.import/map-spot.wav-b28826305a4c3bde4ca43ef2557211bd.sample" ]
+dest_files=["res://.godot/imported/map-spot.wav-b28826305a4c3bde4ca43ef2557211bd.sample"]
 
 [params]
 
@@ -17,5 +18,7 @@ force/max_rate=false
 force/max_rate_hz=44100
 edit/trim=false
 edit/normalize=false
-edit/loop=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
 compress/mode=0

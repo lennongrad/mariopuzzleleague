@@ -1,195 +1,220 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=22 format=3 uid="uid://d16e3wxk7vp3y"]
 
-[ext_resource path="res://shaders/Rainbow.shader" type="Shader" id=1]
-[ext_resource path="res://graphics/stages/water/2p.tres" type="SpriteFrames" id=2]
-[ext_resource path="res://scenes/Text.tscn" type="PackedScene" id=3]
-[ext_resource path="res://scenes/Board.tscn" type="PackedScene" id=4]
-[ext_resource path="res://scenes/ItemFrame.tscn" type="PackedScene" id=5]
-[ext_resource path="res://scenes/TrashPreview.tscn" type="PackedScene" id=6]
-[ext_resource path="res://scenes/MultiPlayer.gd" type="Script" id=7]
-[ext_resource path="res://graphics/colors/red/leftframe.png" type="Texture" id=8]
-[ext_resource path="res://graphics/noise.png" type="Texture" id=9]
-[ext_resource path="res://graphics/colors/green/rightframe.png" type="Texture" id=10]
-[ext_resource path="res://scenes/CharacterSprite.tscn" type="PackedScene" id=11]
-[ext_resource path="res://sounds/starman-low.wav" type="AudioStream" id=12]
-[ext_resource path="res://sounds/magic.wav" type="AudioStream" id=13]
-[ext_resource path="res://sounds/coin.wav" type="AudioStream" id=14]
+[ext_resource type="Shader" path="res://shaders/Rainbow.gdshader" id="1"]
+[ext_resource type="SpriteFrames" uid="uid://8poyuecms1rk" path="res://graphics/stages/water/2p.tres" id="2"]
+[ext_resource type="PackedScene" uid="uid://cdmgd4h1a7gb7" path="res://scenes/Text.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://bh4bdvcgmwpw" path="res://scenes/Board.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://scenes/ItemFrame.tscn" id="5"]
+[ext_resource type="PackedScene" path="res://scenes/TrashPreview.tscn" id="6"]
+[ext_resource type="Script" path="res://scenes/MultiPlayer.gd" id="7"]
+[ext_resource type="Texture2D" uid="uid://bdyyqo36a0jiq" path="res://graphics/colors/red/leftframe.png" id="8"]
+[ext_resource type="Texture2D" uid="uid://b30hgalc0fsj3" path="res://graphics/noise.png" id="9"]
+[ext_resource type="Texture2D" uid="uid://rpbuu1mkwumy" path="res://graphics/colors/green/rightframe.png" id="10"]
+[ext_resource type="PackedScene" uid="uid://ddmi28i512afw" path="res://scenes/CharacterSprite.tscn" id="11"]
+[ext_resource type="AudioStream" uid="uid://dqec40k4cpf37" path="res://sounds/starman-low.wav" id="12"]
+[ext_resource type="AudioStream" uid="uid://bfeokv8mny5nv" path="res://sounds/laugh.wav" id="12_afndo"]
+[ext_resource type="AudioStream" uid="uid://cf0gj2tk42b3q" path="res://sounds/coin.wav" id="14"]
 
-[sub_resource type="ShaderMaterial" id=1]
-shader = ExtResource( 1 )
-shader_param/active = false
-shader_param/noiseTexture = ExtResource( 9 )
+[sub_resource type="ShaderMaterial" id="1"]
+shader = ExtResource("1")
+shader_parameter/active = false
+shader_parameter/noiseTexture = ExtResource("9")
 
-[sub_resource type="ShaderMaterial" id=2]
-shader = ExtResource( 1 )
-shader_param/active = false
-shader_param/noiseTexture = ExtResource( 9 )
+[sub_resource type="ShaderMaterial" id="2"]
+shader = ExtResource("1")
+shader_parameter/active = false
+shader_parameter/noiseTexture = ExtResource("9")
 
-[sub_resource type="Shader" id=3]
+[sub_resource type="Shader" id="3"]
 code = "shader_type canvas_item;
+
+uniform sampler2D SCREEN_TEXTURE: hint_screen_texture, filter_linear_mipmap;
+
+varying flat vec4 modulate;
+void vertex() {
+	modulate = COLOR;
+}
 
 void fragment() {
     COLOR = texture(SCREEN_TEXTURE, SCREEN_UV);
     float avg = (COLOR.r + COLOR.g + COLOR.b) / 3.0;
     COLOR.rgb = vec3(avg);
+	COLOR.a = modulate.a;
 }"
-custom_defines = ""
 
-[sub_resource type="ShaderMaterial" id=4]
-shader = SubResource( 3 )
+[sub_resource type="ShaderMaterial" id="4"]
+shader = SubResource("3")
 
-[sub_resource type="AudioStreamRandomPitch" id=5]
-audio_stream = ExtResource( 13 )
+[sub_resource type="AudioStreamRandomizer" id="5"]
+random_pitch = 2.0
+streams_count = 1
+stream_0/stream = ExtResource("12_afndo")
+stream_0/weight = 1.0
 
-[sub_resource type="AudioStreamRandomPitch" id=6]
-audio_stream = ExtResource( 12 )
+[sub_resource type="AudioStreamRandomizer" id="6"]
+streams_count = 1
+stream_0/stream = ExtResource("12")
+stream_0/weight = 1.0
 
-[sub_resource type="AudioStreamRandomPitch" id=7]
-audio_stream = ExtResource( 14 )
+[sub_resource type="AudioStreamRandomizer" id="7"]
+random_pitch = 2.0
+streams_count = 1
+stream_0/stream = ExtResource("14")
+stream_0/weight = 1.0
 
 [node name="MultiPlayer" type="Control"]
+texture_filter = 1
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = ExtResource( 7 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("7")
 
-[node name="StageBackground" type="AnimatedSprite" parent="."]
-position = Vector2( 128, 112 )
-frames = ExtResource( 2 )
+[node name="StageBackground" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+position = Vector2(128, 112)
+sprite_frames = ExtResource("2")
 frame = 7
-playing = true
 
-[node name="Board1" parent="." instance=ExtResource( 4 )]
+[node name="Board1" parent="." instance=ExtResource("4")]
+layout_mode = 0
+anchors_preset = 0
 anchor_top = 0.5
 anchor_right = 0.0
 anchor_bottom = 0.5
-margin_left = 8.0
-margin_top = -89.0
-margin_right = 104.0
-margin_bottom = 112.0
+offset_left = 8.0
+offset_top = -89.0
+offset_right = 104.0
+offset_bottom = 112.0
 
-[node name="Board2" parent="." instance=ExtResource( 4 )]
+[node name="Board2" parent="." instance=ExtResource("4")]
+layout_mode = 0
+anchors_preset = 0
 anchor_left = 0.594
 anchor_top = 0.103
 anchor_right = 0.969
 anchor_bottom = 1.0
-margin_left = -0.0640106
-margin_top = -0.0720024
-margin_right = -0.0640106
-margin_bottom = 0.0
+offset_left = -0.0640106
+offset_top = -0.0720024
+offset_right = -0.0640106
+offset_bottom = 0.0
 
-[node name="Frame" type="Sprite" parent="."]
-material = SubResource( 1 )
-position = Vector2( 128, 127 )
-texture = ExtResource( 8 )
+[node name="Frame" type="Sprite2D" parent="."]
+texture_filter = 1
+material = SubResource("1")
+position = Vector2(128, 127)
+texture = ExtResource("8")
 
-[node name="RightFrame" type="Sprite" parent="Frame"]
-material = SubResource( 2 )
-texture = ExtResource( 10 )
+[node name="RightFrame" type="Sprite2D" parent="Frame"]
+texture_filter = 1
+material = SubResource("2")
+texture = ExtResource("10")
 
-[node name="Score1" parent="Frame" instance=ExtResource( 3 )]
-position = Vector2( -12, -16 )
+[node name="Score1" parent="Frame" instance=ExtResource("3")]
+position = Vector2(-12, -16)
 text = "0000"
 font = "red"
 separation = 8
 
-[node name="Score2" parent="Frame" instance=ExtResource( 3 )]
-position = Vector2( -12, 16 )
+[node name="Score2" parent="Frame" instance=ExtResource("3")]
+position = Vector2(-12, 16)
 text = "0000"
 font = "green"
 separation = 8
 
-[node name="Level1" parent="Frame" instance=ExtResource( 3 )]
-position = Vector2( -12, -91.5 )
+[node name="Level1" parent="Frame" instance=ExtResource("3")]
+position = Vector2(-12, -91.5)
 text = "00"
 font = "red"
 separation = 7
 
-[node name="Level2" parent="Frame" instance=ExtResource( 3 )]
-position = Vector2( 5, -91.5 )
+[node name="Level2" parent="Frame" instance=ExtResource("3")]
+position = Vector2(5, -91.5)
 text = "00"
 font = "green"
 separation = 7
 
-[node name="Time" parent="Frame" instance=ExtResource( 3 )]
-position = Vector2( -16, 48 )
+[node name="Time" parent="Frame" instance=ExtResource("3")]
+position = Vector2(-16, 48)
 text = "00'00"
 font = "black"
 separation = 8
 
-[node name="TrashPreview1" parent="Frame" instance=ExtResource( 6 )]
-position = Vector2( -120, -121 )
+[node name="TrashPreview1" parent="Frame" instance=ExtResource("6")]
+texture_filter = 1
+position = Vector2(-120, -121)
 
-[node name="TrashPreview2" parent="Frame" instance=ExtResource( 6 )]
-position = Vector2( 28, -121 )
+[node name="TrashPreview2" parent="Frame" instance=ExtResource("6")]
+texture_filter = 1
+position = Vector2(28, -121)
 
-[node name="Character1" parent="Frame" instance=ExtResource( 11 )]
-position = Vector2( -11, -49 )
+[node name="Character1" parent="Frame" instance=ExtResource("11")]
+texture_filter = 1
+position = Vector2(-11, -49)
 
-[node name="Character2" parent="Frame" instance=ExtResource( 11 )]
-position = Vector2( 11, -49 )
-scale = Vector2( -1, 1 )
+[node name="Character2" parent="Frame" instance=ExtResource("11")]
+texture_filter = 1
+position = Vector2(11, -49)
+scale = Vector2(-1, 1)
 
 [node name="Label" type="Label" parent="."]
 visible = false
+layout_mode = 0
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -21.1906
-margin_top = -220.362
-margin_right = 18.8094
-margin_bottom = -206.362
+offset_left = -21.1906
+offset_top = -220.362
+offset_right = 18.8094
+offset_bottom = -206.362
 text = "60"
-align = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="ItemFrame1" parent="." instance=ExtResource( 5 )]
-position = Vector2( 116, 210 )
+[node name="ItemFrame1" parent="." instance=ExtResource("5")]
+texture_filter = 1
+position = Vector2(116, 210)
 
-[node name="ItemFrame2" parent="." instance=ExtResource( 5 )]
-position = Vector2( 140, 210 )
+[node name="ItemFrame2" parent="." instance=ExtResource("5")]
+texture_filter = 1
+position = Vector2(140, 210)
 
 [node name="BlackWhite1" type="ColorRect" parent="."]
-modulate = Color( 1, 1, 1, 0 )
-material = SubResource( 4 )
-margin_left = 6.5
-margin_top = 22.0
-margin_right = 103.5
-margin_bottom = 214.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+modulate = Color(1, 1, 1, 0)
+texture_filter = 1
+material = SubResource("4")
+layout_mode = 0
+offset_left = 6.5
+offset_top = 22.0
+offset_right = 103.5
+offset_bottom = 214.0
 
 [node name="BlackWhite2" type="ColorRect" parent="."]
-modulate = Color( 1, 1, 1, 0 )
-material = SubResource( 4 )
-margin_left = 150.5
-margin_top = 22.5
-margin_right = 247.5
-margin_bottom = 214.5
-__meta__ = {
-"_edit_use_anchors_": false
-}
+modulate = Color(1, 1, 1, 0)
+texture_filter = 1
+material = SubResource("4")
+layout_mode = 0
+offset_left = 150.5
+offset_top = 22.5
+offset_right = 247.5
+offset_bottom = 214.5
 
 [node name="Boo" type="AudioStreamPlayer" parent="."]
-stream = SubResource( 5 )
+stream = SubResource("5")
 volume_db = 8.0
-bus = "Sound Effects"
+bus = &"Sound Effects"
 
 [node name="Star" type="AudioStreamPlayer" parent="."]
-stream = SubResource( 6 )
+stream = SubResource("6")
 volume_db = 10.0
-bus = "Sound Effects"
+bus = &"Sound Effects"
 
 [node name="Coin" type="AudioStreamPlayer" parent="."]
-stream = SubResource( 7 )
+stream = SubResource("7")
 volume_db = 14.0
-bus = "Sound Effects"
+bus = &"Sound Effects"
+
 [connection signal="spawn_trash" from="Board1" to="." method="_on_Board1_spawn_trash"]
 [connection signal="use_item" from="Board1" to="." method="_on_Board1_use_item"]
 [connection signal="won_item" from="Board1" to="." method="_on_Board1_won_item"]

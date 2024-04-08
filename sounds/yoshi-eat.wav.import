@@ -1,13 +1,14 @@
 [remap]
 
 importer="wav"
-type="AudioStreamSample"
-path="res://.import/yoshi-eat.wav-bbc0110319f3e9d4938a78ee1a16f623.sample"
+type="AudioStreamWAV"
+uid="uid://cd4fwlcvr8r6x"
+path="res://.godot/imported/yoshi-eat.wav-bbc0110319f3e9d4938a78ee1a16f623.sample"
 
 [deps]
 
 source_file="res://sounds/yoshi-eat.wav"
-dest_files=[ "res://.import/yoshi-eat.wav-bbc0110319f3e9d4938a78ee1a16f623.sample" ]
+dest_files=["res://.godot/imported/yoshi-eat.wav-bbc0110319f3e9d4938a78ee1a16f623.sample"]
 
 [params]
 
@@ -17,5 +18,7 @@ force/max_rate=false
 force/max_rate_hz=44100
 edit/trim=false
 edit/normalize=false
-edit/loop=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
 compress/mode=0

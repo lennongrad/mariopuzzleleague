@@ -1,13 +1,14 @@
 [remap]
 
 importer="wav"
-type="AudioStreamSample"
-path="res://.import/kick_off.wav-26dca8aa5374e1c956f0dff09895d090.sample"
+type="AudioStreamWAV"
+uid="uid://cr5hyd3c5pp8k"
+path="res://.godot/imported/kick_off.wav-26dca8aa5374e1c956f0dff09895d090.sample"
 
 [deps]
 
 source_file="res://sounds/kick_off.wav"
-dest_files=[ "res://.import/kick_off.wav-26dca8aa5374e1c956f0dff09895d090.sample" ]
+dest_files=["res://.godot/imported/kick_off.wav-26dca8aa5374e1c956f0dff09895d090.sample"]
 
 [params]
 
@@ -17,5 +18,7 @@ force/max_rate=false
 force/max_rate_hz=44100
 edit/trim=false
 edit/normalize=false
-edit/loop=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
 compress/mode=0

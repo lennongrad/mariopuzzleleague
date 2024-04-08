@@ -1,13 +1,14 @@
 [remap]
 
 importer="wav"
-type="AudioStreamSample"
-path="res://.import/bump.wav-8ad2d747d2a2905047f66678270cbeed.sample"
+type="AudioStreamWAV"
+uid="uid://beccloew40bip"
+path="res://.godot/imported/bump.wav-8ad2d747d2a2905047f66678270cbeed.sample"
 
 [deps]
 
 source_file="res://sounds/bump.wav"
-dest_files=[ "res://.import/bump.wav-8ad2d747d2a2905047f66678270cbeed.sample" ]
+dest_files=["res://.godot/imported/bump.wav-8ad2d747d2a2905047f66678270cbeed.sample"]
 
 [params]
 
@@ -17,5 +18,7 @@ force/max_rate=false
 force/max_rate_hz=44100
 edit/trim=false
 edit/normalize=false
-edit/loop=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
 compress/mode=0

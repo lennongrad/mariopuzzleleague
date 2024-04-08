@@ -8,7 +8,7 @@ var player1_data = {"ai": 0, "colors": -1}
 var player2_data = {"colors": -1}
 var is_ai = false
 var is_multi
-onready var current_menu = $CharacterSelect
+@onready var current_menu = $CharacterSelect
 
 var colors = ["red", "green", "pink", "blue"]
 
@@ -105,7 +105,8 @@ func _on_Stats_done(p1_speed, p2_speed, p1_difficulty, p2_difficulty):
 func _on_Stats_Single_done(p1_speed, p1_difficulty, p1_time):
 	player1_data["speed"] = p1_speed
 	player1_data["difficulty"] = p1_difficulty
-	player1_data["time"] = p1_time
+	if(is_ai):
+		player1_data["time"] = p1_time
 	player1_data["colors"] = colors[player1_data["colors"]]
 	emit_signal("done_single", player1_data)
 	done_timer = 0

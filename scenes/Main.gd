@@ -1,6 +1,6 @@
 extends TextureRect
 
-onready var current_target = null
+@onready var current_target = null
 var change_timer = -1
 var target_color = null
 var save_data = {}
@@ -9,15 +9,16 @@ func _ready():
 	randomize()
 	
 	#load save data
-	var saved_game = File.new()
-	if not saved_game.file_exists("user://savegame.save"):
-		saved_game.open("user://savegame.save", File.WRITE)
-		saved_game.store_line(to_json({}))
-		saved_game.close()
+	if not FileAccess.file_exists("user://savegame.save"):
+		var new_save_game = FileAccess.open("user://savegame.save", FileAccess.WRITE)
+		new_save_game.store_line(JSON.stringify({}))
+		new_save_game.close()
 	
-	saved_game.open("user://savegame.save", File.READ)
-	while saved_game.get_position() < saved_game.get_len():
-		save_data = parse_json(saved_game.get_line())
+	var saved_game = FileAccess.open("user://savegame.save", FileAccess.READ)
+	while saved_game.get_position() < saved_game.get_length():
+		var test_json_conv = JSON.new()
+		test_json_conv.parse(saved_game.get_line())
+		save_data = test_json_conv.get_data()
 	saved_game.close()
 	
 	if not save_data.has("high_scores"):
@@ -30,7 +31,7 @@ func _ready():
 		for action in InputMap.get_actions():
 			if action.substr(0, 2) != "ui" and config.has_section_key("input", action) and str(config.get_value("input", action)) != "":
 				var key = InputEventKey.new()
-				key.set_scancode(int(config.get_value("input", action)))
+				key.set_keycode(int(config.get_value("input", action)))
 				InputMap.action_erase_events(action)
 				InputMap.action_add_event(action, key)
 		start_main_menu()
@@ -44,10 +45,9 @@ func _ready():
 		start_control_configuration()
 
 func save_game():
-	var save_game = File.new()
-	save_game.open("user://savegame.save", File.WRITE)
-	save_game.store_line(to_json(save_data))
-	save_game.close()
+	var saved_game = FileAccess.open("user://savegame.save", FileAccess.WRITE)
+	saved_game.store_line(JSON.stringify(save_data))
+	saved_game.close()
 
 func play_ping():
 	$Ping.play()
@@ -113,21 +113,21 @@ func _process(_delta):
 			$Black.color.v += (1 - $Black.color.v) * .1
 
 func start_control_configuration():
-	current_target = load("res://scenes/InputConfig.tscn").instance()
+	current_target = load("res://scenes/InputConfig.tscn").instantiate()
 	add_child(current_target)
 	target_color = Color(0.533333, 0.921569, 0.294118)
-	current_target.connect("done", self, "start_main_menu_begin")
-	current_target.connect("ping", self, "play_ping")
+	current_target.connect("done", Callable(self, "start_main_menu_begin"))
+	current_target.connect("ping", Callable(self, "play_ping"))
 
 func start_main_menu():
 	save_game()
-	current_target = load("res://scenes/MainMenu.tscn").instance()
+	current_target = load("res://scenes/MainMenu.tscn").instantiate()
 	add_child(current_target)
 	target_color = Color(0.294118, 0.847059, 0.921569)
-	current_target.connect("goto_twoplayer", self, "_on_MainMenu_to2p")
-	current_target.connect("goto_oneplayer", self, "_on_MainMenu_to1p")
-	current_target.connect("goto_input", self, "_on_MainMenu_toInput")
-	current_target.connect("ping", self, "play_ping")
+	current_target.connect("goto_twoplayer", Callable(self, "_on_MainMenu_to2p"))
+	current_target.connect("goto_oneplayer", Callable(self, "_on_MainMenu_to1p"))
+	current_target.connect("goto_input", Callable(self, "_on_MainMenu_toInput"))
+	current_target.connect("ping", Callable(self, "play_ping"))
 	play_music("titlescreen")
 
 func start_main_menu_begin(do_animation):
@@ -135,37 +135,37 @@ func start_main_menu_begin(do_animation):
 	current_target.start(do_animation)
 
 func start_css(cpu_level, multi):
-	current_target = load("res://scenes/CSS.tscn").instance()
+	current_target = load("res://scenes/CSS.tscn").instantiate()
 	add_child(current_target)
 	current_target.start(cpu_level, multi)
 	target_color = Color(0.921569, 0.827451, 0.294118)
-	current_target.connect("go_back", self, "start_main_menu_begin")
-	current_target.connect("done_multi", self, "_on_CSS_done_multi")
-	current_target.connect("done_single", self, "_on_CSS_done_single")
-	current_target.connect("ping", self, "play_ping")
+	current_target.connect("go_back", Callable(self, "start_main_menu_begin"))
+	current_target.connect("done_multi", Callable(self, "_on_CSS_done_multi"))
+	current_target.connect("done_single", Callable(self, "_on_CSS_done_single"))
+	current_target.connect("ping", Callable(self, "play_ping"))
 
 func _on_CSS_done_multi(p1_data, p2_data):
-	current_target = load("res://scenes/MultiPlayer.tscn").instance()
+	current_target = load("res://scenes/MultiPlayer.tscn").instantiate()
 	add_child(current_target)
 	current_target.start(p1_data, p2_data)
 	current_target.visible = false
 	change_timer = 200
-	current_target.connect("rematch", self, "_on_CSS_done_multi")
-	current_target.connect("return_to_menu", self, "return_to_main")
-	current_target.connect("play_music", self, "play_music")
-	current_target.connect("ping", self, "play_ping")
+	current_target.connect("rematch", Callable(self, "_on_CSS_done_multi"))
+	current_target.connect("return_to_menu", Callable(self, "return_to_main"))
+	current_target.connect("play_music", Callable(self, "play_music"))
+	current_target.connect("ping", Callable(self, "play_ping"))
 	$Music.playing = false
 
 func _on_CSS_done_single(p1_data):
-	current_target = load("res://scenes/SinglePlayer.tscn").instance()
+	current_target = load("res://scenes/SinglePlayer.tscn").instantiate()
 	add_child(current_target)
 	current_target.start(p1_data, save_data)
 	current_target.visible = false
 	change_timer = 200
-	current_target.connect("rematch", self, "_on_CSS_done_single")
-	current_target.connect("return_to_menu", self, "return_to_main")
-	current_target.connect("play_music", self, "play_music")
-	current_target.connect("ping", self, "play_ping")
+	current_target.connect("rematch", Callable(self, "_on_CSS_done_single"))
+	current_target.connect("return_to_menu", Callable(self, "return_to_main"))
+	current_target.connect("play_music", Callable(self, "play_music"))
+	current_target.connect("ping", Callable(self, "play_ping"))
 	$Music.playing = false
 
 func _on_MainMenu_to2p(cpu_level):

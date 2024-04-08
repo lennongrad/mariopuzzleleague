@@ -1,13 +1,14 @@
 [remap]
 
 importer="wav"
-type="AudioStreamSample"
-path="res://.import/start_tick.wav-2f0e6e89c9ba863e898a31e3baebe112.sample"
+type="AudioStreamWAV"
+uid="uid://bwbnfnok7i665"
+path="res://.godot/imported/start_tick.wav-2f0e6e89c9ba863e898a31e3baebe112.sample"
 
 [deps]
 
 source_file="res://sounds/start_tick.wav"
-dest_files=[ "res://.import/start_tick.wav-2f0e6e89c9ba863e898a31e3baebe112.sample" ]
+dest_files=["res://.godot/imported/start_tick.wav-2f0e6e89c9ba863e898a31e3baebe112.sample"]
 
 [params]
 
@@ -17,5 +18,7 @@ force/max_rate=false
 force/max_rate_hz=44100
 edit/trim=false
 edit/normalize=false
-edit/loop=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
 compress/mode=0

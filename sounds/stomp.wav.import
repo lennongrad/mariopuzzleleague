@@ -1,13 +1,14 @@
 [remap]
 
 importer="wav"
-type="AudioStreamSample"
-path="res://.import/stomp.wav-0708c61fc169a434c4921abf620c72bc.sample"
+type="AudioStreamWAV"
+uid="uid://bj8vd80rsj20f"
+path="res://.godot/imported/stomp.wav-0708c61fc169a434c4921abf620c72bc.sample"
 
 [deps]
 
 source_file="res://sounds/stomp.wav"
-dest_files=[ "res://.import/stomp.wav-0708c61fc169a434c4921abf620c72bc.sample" ]
+dest_files=["res://.godot/imported/stomp.wav-0708c61fc169a434c4921abf620c72bc.sample"]
 
 [params]
 
@@ -17,5 +18,7 @@ force/max_rate=false
 force/max_rate_hz=44100
 edit/trim=false
 edit/normalize=false
-edit/loop=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
 compress/mode=0

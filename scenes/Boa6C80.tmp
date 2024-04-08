@@ -1,0 +1,287 @@
+[gd_scene load_steps=39 format=3 uid="uid://bh4bdvcgmwpw"]
+
+[ext_resource type="PackedScene" path="res://scenes/BlockHolder.tscn" id="1"]
+[ext_resource type="Script" path="res://scenes/Board.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://xbh8ldw3hs0l" path="res://graphics/colors/red/wall.png" id="3"]
+[ext_resource type="Texture2D" uid="uid://bmjyk1cmror4r" path="res://graphics/loss_palette.png" id="4"]
+[ext_resource type="Texture2D" uid="uid://bf8w0hfhvurxt" path="res://graphics/win_palette.png" id="5"]
+[ext_resource type="Texture2D" uid="uid://ccdakqupbmsgu" path="res://graphics/ready.png" id="6"]
+[ext_resource type="Texture2D" uid="uid://dl4rqkk8g1nks" path="res://graphics/lose.png" id="7"]
+[ext_resource type="Texture2D" uid="uid://ryj3dqd7t63r" path="res://graphics/ready3.png" id="8"]
+[ext_resource type="Texture2D" uid="uid://b30hgalc0fsj3" path="res://graphics/noise.png" id="9"]
+[ext_resource type="Texture2D" uid="uid://chhfw5vsgja5a" path="res://graphics/win.png" id="10"]
+[ext_resource type="Texture2D" uid="uid://mhsbdxn1wld1" path="res://graphics/characters/lip/portrait.png" id="11"]
+[ext_resource type="Texture2D" uid="uid://c4j081hrvijem" path="res://graphics/boos.png" id="12"]
+[ext_resource type="Texture2D" uid="uid://my8sg5jg6rph" path="res://graphics/star.png" id="13"]
+[ext_resource type="Script" path="res://scenes/ParticlePlay.gd" id="14"]
+[ext_resource type="Texture2D" uid="uid://cvaa3ihw401oj" path="res://graphics/a_rematch.png" id="15"]
+[ext_resource type="Texture2D" uid="uid://cubxyufanfgpa" path="res://graphics/b_back.png" id="16"]
+[ext_resource type="AudioStream" uid="uid://bwbnfnok7i665" path="res://sounds/start_tick.wav" id="18"]
+[ext_resource type="AudioStream" uid="uid://cr5hyd3c5pp8k" path="res://sounds/kick_off.wav" id="19"]
+
+[sub_resource type="StyleBoxFlat" id="1"]
+bg_color = Color(0, 0, 0, 0.568627)
+
+[sub_resource type="ParticleProcessMaterial" id="2"]
+emission_shape = 2
+emission_sphere_radius = 1.0
+direction = Vector3(0, 5, 0)
+spread = 9.12
+gravity = Vector3(0, 0, 0)
+
+[sub_resource type="Shader" id="3"]
+code = "shader_type canvas_item;
+render_mode blend_mix;
+
+uniform sampler2D base_palette;
+
+float find_color_in_base_palette(in vec4 color, float pal_size, float pixel_size) {
+    for(float x = 0.0; x <= pal_size; x += pixel_size)   {      
+        vec4 pal_col = texture(base_palette, vec2(x, 0.0));
+
+        if(pal_col.rgba == color.rgba) {
+            return x;
+        }
+    }
+
+    return -1.0;
+}
+
+void fragment() {
+    vec4 color = texture(TEXTURE, UV);
+    ivec2 size = textureSize(base_palette, 0);
+    float pos = find_color_in_base_palette(color, float(size.x), TEXTURE_PIXEL_SIZE.x); 
+
+    // We found the position of the color in the base palette, so fetch a new color from the new palette
+    if(pos != -1.0) {
+        //COLOR = texture(base_palette, vec2(float(int(pos + (3.0 * TEXTURE_PIXEL_SIZE.x)) % 7), 0.0));
+        COLOR = texture(base_palette, vec2(pos + TEXTURE_PIXEL_SIZE.x * 8.0 * float(int(TIME * 9.0) % 10), 0.0));
+    }
+    // The color is not in the base palette, so we don't know its position. Keep the base color.
+    else {
+        COLOR = color;
+    }   
+}"
+
+[sub_resource type="ShaderMaterial" id="4"]
+shader = SubResource("3")
+shader_parameter/base_palette = ExtResource("5")
+
+[sub_resource type="Shader" id="5"]
+code = "shader_type canvas_item;
+render_mode blend_mix;
+
+uniform sampler2D base_palette;
+
+float find_color_in_base_palette(in vec4 color, float pal_size, float pixel_size) {
+    for(float x = 0.0; x <= pal_size; x += pixel_size)   {      
+        vec4 pal_col = texture(base_palette, vec2(x, 0.0));
+
+        if(pal_col.rgba == color.rgba) {
+            return x;
+        }
+    }
+
+    return -1.0;
+}
+
+void fragment() {
+    vec4 color = texture(TEXTURE, UV);
+    ivec2 size = textureSize(base_palette, 0);
+    float pos = find_color_in_base_palette(color, float(size.x), TEXTURE_PIXEL_SIZE.x); 
+
+    // We found the position of the color in the base palette, so fetch a new color from the new palette
+    if(pos != -1.0) {
+        //COLOR = texture(base_palette, vec2(float(int(pos + (3.0 * TEXTURE_PIXEL_SIZE.x)) % 7), 0.0));
+        COLOR = texture(base_palette, vec2(pos + TEXTURE_PIXEL_SIZE.x * 4.0 * (12.0 - float(int(TIME * 15.0) % 12)), 0.0));
+    }
+    // The color is not in the base palette, so we don't know its position. Keep the base color.
+    else {
+        COLOR = color;
+    }   
+}"
+
+[sub_resource type="ShaderMaterial" id="6"]
+shader = SubResource("5")
+shader_parameter/base_palette = ExtResource("4")
+
+[sub_resource type="Shader" id="7"]
+code = "shader_type canvas_item;
+uniform sampler2D noiseTexture;
+uniform bool active;
+
+void fragment()
+{
+	vec4 originalTexture = texture(TEXTURE, UV);
+	if(active){
+		vec4 dissolveNoise = texture(noiseTexture, UV + vec2(TIME * .1, -TIME * .1));
+		vec4 dissolveNoise2 = texture(noiseTexture, UV + vec2(TIME * .2, -TIME * .2));
+		vec4 dissolveNoise3 = texture(noiseTexture, UV + vec2(TIME * .25, -TIME * .25));
+		COLOR = dissolveNoise * dissolveNoise2;
+		COLOR.a = dissolveNoise3.r *.5 + .2;
+	} else {
+		COLOR.a = 0.0;
+	}
+}"
+
+[sub_resource type="ShaderMaterial" id="8"]
+shader = SubResource("7")
+shader_parameter/active = true
+shader_parameter/noiseTexture = ExtResource("9")
+
+[sub_resource type="CanvasItemMaterial" id="9"]
+particles_animation = true
+particles_anim_h_frames = 3
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="Gradient" id="10"]
+offsets = PackedFloat32Array(0, 0.158333, 0.816667, 1)
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="11"]
+gradient = SubResource("10")
+
+[sub_resource type="ParticleProcessMaterial" id="12"]
+lifetime_randomness = 0.05
+emission_shape = 2
+emission_sphere_radius = 1.0
+direction = Vector3(0, 1, 0)
+spread = 180.0
+gravity = Vector3(0, 0, 0)
+color_ramp = SubResource("11")
+
+[sub_resource type="CanvasItemMaterial" id="13"]
+blend_mode = 1
+
+[sub_resource type="Gradient" id="14"]
+offsets = PackedFloat32Array(0, 0.741667)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="15"]
+gradient = SubResource("14")
+
+[sub_resource type="ParticleProcessMaterial" id="16"]
+emission_shape = 2
+emission_sphere_radius = 1.0
+direction = Vector3(0, 5, 0)
+spread = 15.95
+gravity = Vector3(0, 0, 0)
+color_ramp = SubResource("15")
+
+[sub_resource type="CompressedTexture2D" id="17"]
+
+[sub_resource type="AudioStreamRandomizer" id="18"]
+random_pitch = 1.2
+
+[sub_resource type="AudioStreamRandomizer" id="19"]
+
+[sub_resource type="AudioStreamRandomizer" id="20"]
+
+[node name="Board" type="Panel"]
+clip_contents = true
+anchors_preset = -1
+anchor_right = 0.375
+anchor_bottom = 0.902
+offset_bottom = -0.0480194
+theme_override_styles/panel = SubResource("1")
+script = ExtResource("2")
+
+[node name="Portrait" type="Sprite2D" parent="."]
+position = Vector2(48, 96)
+texture = ExtResource("11")
+
+[node name="WinConfetti" type="GPUParticles2D" parent="."]
+position = Vector2(47.6758, -10.5946)
+emitting = false
+amount = 120
+process_material = SubResource("2")
+texture = ExtResource("13")
+lifetime = 4.0
+
+[node name="Wall" type="Node2D" parent="."]
+position = Vector2(48, 324)
+
+[node name="BlockHolder" parent="Wall" instance=ExtResource("1")]
+modulate = Color(1, 1, 1, 0)
+position = Vector2(-48, -324)
+
+[node name="Win" type="Sprite2D" parent="Wall"]
+visible = false
+material = SubResource("4")
+position = Vector2(0, -304)
+texture = ExtResource("10")
+
+[node name="Loss" type="Sprite2D" parent="Wall"]
+visible = false
+material = SubResource("6")
+position = Vector2(0, -304)
+texture = ExtResource("7")
+
+[node name="Wall" type="Sprite2D" parent="Wall"]
+texture = ExtResource("3")
+
+[node name="A" type="Sprite2D" parent="Wall"]
+position = Vector2(-110, -157.206)
+texture = ExtResource("15")
+
+[node name="B" type="Sprite2D" parent="Wall"]
+position = Vector2(91, -142)
+texture = ExtResource("16")
+
+[node name="Ready" type="Sprite2D" parent="."]
+position = Vector2(-42.7027, 76)
+texture = ExtResource("6")
+
+[node name="CountDown" type="Sprite2D" parent="."]
+position = Vector2(-42.7027, 97)
+texture = ExtResource("8")
+
+[node name="BooSmoke" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0)
+material = SubResource("8")
+position = Vector2(48, 96)
+texture = ExtResource("11")
+
+[node name="BooParticles" type="GPUParticles2D" parent="."]
+material = SubResource("9")
+position = Vector2(47.4041, 112.174)
+emitting = false
+amount = 16
+process_material = SubResource("12")
+texture = ExtResource("12")
+lifetime = 3.0
+
+[node name="StarActivated" type="GPUParticles2D" parent="."]
+material = SubResource("13")
+position = Vector2(47.6758, -10.5946)
+emitting = false
+amount = 240
+process_material = SubResource("16")
+texture = SubResource("17")
+script = ExtResource("14")
+
+[node name="MatchBroke" type="AudioStreamPlayer" parent="."]
+stream = SubResource("18")
+volume_db = 15.0
+bus = &"Sound Effects"
+
+[node name="StartTick" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("18")
+volume_db = 10.0
+bus = &"Sound Effects"
+
+[node name="KickOff" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("19")
+volume_db = 15.0
+bus = &"Sound Effects"
+
+[node name="Clap" type="AudioStreamPlayer" parent="."]
+stream = SubResource("19")
+volume_db = 10.0
+bus = &"Sound Effects"
+
+[node name="Spin" type="AudioStreamPlayer" parent="."]
+stream = SubResource("20")
+volume_db = 12.0
+bus = &"Sound Effects"

@@ -1,13 +1,14 @@
 [remap]
 
 importer="wav"
-type="AudioStreamSample"
-path="res://.import/clap.wav-0dc100259b36bee4ae1297b124383d2f.sample"
+type="AudioStreamWAV"
+uid="uid://b4r6fhfncolsq"
+path="res://.godot/imported/clap.wav-0dc100259b36bee4ae1297b124383d2f.sample"
 
 [deps]
 
 source_file="res://sounds/clap.wav"
-dest_files=[ "res://.import/clap.wav-0dc100259b36bee4ae1297b124383d2f.sample" ]
+dest_files=["res://.godot/imported/clap.wav-0dc100259b36bee4ae1297b124383d2f.sample"]
 
 [params]
 
@@ -17,5 +18,7 @@ force/max_rate=false
 force/max_rate_hz=44100
 edit/trim=false
 edit/normalize=false
-edit/loop=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
 compress/mode=0

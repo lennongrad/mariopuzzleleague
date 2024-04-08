@@ -1,4 +1,4 @@
-extends Particles2D
+extends GPUParticles2D
 
 var test = false
 var timer = 0

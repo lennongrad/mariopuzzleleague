@@ -1,48 +1,53 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=7 format=3 uid="uid://ur6uifno3ffw"]
 
-[ext_resource path="res://graphics/background.png" type="Texture" id=1]
-[ext_resource path="res://scenes/Main.gd" type="Script" id=3]
-[ext_resource path="res://sounds/map-spot.wav" type="AudioStream" id=4]
+[ext_resource type="Texture2D" uid="uid://dg642t6tv3php" path="res://graphics/background.png" id="1"]
+[ext_resource type="Script" path="res://scenes/Main.gd" id="3"]
+[ext_resource type="AudioStream" uid="uid://bivkvx1c32ol0" path="res://sounds/map-spot.wav" id="4"]
 
-[sub_resource type="Shader" id=1]
+[sub_resource type="Shader" id="1"]
 code = "shader_type canvas_item;
+
+varying flat vec4 modulate;
+void vertex() {
+	modulate = COLOR;
+}
 
 void fragment(){
     vec2 newuv = UV;
     newuv.x += floor(TIME * 30.0) * TEXTURE_PIXEL_SIZE.x;
     newuv.y -= floor(TIME * 30.0) * TEXTURE_PIXEL_SIZE.y;
     vec4 c = texture(TEXTURE, newuv);
-    COLOR = c;
+    COLOR = c * modulate;
 }"
-custom_defines = ""
 
-[sub_resource type="ShaderMaterial" id=2]
-shader = SubResource( 1 )
+[sub_resource type="ShaderMaterial" id="2"]
+shader = SubResource("1")
 
-[sub_resource type="AudioStreamRandomPitch" id=3]
-audio_stream = ExtResource( 4 )
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_tl8tl"]
 random_pitch = 1.05
+streams_count = 1
+stream_0/stream = ExtResource("4")
+stream_0/weight = 1.0
 
 [node name="Main" type="TextureRect"]
-self_modulate = Color( 0.533333, 0.921569, 0.294118, 1 )
-material = SubResource( 2 )
+self_modulate = Color(1, 0.466667, 1, 1)
+material = SubResource("2")
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-texture = ExtResource( 1 )
-stretch_mode = 2
-script = ExtResource( 3 )
-__meta__ = {
-"_edit_use_anchors_": true
-}
+texture = ExtResource("1")
+stretch_mode = 1
+script = ExtResource("3")
 
 [node name="Black" type="CanvasModulate" parent="."]
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
 volume_db = 10.0
-bus = "Music"
+bus = &"Music"
 
 [node name="Ping" type="AudioStreamPlayer" parent="."]
-stream = SubResource( 3 )
-volume_db = 5.0
-bus = "Sound Effects"
+stream = SubResource("AudioStreamRandomizer_tl8tl")
+volume_db = 10.0
+bus = &"Sound Effects"
+
 [connection signal="finished" from="Music" to="." method="_on_Music_finished"]

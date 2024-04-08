@@ -1,9 +1,9 @@
-extends AnimatedSprite
+extends AnimatedSprite2D
 
-export(String) var cursor_number = 1
+@export var cursor_number: int = 1
 
 func color_change(color):
-	frames = SpriteFrames.new()
+	var frames = SpriteFrames.new()
 	
 	for i in 2:
 		var texture = AtlasTexture.new()

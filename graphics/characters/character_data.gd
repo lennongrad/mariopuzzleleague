@@ -1,15 +1,15 @@
 extends Resource
 
-export(String) var character_name
-export(String) var character_identifier
-export(Color) var trash_color
-export(int) var order
-export(bool) var do_tongue
-export(int) var frames_default
-export(int) var frames_attack
-export(int) var frames_jump
-export(int) var frames_loss
-export(int) var frames_sad
+@export var character_name: String
+@export var character_identifier: String
+@export var trash_color: Color
+@export var order: int
+@export var do_tongue: bool
+@export var frames_default: int
+@export var frames_attack: int
+@export var frames_jump: int
+@export var frames_loss: int
+@export var frames_sad: int
 
 func get_portrait():
 	var file_location = "res://graphics/characters/" + character_identifier + "/portrait.png"

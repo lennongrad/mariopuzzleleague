@@ -4,8 +4,8 @@ signal bound(input)
 signal pressed(input)
 signal already_bound(input)
 
-export(String) var action_name
-export(String) var prefix
+@export var action_name: String
+@export var prefix: String
 #export(NodePath) var left_input
 #export(NodePath) var down_input
 #export(NodePath) var right_input
@@ -13,7 +13,7 @@ export(String) var prefix
 var is_listening = false
 
 func needs_binding():
-	return  InputMap.get_action_list(get_action_name()).size() == 0
+	return  InputMap.action_get_events(get_action_name()).size() == 0
 
 func get_action_name():
 	return prefix + action_name
@@ -24,7 +24,7 @@ func _unhandled_input(event):
 			if event.pressed:
 				for action in InputMap.get_actions():
 					if action != get_action_name() and action.substr(0, 2) != "ui":
-						for action_event in InputMap.get_action_list(action):
+						for action_event in InputMap.action_get_events(action):
 							if action_event.as_text() == event.as_text():
 								emit_signal("already_bound", self)
 								return
@@ -56,7 +56,7 @@ func _process(_delta):
 	if is_listening or needs_binding():
 		$Label.text = ""
 	else:
-		$Label.text = InputMap.get_action_list(get_action_name())[0].as_text()
+		$Label.text = InputMap.action_get_events(get_action_name())[0].as_text()
 
 
 func _on_Button_pressed():

@@ -7,7 +7,7 @@ signal won_item()
 signal use_item()
 signal play_music(music)
 
-onready var holder = $Wall/BlockHolder
+@onready var holder = $Wall/BlockHolder
 var rand = RandomNumberGenerator.new()
 
 # constants
@@ -51,15 +51,15 @@ var star_timer = 0
 var ghost_timer = 0
 
 # endgame timer
-var has_lost = false
-var has_won = false
+var is_has_lost = false
+var is_has_won = false
 var has_stopped = false
 var end_timer = -150
 
 func _ready():
 	$Portrait.material = ShaderMaterial.new()
-	$Portrait.material.set_shader(load("res://shaders/Rainbow.shader"))
-	$Portrait.material.set_shader_param("noiseTexture", load("res://graphics/noise.png")) 
+	$Portrait.material.set_shader(load("res://shaders/Rainbow.gdshader"))
+	$Portrait.material.set_shader_parameter("noiseTexture", load("res://graphics/noise.png")) 
 
 func start(seed_to_use, player_data, p_player_number, multiplayer, opponent):
 	rand.set_seed(seed_to_use)
@@ -115,13 +115,13 @@ func win_game():
 		emit_signal("play_music", "win")
 	else:
 		emit_signal("play_music", "loss")
-	has_won = true
+	is_has_won = true
 	game_over()
 
 func lose_game():
 	if not is_multiplayer:
 		emit_signal("play_music", "loss")
-	has_lost = true
+	is_has_lost = true
 	holder.lose_game()
 	game_over()
 
@@ -130,7 +130,7 @@ func game_over():
 	star_timer = 0
 	$BooSmoke.modulate.a = 0
 	$BooParticles.emitting = false
-	$Portrait.material.set_shader_param("active", false)
+	$Portrait.material.set_shader_parameter("active", false)
 
 func announce_win():
 	emit_signal("has_won")
@@ -146,7 +146,7 @@ func increase_score(amt):
 		print("Won by score")
 		announce_win()
 
-func get_speed():
+func get_velocity():
 	return min(99, data.speed + score / 100)
 
 var trash_timer = 0
@@ -160,9 +160,9 @@ func tick(input):
 			$Wall/B.position.x += (-4 - $Wall/B.position.x) * .1
 		return
 	
-	if (has_lost or has_won) and not has_stopped:
+	if (is_has_lost or is_has_won) and not has_stopped:
 		end_timer += 1
-		if has_lost:
+		if is_has_lost:
 			if end_timer < 50:
 				pass
 			elif end_timer < 75:
@@ -271,7 +271,7 @@ func tick(input):
 	# remove as many blocks as there are blocks that have time of zero left
 	# works because block scores is always in order
 	for _e in range(0, at_zero):
-		block_scores.remove(0)
+		block_scores.erase(0)
 	
 	########################################
 	# block maintenance
@@ -284,9 +284,9 @@ func tick(input):
 	#########################
 	if star_timer > 0:
 		star_timer -= 1
-		$Portrait.material.set_shader_param("active", true)
+		$Portrait.material.set_shader_parameter("active", true)
 	else:
-		$Portrait.material.set_shader_param("active", false)
+		$Portrait.material.set_shader_parameter("active", false)
 	
 	if ghost_timer > 0:
 		ghost_timer -= 1
@@ -304,7 +304,7 @@ func tick(input):
 	if bonus_time > 0 or star_timer > 0:
 		bonus_time -= 1
 	else:
-		row_timer += (speed_base + speed_base_modifier * get_speed())
+		row_timer += (speed_base + speed_base_modifier * get_velocity())
 		chain = 1
 	
 	if row_timer >= 1:
@@ -340,7 +340,7 @@ func tick(input):
 		pressed_timer += 1
 		unpressed_timer += 1
 		var button_pressed_already = false
-		var pressed 
+		var pressed = null
 		
 		if input.left:
 			button_pressed_already = true

@@ -1,59 +1,55 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=8 format=3 uid="uid://n6jwm82trswm"]
 
-[ext_resource path="res://scenes/BlockParticle.tscn" type="PackedScene" id=1]
-[ext_resource path="res://graphics/blockstyle/paneldepon/blue.tres" type="SpriteFrames" id=2]
-[ext_resource path="res://graphics/characters/lip/face.png" type="Texture" id=3]
-[ext_resource path="res://scenes/Block.gd" type="Script" id=4]
-[ext_resource path="res://sounds/bullet.wav" type="AudioStream" id=5]
-[ext_resource path="res://sounds/stomp.wav" type="AudioStream" id=6]
+[ext_resource type="PackedScene" uid="uid://cq3n5ur7sxd6h" path="res://scenes/BlockParticle.tscn" id="1"]
+[ext_resource type="SpriteFrames" uid="uid://ctn1qg0x7wpgi" path="res://graphics/blockstyle/paneldepon/blue.tres" id="2"]
+[ext_resource type="Texture2D" uid="uid://cjabdqy7b33lo" path="res://graphics/characters/lip/face.png" id="3"]
+[ext_resource type="Script" path="res://scenes/Block.gd" id="4"]
 
-[sub_resource type="StreamTexture" id=1]
+[sub_resource type="CompressedTexture2D" id="1"]
 
-[sub_resource type="AudioStreamRandomPitch" id=2]
-audio_stream = ExtResource( 5 )
+[sub_resource type="AudioStreamRandomizer" id="2"]
 random_pitch = 1.3
 
-[sub_resource type="AudioStreamRandomPitch" id=3]
-audio_stream = ExtResource( 6 )
+[sub_resource type="AudioStreamRandomizer" id="3"]
 random_pitch = 1.3
 
-[node name="Control" type="AnimatedSprite"]
-frames = ExtResource( 2 )
-animation = "jump"
-script = ExtResource( 4 )
+[node name="Control" type="AnimatedSprite2D"]
+sprite_frames = ExtResource("2")
+animation = &"jump"
+script = ExtResource("4")
 
-[node name="BR" parent="." instance=ExtResource( 1 )]
-position = Vector2( 0, 0 )
+[node name="BR" parent="." instance=ExtResource("1")]
+position = Vector2(0, 0)
 
-[node name="BL" parent="." instance=ExtResource( 1 )]
-position = Vector2( 0, 0 )
+[node name="BL" parent="." instance=ExtResource("1")]
+position = Vector2(0, 0)
 rotation = 1.5708
 
-[node name="TL" parent="." instance=ExtResource( 1 )]
-position = Vector2( 0, 0 )
+[node name="TL" parent="." instance=ExtResource("1")]
+position = Vector2(0, 0)
 rotation = -3.14159
 
-[node name="TR" parent="." instance=ExtResource( 1 )]
-position = Vector2( 0, 0 )
+[node name="TR" parent="." instance=ExtResource("1")]
+position = Vector2(0, 0)
 rotation = -1.5708
 
-[node name="Trash" type="Sprite" parent="."]
+[node name="Trash" type="Sprite2D" parent="."]
 visible = false
-texture = SubResource( 1 )
+texture = SubResource("1")
 
-[node name="Dark" type="AnimatedSprite" parent="."]
-modulate = Color( 1, 1, 1, 0 )
-frames = ExtResource( 2 )
-animation = "dark"
+[node name="Dark" type="AnimatedSprite2D" parent="."]
+modulate = Color(1, 1, 1, 0)
+sprite_frames = ExtResource("2")
+animation = &"dark"
 
-[node name="Face" type="Sprite" parent="."]
-texture = ExtResource( 3 )
+[node name="Face" type="Sprite2D" parent="."]
+texture = ExtResource("3")
 
 [node name="Thud" type="AudioStreamPlayer" parent="."]
-stream = SubResource( 2 )
-bus = "Sound Effects"
+stream = SubResource("2")
+bus = &"Sound Effects"
 
 [node name="Minithud" type="AudioStreamPlayer" parent="."]
-stream = SubResource( 3 )
+stream = SubResource("3")
 volume_db = -10.0
-bus = "Sound Effects"
+bus = &"Sound Effects"

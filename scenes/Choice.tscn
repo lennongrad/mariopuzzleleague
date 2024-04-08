@@ -1,116 +1,126 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=11 format=3 uid="uid://dg84k6gt7w5sa"]
 
-[ext_resource path="res://graphics/ui_round.png" type="Texture" id=1]
-[ext_resource path="res://graphics/pointer.png" type="Texture" id=2]
-[ext_resource path="res://prstartk.ttf" type="DynamicFontData" id=3]
-[ext_resource path="res://scenes/Choice.gd" type="Script" id=4]
-[ext_resource path="res://graphics/ui_round2.png" type="Texture" id=5]
+[ext_resource type="Texture2D" uid="uid://btcxahxcgjfsi" path="res://graphics/ui_round.png" id="1"]
+[ext_resource type="Texture2D" uid="uid://be3dmmmmxruaa" path="res://graphics/pointer.png" id="2"]
+[ext_resource type="FontFile" uid="uid://c6guqa00ydgwy" path="res://prstartk.ttf" id="3"]
+[ext_resource type="Script" path="res://scenes/Choice.gd" id="4"]
+[ext_resource type="Texture2D" uid="uid://vvpfwlbto17l" path="res://graphics/ui_round2.png" id="5"]
 
-[sub_resource type="DynamicFont" id=1]
-outline_color = Color( 0.0156863, 0.0117647, 0.0117647, 0.258824 )
-font_data = ExtResource( 3 )
+[sub_resource type="FontFile" id="1"]
+fallbacks = Array[Font]([ExtResource("3")])
+cache/0/16/0/ascent = 0.0
+cache/0/16/0/descent = 0.0
+cache/0/16/0/underline_position = 0.0
+cache/0/16/0/underline_thickness = 0.0
+cache/0/16/0/scale = 1.0
+cache/0/16/0/kerning_overrides/16/0 = Vector2(0, 0)
 
-[sub_resource type="AtlasTexture" id=2]
-atlas = ExtResource( 2 )
-region = Rect2( 0, 0, 8, 8 )
+[sub_resource type="AtlasTexture" id="2"]
+atlas = ExtResource("2")
+region = Rect2(0, 0, 8, 8)
 
-[sub_resource type="AtlasTexture" id=3]
-atlas = ExtResource( 2 )
-region = Rect2( 8, 0, 8, 8 )
+[sub_resource type="AtlasTexture" id="3"]
+atlas = ExtResource("2")
+region = Rect2(8, 0, 8, 8)
 
-[sub_resource type="SpriteFrames" id=4]
-animations = [ {
-"frames": [ SubResource( 2 ), SubResource( 3 ) ],
+[sub_resource type="SpriteFrames" id="4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("2")
+}, {
+"duration": 1.0,
+"texture": SubResource("3")
+}],
 "loop": true,
-"name": "default",
+"name": &"default",
 "speed": 5.0
-} ]
+}]
 
-[sub_resource type="SpriteFrames" id=5]
-animations = [ {
-"frames": [ SubResource( 3 ), SubResource( 2 ) ],
+[sub_resource type="SpriteFrames" id="5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("3")
+}, {
+"duration": 1.0,
+"texture": SubResource("2")
+}],
 "loop": false,
-"name": "default",
+"name": &"default",
 "speed": 15.0
-} ]
+}]
 
 [node name="Choice" type="TextureRect"]
-margin_right = 140.0
-margin_bottom = 25.0
-texture = ExtResource( 1 )
-script = ExtResource( 4 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+texture_filter = 1
+offset_right = 140.0
+offset_bottom = 25.0
+texture = ExtResource("1")
+script = ExtResource("4")
 
 [node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 7.0
-margin_top = 3.0
-custom_fonts/font = SubResource( 1 )
-custom_colors/font_color = Color( 0.682353, 0, 0.368627, 1 )
+offset_left = 21.0
+offset_top = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.682353, 0, 0.368627, 1)
+theme_override_fonts/font = SubResource("1")
 text = " CPU "
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
+vertical_alignment = 1
 
-[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-position = Vector2( 15, 12 )
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+position = Vector2(15, 12)
 rotation = 1.5708
-scale = Vector2( 2, 2 )
-frames = SubResource( 4 )
-playing = true
+scale = Vector2(2, 2)
+sprite_frames = SubResource("4")
 
 [node name="Border" type="TextureRect" parent="."]
+texture_filter = 1
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-texture = ExtResource( 5 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+texture = ExtResource("5")
 
 [node name="Count" type="Control" parent="."]
+anchors_preset = 0
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-margin_left = -41.0
-margin_top = -19.0
-margin_right = -1.0
-margin_bottom = 21.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+offset_left = -41.0
+offset_top = -19.0
+offset_right = -1.0
+offset_bottom = 21.0
 
-[node name="Right" type="AnimatedSprite" parent="Count"]
-position = Vector2( 27, 19 )
+[node name="Right" type="AnimatedSprite2D" parent="Count"]
+texture_filter = 1
+position = Vector2(27, 19)
 rotation = 1.5708
-frames = SubResource( 5 )
+sprite_frames = SubResource("5")
 frame = 1
-playing = true
 
-[node name="Left" type="AnimatedSprite" parent="Count"]
-position = Vector2( -3, 19 )
+[node name="Left" type="AnimatedSprite2D" parent="Count"]
+texture_filter = 1
+position = Vector2(-3, 19)
 rotation = -1.5708
-frames = SubResource( 5 )
+sprite_frames = SubResource("5")
 frame = 1
-playing = true
 
 [node name="Label" type="Label" parent="Count"]
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -35.0
-margin_top = 2.5
-margin_right = 21.0
-margin_bottom = -0.5
-custom_fonts/font = SubResource( 1 )
-custom_colors/font_color = Color( 0.682353, 0, 0.368627, 1 )
+offset_right = -14.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.682353, 0, 0.368627, 1)
+theme_override_fonts/font = SubResource("1")
 text = "9"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
+horizontal_alignment = 1
+vertical_alignment = 1

@@ -1,8 +1,8 @@
-extends Sprite
+extends Sprite2D
 
 signal done_travelling()
 
-onready var particles = [$BR, $BL, $TL, $TR]
+@onready var particles = [$BR, $BL, $TL, $TR]
 
 var target = Vector2(160,10)
 var velocity = Vector2(0,-20)
@@ -14,7 +14,7 @@ func _ready():
 	texture = character.get_trash()
 	for particle in particles:
 		particle.texture = character.get_particle()
-	$Path.texture = character.get_particle()
+	$Path3D.texture = character.get_particle()
 
 func _process(delta):
 	if finished_timer == -1:

@@ -12,9 +12,9 @@ func _ready():
 	for child in get_children():
 		if child.get("is_listening") != null:
 			inputs.append(child)
-			child.connect("bound", self, "_on_Input_bound")
-			child.connect("pressed", self, "_on_Input_pressed")
-			child.connect("already_bound", self, "_on_Input_already_bound")
+			child.connect("bound", Callable(self, "_on_Input_bound"))
+			child.connect("pressed", Callable(self, "_on_Input_pressed"))
+			child.connect("already_bound", Callable(self, "_on_Input_already_bound"))
 	selected = inputs[0]
 	set_first_needs_input()
 	$InputUp.grab_focus()
@@ -30,8 +30,8 @@ func _process(_delta):
 		if done_timer > 30:
 			queue_free()
 		return
-	var focused = $PlayerNumber.get_focus_owner()
-	$Cursor.position = focused.rect_position + focused.rect_size / 2
+	var focused = $PlayerNumber.get_viewport().gui_get_focus_owner()
+	$Cursor.position = focused.position + focused.size / 2
 	$Cursor.position.y -= 10
 	if is_binding():
 		$Cursor.visible = false
@@ -48,16 +48,16 @@ func _process(_delta):
 	var next
 	if Input.is_action_just_pressed("p1_down"):
 		emit_signal("ping")
-		next = get_node(focused.focus_neighbour_bottom.get_name(1))
+		next = focused.get_node(focused.focus_neighbor_bottom)
 	if Input.is_action_just_pressed("p1_up"):
 		emit_signal("ping")
-		next = get_node(focused.focus_neighbour_top.get_name(1))
+		next = focused.get_node(focused.focus_neighbor_top)
 	if Input.is_action_just_pressed("p1_left"):
 		emit_signal("ping")
-		next = get_node(focused.focus_neighbour_left.get_name(1))
+		next = focused.get_node(focused.focus_neighbor_left)
 	if Input.is_action_just_pressed("p1_right"):
 		emit_signal("ping")
-		next = get_node(focused.focus_neighbour_right.get_name(1))
+		next = focused.get_node(focused.focus_neighbor_right)
 	if next != null: 
 		next.grab_focus()
 	
@@ -115,14 +115,14 @@ func save_and_exit():
 	var config = ConfigFile.new()
 	for action in InputMap.get_actions():
 		if action.substr(0, 2) != "ui":
-			if InputMap.get_action_list(action).size() > 0:
-				config.set_value("input", action, InputMap.get_action_list(action)[0].get_scancode())
+			if InputMap.action_get_events(action).size() > 0:
+				config.set_value("input", action, InputMap.action_get_events(action)[0].get_keycode())
 	config.save("user://settings.cfg")
 	emit_signal("done", true)
 	done_timer = 0
 
 func reset_inputs():
-	InputMap.load_from_globals()
+	InputMap.load_from_project_settings()
 	set_first_needs_input()
 
 func _on_Input_bound(input):

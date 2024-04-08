@@ -1,50 +1,78 @@
-[gd_resource type="SpriteFrames" load_steps=9 format=2]
+[gd_resource type="SpriteFrames" load_steps=9 format=3 uid="uid://c8wx82afkxvyt"]
 
-[ext_resource path="res://graphics/blockstyle/paneldepon/purple.png" type="Texture" id=1]
+[ext_resource type="Texture2D" uid="uid://c5mkrub01eris" path="res://graphics/blockstyle/paneldepon/purple.png" id="1"]
 
+[sub_resource type="AtlasTexture" id="4"]
+atlas = ExtResource("1")
+region = Rect2(0, 0, 16, 16)
 
-[sub_resource type="AtlasTexture" id=1]
-atlas = ExtResource( 1 )
-region = Rect2( 0, 64, 16, 16 )
+[sub_resource type="AtlasTexture" id="5"]
+atlas = ExtResource("1")
+region = Rect2(0, 16, 16, 16)
 
-[sub_resource type="AtlasTexture" id=3]
-atlas = ExtResource( 1 )
-region = Rect2( 0, 96, 16, 16 )
+[sub_resource type="AtlasTexture" id="6"]
+atlas = ExtResource("1")
+region = Rect2(0, 32, 16, 16)
 
-[sub_resource type="AtlasTexture" id=2]
-atlas = ExtResource( 1 )
-region = Rect2( 0, 80, 16, 16 )
+[sub_resource type="AtlasTexture" id="7"]
+atlas = ExtResource("1")
+region = Rect2(0, 48, 16, 16)
 
-[sub_resource type="AtlasTexture" id=4]
-atlas = ExtResource( 1 )
-region = Rect2( 0, 0, 16, 16 )
+[sub_resource type="AtlasTexture" id="1"]
+atlas = ExtResource("1")
+region = Rect2(0, 64, 16, 16)
 
-[sub_resource type="AtlasTexture" id=5]
-atlas = ExtResource( 1 )
-region = Rect2( 0, 16, 16, 16 )
+[sub_resource type="AtlasTexture" id="3"]
+atlas = ExtResource("1")
+region = Rect2(0, 96, 16, 16)
 
-[sub_resource type="AtlasTexture" id=6]
-atlas = ExtResource( 1 )
-region = Rect2( 0, 32, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=7]
-atlas = ExtResource( 1 )
-region = Rect2( 0, 48, 16, 16 )
+[sub_resource type="AtlasTexture" id="2"]
+atlas = ExtResource("1")
+region = Rect2(0, 80, 16, 16)
 
 [resource]
-animations = [ {
-"frames": [ SubResource( 1 ) ],
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("4")
+}],
 "loop": true,
-"name": "preview",
+"name": &"default",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 3 ), SubResource( 2 ) ],
-"loop": true,
-"name": "shock",
-"speed": 5.0
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("4")
 }, {
-"frames": [ SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ) ],
+"duration": 1.0,
+"texture": SubResource("5")
+}, {
+"duration": 1.0,
+"texture": SubResource("6")
+}, {
+"duration": 1.0,
+"texture": SubResource("7")
+}],
 "loop": true,
-"name": "jump",
+"name": &"jump",
 "speed": 15.0
-} ]
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("1")
+}],
+"loop": true,
+"name": &"preview",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("3")
+}, {
+"duration": 1.0,
+"texture": SubResource("2")
+}],
+"loop": true,
+"name": &"shock",
+"speed": 5.0
+}]

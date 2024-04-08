@@ -1,8 +1,8 @@
-extends AnimatedSprite
+extends AnimatedSprite2D
 
 var p = Vector2(0,0)
-var type setget change_type
-var size = Vector2(1, 1) setget change_size
+var type : set = change_type
+var size = Vector2(1, 1): set = change_size
 var character
 var opponent
 
@@ -11,7 +11,7 @@ var has_thudded = false
 var destination_p = Vector2(0,0)
 var current_p = Vector2(0,0)
 
-onready var particles = [$BR, $BL, $TL, $TR]
+@onready var particles = [$BR, $BL, $TL, $TR]
 
 const is_block = true
 
@@ -51,14 +51,14 @@ func change_type(p_type):
 		var zframes = SpriteFrames.new()
 		zframes.add_animation("a")
 		zframes.add_frame("a", trash_graphics[size])
-		frames = zframes
+		sprite_frames = zframes
 		play("a")
 		self_modulate = opponent.trash_color
 		self_modulate.v += .3
 		$Face.texture =  opponent.get_face()
 		$Face.visible = true
 	else:
-		frames = block_graphics[type]
+		sprite_frames = block_graphics[type]
 		$Face.visible = false
 	$Trash.texture = trash_graphics[Vector2(1,1)]
 	if opponent != null:
@@ -127,7 +127,6 @@ func lose():
 		play("shock")
 
 func _process(_delta):
-	playing = false
 	last_p = p
 	
 	current_p += (destination_p - current_p) * .45
@@ -146,7 +145,7 @@ func _process(_delta):
 			particle.play()
 	elif lost:
 		frame = 1
-		playing = false
+		
 		loss_timer += 1
 		if loss_timer > 50:
 			$Face.visible = false
@@ -161,7 +160,6 @@ func _process(_delta):
 		play("preview")
 	elif matching_timer != -1:
 		play("shock")
-		playing = false
 		$Face.visible = false
 		if matching_timer < 60:
 			frame = 1
@@ -183,8 +181,7 @@ func _process(_delta):
 		play("jump")
 		frame = 4 - abs(floor(float(wobble_timer) / 2) - 4)
 	elif type != enums.BLOCKTYPE.TRASH:
-		play("jump")
-		playing = false
+		play("default")
 		modulate.a += (1 - modulate.a) * .1
 		$Trash.visible = false
 	

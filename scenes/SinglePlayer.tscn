@@ -1,89 +1,98 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=11 format=3 uid="uid://cjt35yx5p3swm"]
 
-[ext_resource path="res://scenes/Board.tscn" type="PackedScene" id=1]
-[ext_resource path="res://graphics/stages/grass/1pframe_frame.png" type="Texture" id=2]
-[ext_resource path="res://scenes/SinglePlayer.gd" type="Script" id=3]
-[ext_resource path="res://scenes/Text.tscn" type="PackedScene" id=4]
-[ext_resource path="res://graphics/1p_frame.png" type="Texture" id=5]
-[ext_resource path="res://graphics/stages/grass/1pframe_bg.png" type="Texture" id=6]
-[ext_resource path="res://graphics/normal.png" type="Texture" id=7]
+[ext_resource type="PackedScene" uid="uid://bh4bdvcgmwpw" path="res://scenes/Board.tscn" id="1"]
+[ext_resource type="Texture2D" uid="uid://do1pch7puc8h4" path="res://graphics/stages/grass/1pframe_frame.png" id="2"]
+[ext_resource type="Script" path="res://scenes/SinglePlayer.gd" id="3"]
+[ext_resource type="PackedScene" uid="uid://cdmgd4h1a7gb7" path="res://scenes/Text.tscn" id="4"]
+[ext_resource type="Texture2D" uid="uid://xxl71eppru0q" path="res://graphics/1p_frame.png" id="5"]
+[ext_resource type="Texture2D" uid="uid://xw4jrflos74a" path="res://graphics/stages/grass/1pframe_bg.png" id="6"]
+[ext_resource type="Texture2D" uid="uid://dvfvlsy4prq36" path="res://graphics/normal.png" id="7"]
 
-[sub_resource type="AtlasTexture" id=1]
-atlas = ExtResource( 6 )
-region = Rect2( 0, 0, 256, 224 )
+[sub_resource type="AtlasTexture" id="1"]
+atlas = ExtResource("6")
+region = Rect2(0, 0, 256, 224)
 
-[sub_resource type="AtlasTexture" id=2]
-atlas = ExtResource( 6 )
-region = Rect2( 256, 0, 256, 224 )
+[sub_resource type="AtlasTexture" id="2"]
+atlas = ExtResource("6")
+region = Rect2(256, 0, 256, 224)
 
-[sub_resource type="SpriteFrames" id=3]
-animations = [ {
-"frames": [ SubResource( 1 ), SubResource( 2 ) ],
+[sub_resource type="SpriteFrames" id="3"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("1")
+}, {
+"duration": 1.0,
+"texture": SubResource("2")
+}],
 "loop": true,
-"name": "default",
+"name": &"default",
 "speed": 5.0
-} ]
+}]
 
 [node name="SinglePlayer" type="Control"]
+layout_mode = 3
+anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -128.0
-margin_top = -112.0
-margin_right = 128.0
-margin_bottom = 112.0
-script = ExtResource( 3 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+offset_left = -128.0
+offset_top = -112.0
+offset_right = 128.0
+offset_bottom = 112.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3")
 
-[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 show_behind_parent = true
-position = Vector2( 128, 112 )
-frames = SubResource( 3 )
+position = Vector2(128, 112)
+sprite_frames = SubResource("3")
 
-[node name="Board" parent="." instance=ExtResource( 1 )]
+[node name="Board" parent="." instance=ExtResource("1")]
+layout_mode = 0
+anchors_preset = 0
 anchor_top = 0.5
 anchor_right = 0.0
 anchor_bottom = 0.5
-margin_left = 88.0
-margin_top = -89.0
-margin_right = 184.0
-margin_bottom = 112.0
+offset_left = 88.0
+offset_top = -89.0
+offset_right = 184.0
+offset_bottom = 112.0
 
-[node name="Frame" type="Sprite" parent="."]
-position = Vector2( 128, 112 )
-texture = ExtResource( 2 )
+[node name="Frame" type="Sprite2D" parent="."]
+position = Vector2(128, 112)
+texture = ExtResource("2")
 
-[node name="Text" type="Sprite" parent="Frame"]
+[node name="Text" type="Sprite2D" parent="Frame"]
 show_behind_parent = true
-texture = ExtResource( 5 )
+texture = ExtResource("5")
 
-[node name="Score" parent="Frame" instance=ExtResource( 4 )]
-position = Vector2( 77.9949, -38.2866 )
+[node name="Score" parent="Frame" instance=ExtResource("4")]
+position = Vector2(77.9949, -38.2866)
 text = "0000"
 font = "red"
 separation = 8
 
-[node name="HighScore" parent="Frame" instance=ExtResource( 4 )]
-position = Vector2( 77.9949, -64.2866 )
+[node name="HighScore" parent="Frame" instance=ExtResource("4")]
+position = Vector2(77.9949, -64.2866)
 text = "0000"
 font = "red"
 separation = 8
 
-[node name="Level" parent="Frame" instance=ExtResource( 4 )]
-position = Vector2( 95, -10 )
+[node name="Level" parent="Frame" instance=ExtResource("4")]
+position = Vector2(95, -10)
 text = "00"
 font = "red"
 separation = 7
 
-[node name="Time" parent="Frame" instance=ExtResource( 4 )]
-position = Vector2( -103, -73 )
+[node name="Time" parent="Frame" instance=ExtResource("4")]
+position = Vector2(-103, -73)
 text = "00'00"
 font = "black"
 separation = 8
 
-[node name="Difficulty" type="Sprite" parent="Frame"]
-position = Vector2( 88, 15 )
-texture = ExtResource( 7 )
+[node name="Difficulty" type="Sprite2D" parent="Frame"]
+position = Vector2(88, 15)
+texture = ExtResource("7")

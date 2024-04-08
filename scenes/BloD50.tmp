@@ -1,0 +1,55 @@
+[gd_scene load_steps=8 format=3 uid="uid://bpljmpanhkuh4"]
+
+[ext_resource type="PackedScene" path="res://scenes/BlockParticle.tscn" id="1"]
+[ext_resource type="SpriteFrames" path="res://graphics/blockstyle/paneldepon/blue.tres" id="2"]
+[ext_resource type="Texture2D" uid="uid://cjabdqy7b33lo" path="res://graphics/characters/lip/face.png" id="3"]
+[ext_resource type="Script" path="res://scenes/Block.gd" id="4"]
+
+[sub_resource type="CompressedTexture2D" id="1"]
+
+[sub_resource type="AudioStreamRandomizer" id="2"]
+random_pitch = 1.3
+
+[sub_resource type="AudioStreamRandomizer" id="3"]
+random_pitch = 1.3
+
+[node name="Control" type="AnimatedSprite2D"]
+sprite_frames = ExtResource("2")
+animation = &"jump"
+script = ExtResource("4")
+
+[node name="BR" parent="." instance=ExtResource("1")]
+position = Vector2(0, 0)
+
+[node name="BL" parent="." instance=ExtResource("1")]
+position = Vector2(0, 0)
+rotation = 1.5708
+
+[node name="TL" parent="." instance=ExtResource("1")]
+position = Vector2(0, 0)
+rotation = -3.14159
+
+[node name="TR" parent="." instance=ExtResource("1")]
+position = Vector2(0, 0)
+rotation = -1.5708
+
+[node name="Trash" type="Sprite2D" parent="."]
+visible = false
+texture = SubResource("1")
+
+[node name="Dark" type="AnimatedSprite2D" parent="."]
+modulate = Color(1, 1, 1, 0)
+sprite_frames = ExtResource("2")
+animation = &"dark"
+
+[node name="Face" type="Sprite2D" parent="."]
+texture = ExtResource("3")
+
+[node name="Thud" type="AudioStreamPlayer" parent="."]
+stream = SubResource("2")
+bus = &"Sound Effects"
+
+[node name="Minithud" type="AudioStreamPlayer" parent="."]
+stream = SubResource("3")
+volume_db = -10.0
+bus = &"Sound Effects"

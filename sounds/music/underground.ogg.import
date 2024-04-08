@@ -1,15 +1,19 @@
 [remap]
 
-importer="ogg_vorbis"
-type="AudioStreamOGGVorbis"
-path="res://.import/underground.ogg-b354616123ff7bf8d9b8cb5e7d59adaa.oggstr"
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://bym76opas2xsu"
+path="res://.godot/imported/underground.ogg-b354616123ff7bf8d9b8cb5e7d59adaa.oggvorbisstr"
 
 [deps]
 
 source_file="res://sounds/music/underground.ogg"
-dest_files=[ "res://.import/underground.ogg-b354616123ff7bf8d9b8cb5e7d59adaa.oggstr" ]
+dest_files=["res://.godot/imported/underground.ogg-b354616123ff7bf8d9b8cb5e7d59adaa.oggvorbisstr"]
 
 [params]
 
 loop=true
 loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

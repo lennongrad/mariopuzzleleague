@@ -5,7 +5,7 @@ signal done(p1_speed, p2_speed, p1_difficulty, p2_difficulty)
 
 var is_timed = false
 var p1_level = 0
-var done = false
+var is_done = false
 var p1_difficulty = enums.DIFFICULTY.EASY
 
 func color_change1(color):
@@ -23,6 +23,6 @@ func tick(p1, _p2, _ai):
 		$Player_Time.tick(p1)
 	if $Player_Time.is_inactive():
 		emit_signal("go_back")
-	if $Player_Time.is_done() and not done:
-		done = true
+	if $Player_Time.is_done() and not is_done:
+		is_done = true
 		emit_signal("done", $Player_Time.level, $Player_Time.difficulty, $Player_Time.time)

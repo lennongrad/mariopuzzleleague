@@ -1,9 +1,9 @@
-extends AnimatedSprite
+extends AnimatedSprite2D
 
-export(bool) var is_right = false
+@export var is_right: bool = false
 
 func change_color(color):
-	frames = SpriteFrames.new()
+	var frames = SpriteFrames.new()
 	for i in 2:
 		var texture = AtlasTexture.new()
 		texture.set_atlas(load( "res://graphics/colors/" + color + "/pointer.png"))

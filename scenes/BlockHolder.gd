@@ -102,7 +102,7 @@ func shuffle_list(list):
 	for _i in range(list.size()):
 		var x = randi() % indexList.size()
 		shuffledList.append(list[indexList[x]])
-		indexList.remove(x)
+		indexList.erase(x)
 	return shuffledList
 
 func block_comparison(a, b):
@@ -206,7 +206,7 @@ func move_cursor(direction):
 	return true 
 
 func make_trash_block(size):
-	var trash = block_scene.instance()
+	var trash = block_scene.instantiate()
 	trash.character = character
 	trash.opponent = opponent
 	trash.block_graphics = block_graphics
@@ -310,7 +310,7 @@ func generate_preview_blocks():
 	preview_blocks = []
 	var last_two = [null, null]
 	for i in range(0, width):
-		var block = block_scene.instance()
+		var block = block_scene.instantiate()
 		block.character = character
 		block.opponent = opponent
 		
@@ -392,7 +392,7 @@ func trash_break(block):
 	for i in range(0, block.size.x):
 		for e in range(0, block.size.y):
 			plus += 5
-			var block_new = block_scene.instance()
+			var block_new = block_scene.instantiate()
 			block_new.character = character
 			block_new.opponent = opponent
 			
@@ -446,7 +446,7 @@ func check_matches():
 	var current_matches_array = []
 	for block in current_matches:
 		current_matches_array.append(block)
-	current_matches_array.sort_custom(self, "block_comparison")
+	current_matches_array.sort_custom(Callable(self, "block_comparison"))
 
 	var chain_progress = false
 	var item_matched
@@ -474,7 +474,7 @@ func update_matches():
 	for match_set in match_sets:
 		var set_done = true
 		for block in match_set:
-			if block.update_match():
+			if block != null && block.update_match():
 				set_done = false
 		if set_done:
 			for block in match_set:
@@ -484,7 +484,7 @@ func update_matches():
 			blocks_remaining = true
 	
 	for match_set in sets_to_remove:
-		match_sets.remove(match_sets.find(match_set))
+		match_sets.erase(match_sets.find(match_set))
 	
 	for block in get_blocks(false):
 		if not block.update_popping():
@@ -492,6 +492,8 @@ func update_matches():
 	return blocks_remaining
 
 func remove(block):
+	if block == null:
+		return
 	var block_above = get_block(get_p_adjacent_null(block.p, enums.DIRECTION.UP))
 	if block_above != null:
 		block_above.drop_timer = 10
@@ -499,7 +501,7 @@ func remove(block):
 	update_blocks()
 
 func show_chain(chain, position, is_chain):
-	var node = chain_scene.instance()
+	var node = chain_scene.instantiate()
 	node.character = character
 	node.position = get_position_vector(position) + Vector2(0, -15)
 	if node.position.x < 12:
@@ -608,9 +610,9 @@ func get_new_targets():
 						if not block.matching_timer > 0 and not block.type == enums.BLOCKTYPE.TRASH:
 							color_dict[block.type].append(block)
 					for color in color_dict:
-						color_dict[color].sort_custom(self, "block_comparison")
+						color_dict[color].sort_custom(Callable(self, "block_comparison"))
 					rows.append(color_dict)
-					rows.remove(0)
+					rows.pop_at(0)
 					
 					var unnull_rows = []
 					for r in rows:
@@ -659,7 +661,7 @@ func ai():
 			var t = block_targets[0]["target"]
 			var b = block_targets[0]["block"]
 			if b == null or b.p.x == t or b.matching_timer > 0 or (b.type == enums.BLOCKTYPE.TRASH) or (b.p.y == height) or t < 0 or t > width - 1:
-				block_targets.remove(0)
+				block_targets.pop_at(0)
 			else:
 				if t < b.p.x:
 					if cursor_target != Vector2(b.p.x - 1, b.p.y):
@@ -671,7 +673,7 @@ func ai():
 					cursor_target = Vector2(b.p.x, b.p.y)
 				if ((get_block(cursor_target) != null and get_block(cursor_target).matching_timer > 0) or
 					(get_block(cursor_target + Vector2(1, 0)) != null and get_block(cursor_target + Vector2(1, 0)).matching_timer > 0)):
-					block_targets.remove(0)
+					block_targets.pop_at(0)
 					cursor_target = null
 
 func ai_cursor():
@@ -685,7 +687,7 @@ func ai_cursor():
 		if first_time or not swap_cursor():
 			first_time = false
 			if block_targets.size() > 0:
-				block_targets.remove(0)
+				block_targets.pop_at(0)
 	return true
 
 func _process(_delta):

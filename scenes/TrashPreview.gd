@@ -1,7 +1,7 @@
 extends Node2D
 
-var blocks = [] setget change_blocks
-var shown = 0 setget change_shown
+var blocks = []: set = change_blocks
+var shown = 0: set = change_shown
 var color = "blue"
 var character
 
@@ -32,7 +32,7 @@ func change_blocks(p_blocks):
 	var i = 0
 	for block in blocks.slice(0, shown - 1):
 		for e in range(0, block + 1):
-			var sprite = Sprite.new()
+			var sprite = Sprite2D.new()
 			sprite.position.x += (i + e % 4) * 7
 			sprite.position.y += floor(float(e) / 4) * 7
 			sprite.texture = load("res://graphics/colors/" + color + "/trash.png")

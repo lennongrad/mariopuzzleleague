@@ -1,6 +1,6 @@
-extends Sprite
+extends Sprite2D
 
-onready var particles = [$BR, $BL, $TL, $TR]
+@onready var particles = [$BR, $BL, $TL, $TR]
 
 var character
 
@@ -36,14 +36,14 @@ func start(items):
 	var shuffled_list = item_list
 	shuffled_list.shuffle()
 	for item in shuffled_list:
-		var sprite = Sprite.new()
+		var sprite = Sprite2D.new()
 		sprite.texture = item_sprites[item]
 		sprite.position.y = 7 - 17 * i
 		sprite.position.x = 10
 		sprite.modulate.a = 0
 		sprite.material = ShaderMaterial.new()
-		sprite.material.set_shader(load("res://shaders/dissolve.shader"))
-		sprite.material.set_shader_param("noiseTexture", load("res://graphics/noise.png")) 
+		sprite.material.set_shader(load("res://shaders/dissolve.gdshader"))
+		sprite.material.set_shader_parameter("noiseTexture", load("res://graphics/noise.png")) 
 		sprites.append({"sprite": sprite, "item": item})
 		$Panel.add_child(sprite)
 		i += 1
@@ -65,7 +65,7 @@ func _process(_delta):
 		$Flash.modulate.a -= $Flash.modulate.a * .2
 		if dissolve_timer != -1 and selected != null:
 			dissolve_timer += .03
-			sprites[selected]["sprite"].material.set_shader_param("dissolveAmount", dissolve_timer)
+			sprites[selected]["sprite"].material.set_shader_parameter("dissolveAmount", dissolve_timer)
 			if dissolve_timer > 1.1:
 				selected = null
 	elif timer != -1:

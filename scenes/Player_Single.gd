@@ -2,7 +2,7 @@ extends NinePatchRect
 
 signal go_back()
 
-export(String) var player_number = "1"
+@export var player_number: String = "1"
 
 var level = 1
 var difficulty = enums.DIFFICULTY.EASY
@@ -39,8 +39,8 @@ func set_timed(timed):
 	do_time = timed
 	if not timed:
 		$Time.visible = false
-		rect_position.x = -33
-		rect_size.x = 102
+		position.x = -33
+		size.x = 102
 
 func start():
 	current_sequence = SEQUENCE.LEVEL

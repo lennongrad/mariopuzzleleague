@@ -10,7 +10,7 @@ func _ready():
 	if randi() % 4 == 0:
 		sliding = true
 		velocity.x -= .2
-		$Sprite.play("sliding")
+		$Sprite2D.play("sliding")
 
 func _process(_delta):
 	if position.y < 224 and not gliding:
@@ -23,20 +23,20 @@ func _process(_delta):
 	
 	if gliding and position.y > 224:
 		gliding = false
-		$Sprite.play("default")
+		$Sprite2D.play("default")
 		position.y = 224
 	
 	if velocity.y > 1.5 + (randi() % 16) * .05 and flying:
 		velocity.y = 0
 		flying = false
 		gliding = true
-		$Sprite.play("glide")
+		$Sprite2D.play("glide")
 	
 	if flying or gliding:
 		velocity.x *= 1.01
 	
 	if not sliding and not flying and not gliding and randi() % 400 == 0:
-		$Sprite.play("flying")
+		$Sprite2D.play("flying")
 		flying = true
 		velocity.y = -3
 	

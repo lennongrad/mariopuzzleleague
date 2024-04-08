@@ -1,6 +1,6 @@
 extends NinePatchRect
 
-onready var container = $Choices/VBoxContainer
+@onready var container = $Choices/VBoxContainer
 
 var next_list
 var next_rect_size
@@ -36,12 +36,12 @@ func set_count(type, p_count):
 
 func _process(_delta):
 	if next_list != null:
-		rect_size.y -= 7
-		if rect_size.y <= 10:
+		size.y -= 7
+		if size.y <= 10:
 			for child in container.get_children():
 				child.free()
 			for element in next_list:
-				var new_choice = load("res://scenes/Choice.tscn").instance()
+				var new_choice = load("res://scenes/Choice.tscn").instantiate()
 				if element.has("show_count"):
 					new_choice.show_count = true
 				new_choice.set_text(element.name)
@@ -59,17 +59,17 @@ func _process(_delta):
 			for type in last_count:
 				set_count(type, last_count[type])
 	if next_rect_size != null:
-		rect_size.y += 7
-		if rect_size.y >= next_rect_size:
-			rect_size.y = next_rect_size
+		size.y += 7
+		if size.y >= next_rect_size:
+			size.y = next_rect_size
 			next_rect_size = null
 	if next_position != null:
-		if next_position < rect_position.y:
-			rect_position.y -= 1
-		if next_position > rect_position.y:
-			rect_position.y += 1
-		if abs(next_position - rect_position.y) < 1:
-			rect_position.y = next_position
+		if next_position < position.y:
+			position.y -= 1
+		if next_position > position.y:
+			position.y += 1
+		if abs(next_position - position.y) < 1:
+			position.y = next_position
 			next_position = null
 	
 	if not is_animating() and next_selection != null:
@@ -77,10 +77,10 @@ func _process(_delta):
 		next_selection = null
 	
 	if $Title/Label.text == "":
-		$Title.rect_scale.x -= $Title.rect_scale.x * .4
+		$Title.scale.x -= $Title.scale.x * .4
 		$AButton.visible = true
 		$ABButton.visible = false
 	else:
-		$Title.rect_scale.x += (1 - $Title.rect_scale.x) * .4
+		$Title.scale.x += (1 - $Title.scale.x) * .4
 		$AButton.visible = false
 		$ABButton.visible = true

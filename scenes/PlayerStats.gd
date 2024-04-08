@@ -2,7 +2,7 @@ extends NinePatchRect
 
 signal go_back()
 
-export(String) var player_number = "1"
+@export var player_number: String = "1"
 
 var level = 1
 var difficulty = enums.DIFFICULTY.EASY

@@ -1,49 +1,38 @@
-[gd_scene load_steps=42 format=2]
+[gd_scene load_steps=41 format=3 uid="uid://bh4bdvcgmwpw"]
 
-[ext_resource path="res://scenes/BlockHolder.tscn" type="PackedScene" id=1]
-[ext_resource path="res://scenes/Board.gd" type="Script" id=2]
-[ext_resource path="res://graphics/colors/red/wall.png" type="Texture" id=3]
-[ext_resource path="res://graphics/loss_palette.png" type="Texture" id=4]
-[ext_resource path="res://graphics/win_palette.png" type="Texture" id=5]
-[ext_resource path="res://graphics/ready.png" type="Texture" id=6]
-[ext_resource path="res://graphics/lose.png" type="Texture" id=7]
-[ext_resource path="res://graphics/ready3.png" type="Texture" id=8]
-[ext_resource path="res://graphics/noise.png" type="Texture" id=9]
-[ext_resource path="res://graphics/win.png" type="Texture" id=10]
-[ext_resource path="res://graphics/characters/lip/portrait.png" type="Texture" id=11]
-[ext_resource path="res://graphics/boos.png" type="Texture" id=12]
-[ext_resource path="res://graphics/star.png" type="Texture" id=13]
-[ext_resource path="res://scenes/ParticlePlay.gd" type="Script" id=14]
-[ext_resource path="res://graphics/a_rematch.png" type="Texture" id=15]
-[ext_resource path="res://graphics/b_back.png" type="Texture" id=16]
-[ext_resource path="res://sounds/shatter.wav" type="AudioStream" id=17]
-[ext_resource path="res://sounds/start_tick.wav" type="AudioStream" id=18]
-[ext_resource path="res://sounds/kick_off.wav" type="AudioStream" id=19]
-[ext_resource path="res://sounds/clap.wav" type="AudioStream" id=20]
-[ext_resource path="res://sounds/spin.wav" type="AudioStream" id=21]
+[ext_resource type="PackedScene" uid="uid://c3vi51o2ahmy1" path="res://scenes/BlockHolder.tscn" id="1"]
+[ext_resource type="Script" path="res://scenes/Board.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://xbh8ldw3hs0l" path="res://graphics/colors/red/wall.png" id="3"]
+[ext_resource type="Texture2D" uid="uid://bmjyk1cmror4r" path="res://graphics/loss_palette.png" id="4"]
+[ext_resource type="Texture2D" uid="uid://bf8w0hfhvurxt" path="res://graphics/win_palette.png" id="5"]
+[ext_resource type="Texture2D" uid="uid://ccdakqupbmsgu" path="res://graphics/ready.png" id="6"]
+[ext_resource type="Texture2D" uid="uid://dl4rqkk8g1nks" path="res://graphics/lose.png" id="7"]
+[ext_resource type="Texture2D" uid="uid://ryj3dqd7t63r" path="res://graphics/ready3.png" id="8"]
+[ext_resource type="Texture2D" uid="uid://b30hgalc0fsj3" path="res://graphics/noise.png" id="9"]
+[ext_resource type="Texture2D" uid="uid://chhfw5vsgja5a" path="res://graphics/win.png" id="10"]
+[ext_resource type="Texture2D" uid="uid://mhsbdxn1wld1" path="res://graphics/characters/lip/portrait.png" id="11"]
+[ext_resource type="Texture2D" uid="uid://c4j081hrvijem" path="res://graphics/boos.png" id="12"]
+[ext_resource type="Texture2D" uid="uid://my8sg5jg6rph" path="res://graphics/star.png" id="13"]
+[ext_resource type="Script" path="res://scenes/ParticlePlay.gd" id="14"]
+[ext_resource type="Texture2D" uid="uid://cvaa3ihw401oj" path="res://graphics/a_rematch.png" id="15"]
+[ext_resource type="Texture2D" uid="uid://cubxyufanfgpa" path="res://graphics/b_back.png" id="16"]
+[ext_resource type="AudioStream" uid="uid://dc6rbnenu2gvi" path="res://sounds/shatter.wav" id="17"]
+[ext_resource type="AudioStream" uid="uid://bwbnfnok7i665" path="res://sounds/start_tick.wav" id="18"]
+[ext_resource type="AudioStream" uid="uid://cr5hyd3c5pp8k" path="res://sounds/kick_off.wav" id="19"]
+[ext_resource type="AudioStream" uid="uid://b4r6fhfncolsq" path="res://sounds/clap.wav" id="20"]
+[ext_resource type="AudioStream" uid="uid://dstq6aoqcqgqr" path="res://sounds/spin.wav" id="21"]
 
-[sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0, 0, 0, 0.568627 )
+[sub_resource type="StyleBoxFlat" id="1"]
+bg_color = Color(0, 0, 0, 0.568627)
 
-[sub_resource type="ParticlesMaterial" id=2]
+[sub_resource type="ParticleProcessMaterial" id="2"]
 emission_shape = 2
-emission_box_extents = Vector3( 100, 5, 1 )
-flag_disable_z = true
-direction = Vector3( 0, 5, 0 )
+emission_sphere_radius = 1.0
+direction = Vector3(0, 5, 0)
 spread = 9.12
-gravity = Vector3( 0, 0, 0 )
-initial_velocity = 300.0
-initial_velocity_random = 1.0
-orbit_velocity = 0.0
-orbit_velocity_random = 0.0
-angle = 20.0
-angle_random = 1.0
-scale = 0.3
-scale_random = 0.13
-hue_variation = 1.0
-hue_variation_random = 1.0
+gravity = Vector3(0, 0, 0)
 
-[sub_resource type="Shader" id=3]
+[sub_resource type="Shader" id="3"]
 code = "shader_type canvas_item;
 render_mode blend_mix;
 
@@ -76,13 +65,12 @@ void fragment() {
         COLOR = color;
     }   
 }"
-custom_defines = ""
 
-[sub_resource type="ShaderMaterial" id=4]
-shader = SubResource( 3 )
-shader_param/base_palette = ExtResource( 5 )
+[sub_resource type="ShaderMaterial" id="4"]
+shader = SubResource("3")
+shader_parameter/base_palette = ExtResource("5")
 
-[sub_resource type="Shader" id=5]
+[sub_resource type="Shader" id="5"]
 code = "shader_type canvas_item;
 render_mode blend_mix;
 
@@ -115,13 +103,12 @@ void fragment() {
         COLOR = color;
     }   
 }"
-custom_defines = ""
 
-[sub_resource type="ShaderMaterial" id=6]
-shader = SubResource( 5 )
-shader_param/base_palette = ExtResource( 4 )
+[sub_resource type="ShaderMaterial" id="6"]
+shader = SubResource("5")
+shader_parameter/base_palette = ExtResource("4")
 
-[sub_resource type="Shader" id=7]
+[sub_resource type="Shader" id="7"]
 code = "shader_type canvas_item;
 uniform sampler2D noiseTexture;
 uniform bool active;
@@ -139,190 +126,183 @@ void fragment()
 		COLOR.a = 0.0;
 	}
 }"
-custom_defines = ""
 
-[sub_resource type="ShaderMaterial" id=8]
-shader = SubResource( 7 )
-shader_param/active = true
-shader_param/noiseTexture = ExtResource( 9 )
+[sub_resource type="ShaderMaterial" id="8"]
+shader = SubResource("7")
+shader_parameter/active = true
+shader_parameter/noiseTexture = ExtResource("9")
 
-[sub_resource type="CanvasItemMaterial" id=9]
+[sub_resource type="CanvasItemMaterial" id="9"]
 particles_animation = true
 particles_anim_h_frames = 3
 particles_anim_v_frames = 1
 particles_anim_loop = false
 
-[sub_resource type="Gradient" id=10]
-offsets = PoolRealArray( 0, 0.158333, 0.816667, 1 )
-colors = PoolColorArray( 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 )
+[sub_resource type="Gradient" id="Gradient_deu81"]
+colors = PackedColorArray(1, 1, 1, 0.568627, 1, 1, 1, 0)
 
-[sub_resource type="GradientTexture" id=11]
-gradient = SubResource( 10 )
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_6oiia"]
+gradient = SubResource("Gradient_deu81")
 
-[sub_resource type="ParticlesMaterial" id=12]
+[sub_resource type="ParticleProcessMaterial" id="12"]
 lifetime_randomness = 0.05
-emission_shape = 2
-emission_box_extents = Vector3( 40, 90, 1 )
-flag_disable_z = true
-direction = Vector3( 0, 1, 0 )
+emission_shape = 3
+emission_box_extents = Vector3(39.005, 90, 1)
+direction = Vector3(0, 1, 0)
 spread = 180.0
-gravity = Vector3( 0, 0, 0 )
-initial_velocity = 6.0
-initial_velocity_random = 1.0
-orbit_velocity = 0.0
-orbit_velocity_random = 0.0
-color_ramp = SubResource( 11 )
-anim_offset = 1.0
-anim_offset_random = 1.0
+gravity = Vector3(0, 0, 0)
+color_ramp = SubResource("GradientTexture1D_6oiia")
 
-[sub_resource type="CanvasItemMaterial" id=13]
+[sub_resource type="CanvasItemMaterial" id="13"]
 blend_mode = 1
 
-[sub_resource type="Gradient" id=14]
-offsets = PoolRealArray( 0, 0.741667 )
-colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 0 )
+[sub_resource type="Gradient" id="Gradient_lxcgb"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
-[sub_resource type="GradientTexture" id=15]
-gradient = SubResource( 14 )
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_aakfm"]
+gradient = SubResource("Gradient_lxcgb")
 
-[sub_resource type="ParticlesMaterial" id=16]
-emission_shape = 2
-emission_box_extents = Vector3( 100, 5, 1 )
-flag_disable_z = true
-direction = Vector3( 0, 5, 0 )
-spread = 15.95
-gravity = Vector3( 0, 0, 0 )
-initial_velocity = 300.0
-initial_velocity_random = 0.5
-angular_velocity = 109.37
-orbit_velocity = 0.01
-orbit_velocity_random = 0.0
-angle = 20.0
-angle_random = 1.0
-scale = 0.6
-scale_random = 0.4
-color_ramp = SubResource( 15 )
+[sub_resource type="ParticleProcessMaterial" id="16"]
+emission_shape = 3
+emission_box_extents = Vector3(100, 11.05, 1)
+direction = Vector3(0, 1, 0)
+spread = 32.651
+initial_velocity_min = 20.0
+initial_velocity_max = 40.0
+gravity = Vector3(0, 40, 0)
+color_ramp = SubResource("GradientTexture1D_aakfm")
 
-[sub_resource type="StreamTexture" id=17]
-load_path = "res://.import/star.png-19e2a8935edef1994254d9cf64a4c2d9.stex"
+[sub_resource type="AudioStreamRandomizer" id="18"]
+random_pitch = 1.4
+streams_count = 1
+stream_0/stream = ExtResource("17")
+stream_0/weight = 1.0
 
-[sub_resource type="AudioStreamRandomPitch" id=18]
-audio_stream = ExtResource( 17 )
-random_pitch = 1.2
+[sub_resource type="AudioStreamRandomizer" id="19"]
+streams_count = 1
+stream_0/stream = ExtResource("20")
+stream_0/weight = 1.0
 
-[sub_resource type="AudioStreamRandomPitch" id=19]
-audio_stream = ExtResource( 20 )
-
-[sub_resource type="AudioStreamRandomPitch" id=20]
-audio_stream = ExtResource( 21 )
+[sub_resource type="AudioStreamRandomizer" id="20"]
+random_pitch = 2.0
+streams_count = 1
+stream_0/stream = ExtResource("21")
+stream_0/weight = 1.0
 
 [node name="Board" type="Panel"]
+texture_filter = 1
+clip_contents = true
+anchors_preset = -1
 anchor_right = 0.375
 anchor_bottom = 0.902
-margin_right = -7.62939e-06
-margin_bottom = -0.0480194
-rect_clip_content = true
-custom_styles/panel = SubResource( 1 )
-script = ExtResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+offset_bottom = -0.0480194
+theme_override_styles/panel = SubResource("1")
+script = ExtResource("2")
 
-[node name="Portrait" type="Sprite" parent="."]
-position = Vector2( 48, 96 )
-texture = ExtResource( 11 )
+[node name="Portrait" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.231373)
+texture_filter = 1
+position = Vector2(48, 96)
+texture = ExtResource("11")
 
-[node name="WinConfetti" type="Particles2D" parent="."]
-position = Vector2( 47.6758, -10.5946 )
+[node name="WinConfetti" type="GPUParticles2D" parent="."]
+texture_filter = 1
+position = Vector2(47.6758, -10.5946)
 emitting = false
 amount = 120
+process_material = SubResource("2")
+texture = ExtResource("13")
 lifetime = 4.0
-process_material = SubResource( 2 )
-texture = ExtResource( 13 )
 
 [node name="Wall" type="Node2D" parent="."]
-position = Vector2( 48, 324 )
+position = Vector2(48, 324)
 
-[node name="BlockHolder" parent="Wall" instance=ExtResource( 1 )]
-modulate = Color( 1, 1, 1, 0 )
-position = Vector2( -48, -324 )
+[node name="BlockHolder" parent="Wall" instance=ExtResource("1")]
+modulate = Color(1, 1, 1, 0)
+texture_filter = 1
+position = Vector2(-48, -324)
 
-[node name="Win" type="Sprite" parent="Wall"]
+[node name="Win" type="Sprite2D" parent="Wall"]
 visible = false
-material = SubResource( 4 )
-position = Vector2( 0, -304 )
-texture = ExtResource( 10 )
+material = SubResource("4")
+position = Vector2(0, -304)
+texture = ExtResource("10")
 
-[node name="Loss" type="Sprite" parent="Wall"]
+[node name="Loss" type="Sprite2D" parent="Wall"]
 visible = false
-material = SubResource( 6 )
-position = Vector2( 0, -304 )
-texture = ExtResource( 7 )
+material = SubResource("6")
+position = Vector2(0, -304)
+texture = ExtResource("7")
 
-[node name="Wall" type="Sprite" parent="Wall"]
-texture = ExtResource( 3 )
+[node name="Wall" type="Sprite2D" parent="Wall"]
+texture = ExtResource("3")
 
-[node name="A" type="Sprite" parent="Wall"]
-position = Vector2( -110, -157.206 )
-texture = ExtResource( 15 )
+[node name="A" type="Sprite2D" parent="Wall"]
+position = Vector2(-110, -157.206)
+texture = ExtResource("15")
 
-[node name="B" type="Sprite" parent="Wall"]
-position = Vector2( 91, -142 )
-texture = ExtResource( 16 )
+[node name="B" type="Sprite2D" parent="Wall"]
+position = Vector2(91, -142)
+texture = ExtResource("16")
 
-[node name="Ready" type="Sprite" parent="."]
-position = Vector2( -42.7027, 76 )
-texture = ExtResource( 6 )
+[node name="Ready" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(-42.7027, 76)
+texture = ExtResource("6")
 
-[node name="CountDown" type="Sprite" parent="."]
-position = Vector2( -42.7027, 97 )
-texture = ExtResource( 8 )
+[node name="CountDown" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(-42.7027, 97)
+texture = ExtResource("8")
 
-[node name="BooSmoke" type="Sprite" parent="."]
-modulate = Color( 1, 1, 1, 0 )
-material = SubResource( 8 )
-position = Vector2( 48, 96 )
-texture = ExtResource( 11 )
+[node name="BooSmoke" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0)
+texture_filter = 1
+material = SubResource("8")
+position = Vector2(48, 96)
+texture = ExtResource("11")
 
-[node name="BooParticles" type="Particles2D" parent="."]
-material = SubResource( 9 )
-position = Vector2( 47.4041, 112.174 )
+[node name="BooParticles" type="GPUParticles2D" parent="."]
+texture_filter = 1
+material = SubResource("9")
+position = Vector2(47.4041, 112.174)
 emitting = false
 amount = 16
+process_material = SubResource("12")
+texture = ExtResource("12")
 lifetime = 3.0
-process_material = SubResource( 12 )
-texture = ExtResource( 12 )
 
-[node name="StarActivated" type="Particles2D" parent="."]
-material = SubResource( 13 )
-position = Vector2( 47.6758, -10.5946 )
+[node name="StarActivated" type="GPUParticles2D" parent="."]
+texture_filter = 1
+material = SubResource("13")
+position = Vector2(47.6758, -10.5946)
 emitting = false
-amount = 240
-process_material = SubResource( 16 )
-texture = SubResource( 17 )
-script = ExtResource( 14 )
+amount = 100
+process_material = SubResource("16")
+texture = ExtResource("13")
+script = ExtResource("14")
 
 [node name="MatchBroke" type="AudioStreamPlayer" parent="."]
-stream = SubResource( 18 )
+stream = SubResource("18")
 volume_db = 15.0
-bus = "Sound Effects"
+bus = &"Sound Effects"
 
 [node name="StartTick" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 18 )
+stream = ExtResource("18")
 volume_db = 10.0
-bus = "Sound Effects"
+bus = &"Sound Effects"
 
 [node name="KickOff" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 19 )
+stream = ExtResource("19")
 volume_db = 15.0
-bus = "Sound Effects"
+bus = &"Sound Effects"
 
 [node name="Clap" type="AudioStreamPlayer" parent="."]
-stream = SubResource( 19 )
+stream = SubResource("19")
 volume_db = 10.0
-bus = "Sound Effects"
+bus = &"Sound Effects"
 
 [node name="Spin" type="AudioStreamPlayer" parent="."]
-stream = SubResource( 20 )
+stream = SubResource("20")
 volume_db = 12.0
-bus = "Sound Effects"
+bus = &"Sound Effects"

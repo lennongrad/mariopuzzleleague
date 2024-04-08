@@ -1,31 +1,31 @@
-[gd_scene load_steps=42 format=2]
+[gd_scene load_steps=42 format=3 uid="uid://dd4kjgle0d68q"]
 
-[ext_resource path="res://scenes/Stats_Single.gd" type="Script" id=1]
-[ext_resource path="res://scenes/Text.tscn" type="PackedScene" id=2]
-[ext_resource path="res://graphics/css_back.png" type="Texture" id=3]
-[ext_resource path="res://graphics/1p_select.png" type="Texture" id=4]
-[ext_resource path="res://graphics/2p_select.png" type="Texture" id=5]
-[ext_resource path="res://scenes/CharacterSelect.gd" type="Script" id=6]
-[ext_resource path="res://scenes/CSS.gd" type="Script" id=7]
-[ext_resource path="res://scenes/Cursor.gd" type="Script" id=8]
-[ext_resource path="res://graphics/colors/black/css_ridge.png" type="Texture" id=9]
-[ext_resource path="res://graphics/b_back.png" type="Texture" id=10]
-[ext_resource path="res://graphics/colors/red/player1.png" type="Texture" id=11]
-[ext_resource path="res://graphics/colors/red/level.png" type="Texture" id=12]
-[ext_resource path="res://graphics/x_color.png" type="Texture" id=13]
-[ext_resource path="res://graphics/colors/red/css_ridge.png" type="Texture" id=14]
-[ext_resource path="res://graphics/a_ok.png" type="Texture" id=15]
-[ext_resource path="res://scenes/Stats.gd" type="Script" id=16]
-[ext_resource path="res://graphics/colors/black/pointer.png" type="Texture" id=17]
-[ext_resource path="res://graphics/pointer.png" type="Texture" id=18]
-[ext_resource path="res://scenes/PlayerStats.gd" type="Script" id=19]
-[ext_resource path="res://graphics/colors/blue/medium.png" type="Texture" id=20]
-[ext_resource path="res://scenes/SideCursor.gd" type="Script" id=21]
-[ext_resource path="res://graphics/a_button.png" type="Texture" id=22]
-[ext_resource path="res://scenes/Player_Single.gd" type="Script" id=23]
-[ext_resource path="res://graphics/easy.png" type="Texture" id=24]
+[ext_resource type="Script" path="res://scenes/Stats_Single.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://cdmgd4h1a7gb7" path="res://scenes/Text.tscn" id="2"]
+[ext_resource type="Texture2D" uid="uid://cd6b0k2xaa5w0" path="res://graphics/css_back.png" id="3"]
+[ext_resource type="Texture2D" uid="uid://gq2eixfge4mo" path="res://graphics/1p_select.png" id="4"]
+[ext_resource type="Texture2D" uid="uid://ce0o081s7kjvq" path="res://graphics/2p_select.png" id="5"]
+[ext_resource type="Script" path="res://scenes/CharacterSelect.gd" id="6"]
+[ext_resource type="Script" path="res://scenes/CSS.gd" id="7"]
+[ext_resource type="Script" path="res://scenes/Cursor.gd" id="8"]
+[ext_resource type="Texture2D" uid="uid://dfsrl5ssyvqqm" path="res://graphics/colors/black/css_ridge.png" id="9"]
+[ext_resource type="Texture2D" uid="uid://cubxyufanfgpa" path="res://graphics/b_back.png" id="10"]
+[ext_resource type="Texture2D" uid="uid://dekblepud8isx" path="res://graphics/colors/red/player1.png" id="11"]
+[ext_resource type="Texture2D" uid="uid://7tg10nb8va2d" path="res://graphics/colors/red/level.png" id="12"]
+[ext_resource type="Texture2D" uid="uid://cna3r4wbrb4kv" path="res://graphics/x_color.png" id="13"]
+[ext_resource type="Texture2D" uid="uid://vxyviytwu85a" path="res://graphics/colors/red/css_ridge.png" id="14"]
+[ext_resource type="Texture2D" uid="uid://4wa1ow4o4txr" path="res://graphics/a_ok.png" id="15"]
+[ext_resource type="Script" path="res://scenes/Stats.gd" id="16"]
+[ext_resource type="Texture2D" uid="uid://ddchehxjo7l51" path="res://graphics/colors/black/pointer.png" id="17"]
+[ext_resource type="Texture2D" uid="uid://be3dmmmmxruaa" path="res://graphics/pointer.png" id="18"]
+[ext_resource type="Script" path="res://scenes/PlayerStats.gd" id="19"]
+[ext_resource type="Texture2D" uid="uid://cd0du31dce86t" path="res://graphics/colors/blue/medium.png" id="20"]
+[ext_resource type="Script" path="res://scenes/SideCursor.gd" id="21"]
+[ext_resource type="Texture2D" uid="uid://b8yqil1b8hnev" path="res://graphics/a_button.png" id="22"]
+[ext_resource type="Script" path="res://scenes/Player_Single.gd" id="23"]
+[ext_resource type="Texture2D" uid="uid://0kp5o0j5c14v" path="res://graphics/easy.png" id="24"]
 
-[sub_resource type="Shader" id=1]
+[sub_resource type="Shader" id="1"]
 code = "shader_type canvas_item;
 
 void fragment(){
@@ -35,567 +35,553 @@ void fragment(){
     vec4 c = texture(TEXTURE, newuv);
     COLOR = c;
 }"
-custom_defines = ""
 
-[sub_resource type="ShaderMaterial" id=2]
-shader = SubResource( 1 )
+[sub_resource type="ShaderMaterial" id="2"]
+shader = SubResource("1")
 
-[sub_resource type="AtlasTexture" id=3]
-atlas = ExtResource( 4 )
-region = Rect2( 0, 0, 36, 36 )
+[sub_resource type="AtlasTexture" id="3"]
+atlas = ExtResource("4")
+region = Rect2(0, 0, 36, 36)
 
-[sub_resource type="AtlasTexture" id=4]
-atlas = ExtResource( 4 )
-region = Rect2( 36, 0, 36, 36 )
+[sub_resource type="AtlasTexture" id="4"]
+atlas = ExtResource("4")
+region = Rect2(36, 0, 36, 36)
 
-[sub_resource type="SpriteFrames" id=5]
-animations = [ {
-"frames": [ SubResource( 3 ), SubResource( 4 ) ],
+[sub_resource type="SpriteFrames" id="5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("3")
+}, {
+"duration": 1.0,
+"texture": SubResource("4")
+}],
 "loop": true,
-"name": "default",
+"name": &"default",
 "speed": 5.0
-} ]
+}]
 
-[sub_resource type="AtlasTexture" id=6]
-atlas = ExtResource( 5 )
-region = Rect2( 36, 0, 36, 36 )
+[sub_resource type="AtlasTexture" id="6"]
+atlas = ExtResource("5")
+region = Rect2(36, 0, 36, 36)
 
-[sub_resource type="AtlasTexture" id=7]
-atlas = ExtResource( 5 )
-region = Rect2( 0, 0, 36, 36 )
+[sub_resource type="AtlasTexture" id="7"]
+atlas = ExtResource("5")
+region = Rect2(0, 0, 36, 36)
 
-[sub_resource type="SpriteFrames" id=8]
-animations = [ {
-"frames": [ SubResource( 6 ), SubResource( 7 ) ],
+[sub_resource type="SpriteFrames" id="8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("6")
+}, {
+"duration": 1.0,
+"texture": SubResource("7")
+}],
 "loop": true,
-"name": "default",
+"name": &"default",
 "speed": 5.0
-} ]
+}]
 
-[sub_resource type="AtlasTexture" id=9]
-atlas = ExtResource( 18 )
-region = Rect2( 0, 0, 8, 8 )
+[sub_resource type="AtlasTexture" id="9"]
+atlas = ExtResource("18")
+region = Rect2(0, 0, 8, 8)
 
-[sub_resource type="AtlasTexture" id=10]
-atlas = ExtResource( 18 )
-region = Rect2( 8, 0, 8, 8 )
+[sub_resource type="AtlasTexture" id="10"]
+atlas = ExtResource("18")
+region = Rect2(8, 0, 8, 8)
 
-[sub_resource type="SpriteFrames" id=11]
-animations = [ {
-"frames": [ SubResource( 9 ), SubResource( 10 ) ],
+[sub_resource type="SpriteFrames" id="11"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("9")
+}, {
+"duration": 1.0,
+"texture": SubResource("10")
+}],
 "loop": false,
-"name": "default",
+"name": &"default",
 "speed": 3.0
-} ]
+}]
 
-[sub_resource type="AtlasTexture" id=12]
-atlas = ExtResource( 22 )
-region = Rect2( 0, 0, 11, 12 )
+[sub_resource type="AtlasTexture" id="12"]
+atlas = ExtResource("22")
+region = Rect2(0, 0, 11, 12)
 
-[sub_resource type="AtlasTexture" id=13]
-atlas = ExtResource( 22 )
-region = Rect2( 11, 0, 11, 12 )
+[sub_resource type="AtlasTexture" id="13"]
+atlas = ExtResource("22")
+region = Rect2(11, 0, 11, 12)
 
-[sub_resource type="SpriteFrames" id=14]
-animations = [ {
-"frames": [ SubResource( 12 ), SubResource( 13 ) ],
+[sub_resource type="SpriteFrames" id="14"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("12")
+}, {
+"duration": 1.0,
+"texture": SubResource("13")
+}],
 "loop": true,
-"name": "default",
+"name": &"default",
 "speed": 2.0
-} ]
+}]
 
-[sub_resource type="AtlasTexture" id=15]
-atlas = ExtResource( 17 )
-region = Rect2( 0, 0, 8, 8 )
+[sub_resource type="AtlasTexture" id="15"]
+atlas = ExtResource("17")
+region = Rect2(0, 0, 8, 8)
 
-[sub_resource type="AtlasTexture" id=16]
-atlas = ExtResource( 17 )
-region = Rect2( 8, 0, 8, 8 )
+[sub_resource type="AtlasTexture" id="16"]
+atlas = ExtResource("17")
+region = Rect2(8, 0, 8, 8)
 
-[sub_resource type="SpriteFrames" id=17]
-animations = [ {
-"frames": [ SubResource( 15 ), SubResource( 16 ) ],
+[sub_resource type="SpriteFrames" id="17"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("15")
+}, {
+"duration": 1.0,
+"texture": SubResource("16")
+}],
 "loop": true,
-"name": "default",
+"name": &"default",
 "speed": 3.0
-} ]
+}]
 
 [node name="CSS" type="Control"]
-material = SubResource( 2 )
+texture_filter = 1
+material = SubResource("2")
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = ExtResource( 7 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("7")
 
 [node name="Buttons" type="HBoxContainer" parent="."]
-margin_left = 88.0
-margin_top = 3.0
-margin_right = 237.0
-margin_bottom = 43.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+texture_filter = 1
+layout_mode = 0
+offset_left = 88.0
+offset_top = 3.0
+offset_right = 237.0
+offset_bottom = 15.0
 
 [node name="A" type="TextureRect" parent="Buttons"]
-margin_right = 36.0
-margin_bottom = 40.0
-texture = ExtResource( 15 )
+texture_filter = 1
+layout_mode = 2
+texture = ExtResource("15")
 
 [node name="B" type="TextureRect" parent="Buttons"]
-margin_left = 40.0
-margin_right = 89.0
-margin_bottom = 40.0
-texture = ExtResource( 10 )
+texture_filter = 1
+layout_mode = 2
+texture = ExtResource("10")
 
 [node name="X" type="TextureRect" parent="Buttons"]
-margin_left = 93.0
-margin_right = 149.0
-margin_bottom = 40.0
-texture = ExtResource( 13 )
+texture_filter = 1
+layout_mode = 2
+texture = ExtResource("13")
 
 [node name="CharacterSelect" type="NinePatchRect" parent="."]
-margin_left = 17.0
-margin_top = 17.0
-margin_right = 237.0
-margin_bottom = 156.0
-texture = ExtResource( 9 )
+texture_filter = 1
+layout_mode = 0
+offset_left = 17.0
+offset_top = 17.0
+offset_right = 237.0
+offset_bottom = 156.0
+texture = ExtResource("9")
 patch_margin_left = 5
 patch_margin_top = 5
 patch_margin_right = 5
 patch_margin_bottom = 5
 axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
-script = ExtResource( 6 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+script = ExtResource("6")
 
 [node name="TextureRect" type="TextureRect" parent="CharacterSelect"]
 show_behind_parent = true
+texture_filter = 1
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 2.0
-margin_top = 2.0
-margin_right = -2.0
-margin_bottom = -3.0
-texture = ExtResource( 3 )
-stretch_mode = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
+offset_left = 2.0
+offset_top = 2.0
+offset_right = -2.0
+offset_bottom = -3.0
+texture = ExtResource("3")
+stretch_mode = 1
 
 [node name="CharacterIcons" type="Node2D" parent="CharacterSelect"]
+texture_filter = 1
 
-[node name="Cursor1" type="AnimatedSprite" parent="CharacterSelect"]
-position = Vector2( 25, 25 )
+[node name="Cursor1" type="AnimatedSprite2D" parent="CharacterSelect"]
 z_index = 1
-frames = SubResource( 5 )
-playing = true
-script = ExtResource( 8 )
+texture_filter = 1
+position = Vector2(25, 25)
+sprite_frames = SubResource("5")
+script = ExtResource("8")
 
-[node name="Cursor2" type="AnimatedSprite" parent="CharacterSelect"]
-position = Vector2( 25, 25 )
+[node name="Cursor2" type="AnimatedSprite2D" parent="CharacterSelect"]
 z_index = 2
-frames = SubResource( 8 )
+texture_filter = 1
+position = Vector2(25, 25)
+sprite_frames = SubResource("8")
 frame = 1
-playing = true
-script = ExtResource( 8 )
-cursor_number = "2"
+script = ExtResource("8")
 
 [node name="Stats" type="Control" parent="."]
 visible = false
+anchors_preset = 0
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -20.0
-margin_top = -38.0
-margin_right = 20.0
-margin_bottom = 2.0
-script = ExtResource( 16 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+offset_left = -20.0
+offset_top = -38.0
+offset_right = 20.0
+offset_bottom = 2.0
+script = ExtResource("16")
 
 [node name="Player1" type="NinePatchRect" parent="Stats"]
-margin_left = -91.0
-margin_top = -25.0
-margin_right = 17.0
-margin_bottom = 34.0
-texture = ExtResource( 14 )
+layout_mode = 0
+offset_left = -91.0
+offset_top = -25.0
+offset_right = 17.0
+offset_bottom = 34.0
+texture = ExtResource("14")
 patch_margin_left = 5
 patch_margin_top = 5
 patch_margin_right = 5
 patch_margin_bottom = 5
 axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
-script = ExtResource( 19 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+script = ExtResource("19")
 
 [node name="TextureRect" type="TextureRect" parent="Stats/Player1"]
 show_behind_parent = true
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 2.0
-margin_top = 2.0
-margin_right = -2.0
-margin_bottom = -3.0
-texture = ExtResource( 3 )
+offset_left = 2.0
+offset_top = 2.0
+offset_right = -2.0
+offset_bottom = -3.0
+texture = ExtResource("3")
 stretch_mode = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="PlayerTitle" type="TextureRect" parent="Stats/Player1"]
+layout_mode = 0
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -27.5
-margin_top = 10.0
-margin_right = 27.5
-margin_bottom = 21.0
-texture = ExtResource( 11 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+offset_left = -27.5
+offset_top = 10.0
+offset_right = 27.5
+offset_bottom = 21.0
+texture = ExtResource("11")
 
 [node name="Level" type="TextureRect" parent="Stats/Player1"]
-margin_left = 11.0
-margin_top = 26.0
-margin_right = 46.0
-margin_bottom = 37.0
-texture = ExtResource( 12 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+layout_mode = 0
+offset_left = 11.0
+offset_top = 26.0
+offset_right = 46.0
+offset_bottom = 37.0
+texture = ExtResource("12")
 
-[node name="Text" parent="Stats/Player1/Level" instance=ExtResource( 2 )]
-position = Vector2( 13, 17 )
+[node name="Text" parent="Stats/Player1/Level" instance=ExtResource("2")]
+position = Vector2(13, 17)
 text = "09"
 font = "red"
 separation = 8
 
-[node name="Left" type="AnimatedSprite" parent="Stats/Player1/Level"]
+[node name="Left" type="AnimatedSprite2D" parent="Stats/Player1/Level"]
 visible = false
-position = Vector2( 4, 17 )
+position = Vector2(4, 17)
 rotation = -1.5708
-frames = SubResource( 11 )
+sprite_frames = SubResource("11")
 frame = 1
-playing = true
-script = ExtResource( 21 )
+script = ExtResource("21")
 
-[node name="Right" type="AnimatedSprite" parent="Stats/Player1/Level"]
+[node name="Right" type="AnimatedSprite2D" parent="Stats/Player1/Level"]
 visible = false
-position = Vector2( 30, 17 )
+position = Vector2(30, 17)
 rotation = 1.5708
-frames = SubResource( 11 )
+sprite_frames = SubResource("11")
 frame = 1
-playing = true
-script = ExtResource( 21 )
+script = ExtResource("21")
 
 [node name="Difficulty" type="Control" parent="Stats/Player1"]
-self_modulate = Color( 1, 1, 1, 0 )
-margin_left = 43.0
-margin_top = 28.0
-margin_right = 43.0
-margin_bottom = 39.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+self_modulate = Color(1, 1, 1, 0)
+anchors_preset = 0
+offset_left = 43.0
+offset_top = 28.0
+offset_right = 43.0
+offset_bottom = 39.0
 
-[node name="Up" type="AnimatedSprite" parent="Stats/Player1/Difficulty"]
-position = Vector2( 29, 1 )
-frames = SubResource( 11 )
+[node name="Up" type="AnimatedSprite2D" parent="Stats/Player1/Difficulty"]
+position = Vector2(29, 1)
+sprite_frames = SubResource("11")
 frame = 1
-playing = true
-script = ExtResource( 21 )
+script = ExtResource("21")
 
-[node name="Down" type="AnimatedSprite" parent="Stats/Player1/Difficulty"]
-position = Vector2( 29, 20 )
+[node name="Down" type="AnimatedSprite2D" parent="Stats/Player1/Difficulty"]
+position = Vector2(29, 20)
 rotation = 3.14159
-frames = SubResource( 11 )
+sprite_frames = SubResource("11")
 frame = 1
-playing = true
-script = ExtResource( 21 )
+script = ExtResource("21")
 
-[node name="Text" type="Sprite" parent="Stats/Player1/Difficulty"]
-position = Vector2( 30, 10 )
-texture = ExtResource( 20 )
+[node name="Text" type="Sprite2D" parent="Stats/Player1/Difficulty"]
+position = Vector2(30, 10)
+texture = ExtResource("20")
 
-[node name="AButton" type="AnimatedSprite" parent="Stats/Player1"]
+[node name="AButton" type="AnimatedSprite2D" parent="Stats/Player1"]
 visible = false
-position = Vector2( 99, 51 )
-frames = SubResource( 14 )
-playing = true
+position = Vector2(99, 51)
+sprite_frames = SubResource("14")
 
 [node name="Player2" type="NinePatchRect" parent="Stats"]
-margin_left = 21.0
-margin_top = -25.0
-margin_right = 129.0
-margin_bottom = 34.0
-texture = ExtResource( 14 )
+layout_mode = 0
+offset_left = 21.0
+offset_top = -25.0
+offset_right = 129.0
+offset_bottom = 34.0
+texture = ExtResource("14")
 patch_margin_left = 5
 patch_margin_top = 5
 patch_margin_right = 5
 patch_margin_bottom = 5
 axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
-script = ExtResource( 19 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+script = ExtResource("19")
 player_number = "2"
 
 [node name="TextureRect" type="TextureRect" parent="Stats/Player2"]
 show_behind_parent = true
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 2.0
-margin_top = 2.0
-margin_right = -2.0
-margin_bottom = -3.0
-texture = ExtResource( 3 )
+offset_left = 2.0
+offset_top = 2.0
+offset_right = -2.0
+offset_bottom = -3.0
+texture = ExtResource("3")
 stretch_mode = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="PlayerTitle" type="TextureRect" parent="Stats/Player2"]
+layout_mode = 0
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -27.5
-margin_top = 10.0
-margin_right = 27.5
-margin_bottom = 21.0
-texture = ExtResource( 11 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+offset_left = -27.5
+offset_top = 10.0
+offset_right = 27.5
+offset_bottom = 21.0
+texture = ExtResource("11")
 
 [node name="Level" type="TextureRect" parent="Stats/Player2"]
-margin_left = 11.0
-margin_top = 26.0
-margin_right = 46.0
-margin_bottom = 37.0
-texture = ExtResource( 12 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+layout_mode = 0
+offset_left = 11.0
+offset_top = 26.0
+offset_right = 46.0
+offset_bottom = 37.0
+texture = ExtResource("12")
 
-[node name="Selected" type="AnimatedSprite" parent="Stats/Player2/Level"]
-position = Vector2( 16, -1 )
+[node name="Selected" type="AnimatedSprite2D" parent="Stats/Player2/Level"]
+position = Vector2(16, -1)
 rotation = 3.14159
-frames = SubResource( 17 )
+sprite_frames = SubResource("17")
 frame = 1
-playing = true
 
-[node name="Text" parent="Stats/Player2/Level" instance=ExtResource( 2 )]
-position = Vector2( 13, 17 )
+[node name="Text" parent="Stats/Player2/Level" instance=ExtResource("2")]
+position = Vector2(13, 17)
 text = "09"
 font = "red"
 separation = 8
 
-[node name="Left" type="AnimatedSprite" parent="Stats/Player2/Level"]
+[node name="Left" type="AnimatedSprite2D" parent="Stats/Player2/Level"]
 visible = false
-position = Vector2( 4, 17 )
+position = Vector2(4, 17)
 rotation = -1.5708
-frames = SubResource( 11 )
+sprite_frames = SubResource("11")
 frame = 1
-playing = true
-script = ExtResource( 21 )
+script = ExtResource("21")
 
-[node name="Right" type="AnimatedSprite" parent="Stats/Player2/Level"]
+[node name="Right" type="AnimatedSprite2D" parent="Stats/Player2/Level"]
 visible = false
-position = Vector2( 30, 17 )
+position = Vector2(30, 17)
 rotation = 1.5708
-frames = SubResource( 11 )
+sprite_frames = SubResource("11")
 frame = 1
-playing = true
-script = ExtResource( 21 )
+script = ExtResource("21")
 
 [node name="Difficulty" type="Control" parent="Stats/Player2"]
-self_modulate = Color( 1, 1, 1, 0 )
-margin_left = 43.0
-margin_top = 28.0
-margin_right = 43.0
-margin_bottom = 39.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+self_modulate = Color(1, 1, 1, 0)
+anchors_preset = 0
+offset_left = 43.0
+offset_top = 28.0
+offset_right = 43.0
+offset_bottom = 39.0
 
-[node name="Up" type="AnimatedSprite" parent="Stats/Player2/Difficulty"]
-position = Vector2( 29, 1 )
-frames = SubResource( 11 )
+[node name="Up" type="AnimatedSprite2D" parent="Stats/Player2/Difficulty"]
+position = Vector2(29, 1)
+sprite_frames = SubResource("11")
 frame = 1
-playing = true
-script = ExtResource( 21 )
+script = ExtResource("21")
 
-[node name="Down" type="AnimatedSprite" parent="Stats/Player2/Difficulty"]
-position = Vector2( 29, 20 )
+[node name="Down" type="AnimatedSprite2D" parent="Stats/Player2/Difficulty"]
+position = Vector2(29, 20)
 rotation = 3.14159
-frames = SubResource( 11 )
+sprite_frames = SubResource("11")
 frame = 1
-playing = true
-script = ExtResource( 21 )
+script = ExtResource("21")
 
-[node name="Text" type="Sprite" parent="Stats/Player2/Difficulty"]
-position = Vector2( 30, 10 )
-texture = ExtResource( 20 )
+[node name="Text" type="Sprite2D" parent="Stats/Player2/Difficulty"]
+position = Vector2(30, 10)
+texture = ExtResource("20")
 
-[node name="AButton" type="AnimatedSprite" parent="Stats/Player2"]
+[node name="AButton" type="AnimatedSprite2D" parent="Stats/Player2"]
 visible = false
-position = Vector2( 99, 51 )
-frames = SubResource( 14 )
-playing = true
+position = Vector2(99, 51)
+sprite_frames = SubResource("14")
 
 [node name="Stats_Single" type="Control" parent="."]
+texture_filter = 1
+anchors_preset = 0
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -20.0
-margin_top = -38.0
-margin_right = 20.0
-margin_bottom = 2.0
-script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+offset_left = -20.0
+offset_top = -38.0
+offset_right = 20.0
+offset_bottom = 2.0
+script = ExtResource("1")
 
 [node name="Player_Time" type="NinePatchRect" parent="Stats_Single"]
+texture_filter = 1
+layout_mode = 0
 anchor_left = 0.412
 anchor_right = 0.412
-margin_left = -77.48
-margin_top = -20.0
-margin_right = 77.52
-margin_bottom = 22.0
-texture = ExtResource( 14 )
+offset_left = -77.48
+offset_top = -20.0
+offset_right = 77.52
+offset_bottom = 22.0
+texture = ExtResource("14")
 patch_margin_left = 5
 patch_margin_top = 5
 patch_margin_right = 5
 patch_margin_bottom = 5
 axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
-script = ExtResource( 23 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+script = ExtResource("23")
 
 [node name="TextureRect" type="TextureRect" parent="Stats_Single/Player_Time"]
 show_behind_parent = true
+texture_filter = 1
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 2.0
-margin_top = 2.0
-margin_right = -2.0
-margin_bottom = -3.0
-texture = ExtResource( 3 )
-stretch_mode = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
+offset_left = 2.0
+offset_top = 2.0
+offset_right = -2.0
+offset_bottom = -3.0
+texture = ExtResource("3")
+stretch_mode = 1
 
 [node name="Level" type="TextureRect" parent="Stats_Single/Player_Time"]
-margin_left = 10.0
-margin_top = 10.0
-margin_right = 45.0
-margin_bottom = 21.0
-texture = ExtResource( 12 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+texture_filter = 1
+layout_mode = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 45.0
+offset_bottom = 21.0
+texture = ExtResource("12")
 
-[node name="Text" parent="Stats_Single/Player_Time/Level" instance=ExtResource( 2 )]
-position = Vector2( 13, 17 )
+[node name="Text" parent="Stats_Single/Player_Time/Level" instance=ExtResource("2")]
+position = Vector2(13, 17)
 text = "09"
 font = "red"
 separation = 8
 
-[node name="Left" type="AnimatedSprite" parent="Stats_Single/Player_Time/Level"]
+[node name="Left" type="AnimatedSprite2D" parent="Stats_Single/Player_Time/Level"]
 visible = false
-position = Vector2( 4, 17 )
+position = Vector2(4, 17)
 rotation = -1.5708
-frames = SubResource( 11 )
+sprite_frames = SubResource("11")
 frame = 1
-playing = true
-script = ExtResource( 21 )
+script = ExtResource("21")
 
-[node name="Right" type="AnimatedSprite" parent="Stats_Single/Player_Time/Level"]
+[node name="Right" type="AnimatedSprite2D" parent="Stats_Single/Player_Time/Level"]
 visible = false
-position = Vector2( 30, 17 )
+position = Vector2(30, 17)
 rotation = 1.5708
-frames = SubResource( 11 )
+sprite_frames = SubResource("11")
 frame = 1
-playing = true
-script = ExtResource( 21 )
+script = ExtResource("21")
 
 [node name="Difficulty" type="Control" parent="Stats_Single/Player_Time"]
-self_modulate = Color( 1, 1, 1, 0 )
-margin_left = 43.0
-margin_top = 11.0
-margin_right = 101.0
-margin_bottom = 22.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+self_modulate = Color(1, 1, 1, 0)
+texture_filter = 1
+anchors_preset = 0
+offset_left = 43.0
+offset_top = 11.0
+offset_right = 101.0
+offset_bottom = 22.0
 
-[node name="Up" type="AnimatedSprite" parent="Stats_Single/Player_Time/Difficulty"]
-position = Vector2( 29, 0 )
-frames = SubResource( 11 )
+[node name="Up" type="AnimatedSprite2D" parent="Stats_Single/Player_Time/Difficulty"]
+texture_filter = 1
+position = Vector2(29, 0)
+sprite_frames = SubResource("11")
 frame = 1
-playing = true
-script = ExtResource( 21 )
+script = ExtResource("21")
 
-[node name="Down" type="AnimatedSprite" parent="Stats_Single/Player_Time/Difficulty"]
-position = Vector2( 29, 21 )
+[node name="Down" type="AnimatedSprite2D" parent="Stats_Single/Player_Time/Difficulty"]
+texture_filter = 1
+position = Vector2(29, 21)
 rotation = 3.14159
-frames = SubResource( 11 )
+sprite_frames = SubResource("11")
 frame = 1
-playing = true
-script = ExtResource( 21 )
+script = ExtResource("21")
 
-[node name="Text" type="Sprite" parent="Stats_Single/Player_Time/Difficulty"]
-position = Vector2( 30, 10 )
-texture = ExtResource( 24 )
+[node name="Text" type="Sprite2D" parent="Stats_Single/Player_Time/Difficulty"]
+texture_filter = 1
+position = Vector2(28, 10)
+texture = ExtResource("24")
 
 [node name="Time" type="Control" parent="Stats_Single/Player_Time"]
-self_modulate = Color( 1, 1, 1, 0 )
-margin_left = 94.0
-margin_top = 11.0
-margin_right = 94.0
-margin_bottom = 22.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+self_modulate = Color(1, 1, 1, 0)
+texture_filter = 1
+anchors_preset = 0
+offset_left = 94.0
+offset_top = 11.0
+offset_right = 94.0
+offset_bottom = 22.0
 
-[node name="Up" type="AnimatedSprite" parent="Stats_Single/Player_Time/Time"]
-position = Vector2( 29, 0 )
-frames = SubResource( 11 )
+[node name="Up" type="AnimatedSprite2D" parent="Stats_Single/Player_Time/Time"]
+texture_filter = 1
+position = Vector2(29, 0)
+sprite_frames = SubResource("11")
 frame = 1
-playing = true
-script = ExtResource( 21 )
+script = ExtResource("21")
 
-[node name="Down" type="AnimatedSprite" parent="Stats_Single/Player_Time/Time"]
-position = Vector2( 29, 21 )
+[node name="Down" type="AnimatedSprite2D" parent="Stats_Single/Player_Time/Time"]
+texture_filter = 1
+position = Vector2(29, 21)
 rotation = 3.14159
-frames = SubResource( 11 )
+sprite_frames = SubResource("11")
 frame = 1
-playing = true
-script = ExtResource( 21 )
+script = ExtResource("21")
 
-[node name="Text" parent="Stats_Single/Player_Time/Time" instance=ExtResource( 2 )]
-position = Vector2( 13, 10 )
+[node name="Text" parent="Stats_Single/Player_Time/Time" instance=ExtResource("2")]
+position = Vector2(13, 10)
 text = "00'00"
 separation = 8
 
-[node name="AButton" type="AnimatedSprite" parent="Stats_Single/Player_Time"]
+[node name="AButton" type="AnimatedSprite2D" parent="Stats_Single/Player_Time"]
 visible = false
-position = Vector2( 99, 51 )
-frames = SubResource( 14 )
-playing = true
+position = Vector2(99, 51)
+sprite_frames = SubResource("14")
+
 [connection signal="done" from="CharacterSelect" to="." method="_on_CharacterSelect_done"]
 [connection signal="go_back" from="CharacterSelect" to="." method="_on_CharacterSelect_go_back"]
 [connection signal="done" from="Stats" to="." method="_on_Stats_done"]

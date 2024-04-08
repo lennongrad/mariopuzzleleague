@@ -19,10 +19,10 @@ func _ready():
 	for character in characters_list:
 		var choice_path = "res://graphics/characters/" + character + "/data.tres"
 		characters.append({"data": load(choice_path)})
-	characters.sort_custom(self, "character_comparison")
+	characters.sort_custom(Callable(self, "character_comparison"))
 	
 	for i in range(0, characters.size()):
-		characters[i].node = load("scenes/CharacterIcon.tscn").instance()
+		characters[i].node = load("scenes/CharacterIcon.tscn").instantiate()
 		characters[i].node.position.x = 40 * (i % col_size) + 30
 		characters[i].node.position.y = 40 * floor(float(i) / col_size) + 30
 		characters[i].node.change_character(characters[i].data)
@@ -102,7 +102,7 @@ func tick(p1_input, p2_input, is_ai):
 		if p1_input.a:
 			p1_selected = true
 		if p1_input.b:
-			go_back()
+			do_go_back()
 		$Cursor1.visible = true
 	else:
 		if timer % 8 < 2:
@@ -116,7 +116,7 @@ func tick(p1_input, p2_input, is_ai):
 		emit_signal("done", characters[p1_selection], characters[p2_selection])
 		active = false
 
-func go_back():
+func do_go_back():
 	emit_signal("go_back")
 
 func color_change1(color):

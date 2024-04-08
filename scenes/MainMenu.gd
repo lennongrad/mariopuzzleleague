@@ -38,6 +38,17 @@ var music_volume = 5
 var sound_effects_volume = 5
 
 func _ready():
+	
+	var config = ConfigFile.new()
+	var err = config.load("user://settings.cfg")
+	if err == OK and config.has_section("volume"): 
+		if config.has_section_key("volume", "music"):
+			music_volume = config.get_value("volume", "music")
+			sound_effects_volume = config.get_value("volume", "sfx")
+			$Choices.set_count("SFX", sound_effects_volume)
+			$Choices.set_count("Music", music_volume)
+			set_volume()
+			
 	change_choices(first_choices, "", Color(0, 0.294118, 0.682353))
 
 func tick(p1, _p2, save_data):
@@ -47,7 +58,7 @@ func tick(p1, _p2, save_data):
 				bumpty_timer -= 1
 				last_bumpty -= 1
 				if randi() % 16 == 0 and last_bumpty <= 0:
-					var new_bumpty = load("res://scenes/Bumpty.tscn").instance()
+					var new_bumpty = load("res://scenes/Bumpty.tscn").instantiate()
 					new_bumpty.position = Vector2(266, 224)
 					add_child(new_bumpty)
 					last_bumpty = 10
@@ -55,7 +66,7 @@ func tick(p1, _p2, save_data):
 			if final_bumpty > 0:
 				final_bumpty -= 1
 				if final_bumpty == 0:
-					var new_bumpty = load("res://scenes/Bumpty.tscn").instance()
+					var new_bumpty = load("res://scenes/Bumpty.tscn").instantiate()
 					new_bumpty.position = Vector2(266, 224)
 					add_child(new_bumpty)
 			
@@ -137,6 +148,12 @@ func set_volume():
 	AudioServer.set_bus_mute(AudioServer.get_bus_index("Music"), music_volume == 1)
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Sound Effects"), sound_effects_volume * 5 - 45)
 	AudioServer.set_bus_mute(AudioServer.get_bus_index("Sound Effects"), sound_effects_volume == 1)
+	
+	var config = ConfigFile.new()
+	config.load("user://settings.cfg")
+	config.set_value("volume", "music", music_volume)
+	config.set_value("volume", "sfx", sound_effects_volume)
+	config.save("user://settings.cfg")
 
 func change_choices(choices, title, color):
 	store_selection[current_choices] = current_selection

@@ -1,10 +1,10 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scenes/BlockParticle.tscn" type="PackedScene" id=1]
-[ext_resource path="res://graphics/chain/2.png" type="Texture" id=2]
+[ext_resource path="res://graphics/chain/2.png" type="Texture2D" id=2]
 [ext_resource path="res://scenes/ChainCombo.gd" type="Script" id=3]
 
-[node name="ChainCombo" type="Sprite"]
+[node name="ChainCombo" type="Sprite2D"]
 texture = ExtResource( 2 )
 script = ExtResource( 3 )
 

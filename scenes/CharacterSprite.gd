@@ -1,6 +1,6 @@
 extends Node2D
 
-onready var sprite = $AnimatedSprite
+@onready var sprite = $AnimatedSprite2D
 
 var win_timer = -1
 var pause_timer = 0
@@ -48,7 +48,7 @@ func _process(_delta):
 			if pause_timer < 0:
 				sprite.position.y = 0
 				sprite.play("default")
-				sprite.playing = false
+				sprite.stop()
 				pause_timer = 8
 		else:
 			sprite.play("jump")

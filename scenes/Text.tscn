@@ -1,7 +1,9 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=2 format=3 uid="uid://cdmgd4h1a7gb7"]
 
-[ext_resource path="res://scenes/Text.gd" type="Script" id=1]
+[ext_resource type="Script" path="res://scenes/Text.gd" id="1"]
 
 [node name="Text" type="Node2D"]
-script = ExtResource( 1 )
+texture_filter = 1
+script = ExtResource("1")
 text = "0088"
+separation = 9
